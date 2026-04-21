@@ -2,5 +2,51 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./apps/api-e2e"
+    },
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./apps/ui-e2e"
+    },
+    {
+      "path": "./apps/ui"
+    },
+    {
+      "path": "./libs/server/users"
+    },
+    {
+      "path": "./libs/database"
+    },
+    {
+      "path": "./libs/server/books"
+    },
+    {
+      "path": "./libs/server/auth"
+    },
+    {
+      "path": "./libs/server/security"
+    },
+    {
+      "path": "./libs/server/corso-di-laurea"
+    },
+    {
+      "path": "./libs/server/segreteria"
+    },
+    {
+      "path": "./libs/server/sessione"
+    },
+    {
+      "path": "./libs/server/appello"
+    },
+    {
+      "path": "./libs/server/docente"
+    },
+    {
+      "path": "./libs/server/materia"
+    }
+  ]
 }
