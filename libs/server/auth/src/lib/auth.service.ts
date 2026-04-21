@@ -31,9 +31,11 @@ export class ServerAuthService {
         return {access_token: await this.jwtService.signAsync(payload), user}
     }
 
+    //Al posto di AuthResponse se metto any => qualsiasi cosa 
     async register(dto: RegisterDto): Promise<AuthResponse> {
         const user = await this.usersService.create(dto);
 
+        //tutto tranne password hash 
         const { passwordHash, ...result } = user;
         return this.login(result);
     }
