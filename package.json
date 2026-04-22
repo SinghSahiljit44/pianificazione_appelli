@@ -7,6 +7,8 @@
   },
   "private": true,
   "devDependencies": {
+    "@angular-devkit/core": "^21.2.8",
+    "@angular-devkit/schematics": "^21.2.8",
     "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/swagger": "^11.2.6",
@@ -72,7 +74,9 @@
     "libs/server/*",
     "libs/server/users/src/lib/libs/db/*",
     "libs/db/*",
-    "libs/*"
+    "libs/*",
+    "libs/server/academic/*",
+    "libs/server/academic/appello/src/*"
   ],
   "dependencies": {
     "@nestjs/common": "^11.0.0",

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrgAppelloController } from './appello.controller';
-import { OrgAppelloService } from './appello.service';
+import { AppelloController } from './appello.controller';
+import { AppelloService } from './appello.service';
 
 @Module({
-  controllers: [OrgAppelloController],
-  providers: [OrgAppelloService],
-  exports: [OrgAppelloService],
+  controllers: [AppelloController],
+  providers: [AppelloService],
+  exports: [AppelloService],
 })
-export class OrgAppelloModule {}
+export class AppelloModule {}

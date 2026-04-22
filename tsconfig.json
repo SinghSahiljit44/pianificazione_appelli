@@ -50,6 +50,45 @@
     },
     {
       "path": "./libs/server/academic"
+    },
+    {
+      "path": "./libs/server/academic/appello"
+    },
+    {
+      "path": "./libs/server/academic/corso-di-laurea"
+    },
+    {
+      "path": "./libs/server/academic/docente"
+    },
+    {
+      "path": "./libs/server/academic/materia"
+    },
+    {
+      "path": "./libs/server/academic/segreteria"
+    },
+    {
+      "path": "./libs/server/academic/sessione"
+    },
+    {
+      "path": "./libs/server/academic/appello/src/lib"
+    },
+    {
+      "path": "./libs/server/academic/appello"
+    },
+    {
+      "path": "./libs/server/academic/corso-di-laurea"
+    },
+    {
+      "path": "./libs/server/academic/docente"
+    },
+    {
+      "path": "./libs/server/academic/materia"
+    },
+    {
+      "path": "./libs/server/academic/segreteria"
+    },
+    {
+      "path": "./libs/server/academic/sessione"
     }
   ]
 }
