@@ -47,6 +47,9 @@
     },
     {
       "path": "./libs/server/materia"
+    },
+    {
+      "path": "./libs/server/academic"
     }
   ]
 }

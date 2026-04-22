@@ -15,6 +15,7 @@ type RequestWithUser = Request & {
 export class ServerAuthController {
   constructor(private serverAuthService: ServerAuthService) {}
 
+  //Guarda guards
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @ApiBody({
