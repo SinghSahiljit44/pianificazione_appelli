@@ -1,4 +1,3 @@
-// libs/academic/appello/src/lib/repositories/appello.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

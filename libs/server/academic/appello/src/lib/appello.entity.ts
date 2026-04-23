@@ -1,6 +1,5 @@
-// libs/academic/appello/src/lib/entities/appello.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { MateriaEntity } from '@org/materia';
+import { MateriaEntity } from '@server/materia';
 import { DocenteEntity } from '@server/docente';
 import { SessioneEntity } from '@server/sessione'; 
 

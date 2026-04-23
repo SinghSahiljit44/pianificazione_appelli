@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { DocenteEntity } from '@org/docente';
-import { CorsoDiLaureaEntity } from '@org/corso-di-laurea';
+import { DocenteEntity } from '@server/docente';
+import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 
 @Entity('materie')
 export class MateriaEntity {
