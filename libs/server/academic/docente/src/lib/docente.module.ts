@@ -7,4 +7,4 @@ import { DocenteService } from './docente.service';
   providers: [DocenteService],
   exports: [DocenteService],
 })
-export class OrgDocenteModule {}
+export class DocenteModule {}

@@ -1,4 +1,3 @@
-// libs/academic/docente/src/lib/docente.controller.ts
 import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { DocenteService } from './docente.service';
 import { DocenteEntity } from './docente.entity';

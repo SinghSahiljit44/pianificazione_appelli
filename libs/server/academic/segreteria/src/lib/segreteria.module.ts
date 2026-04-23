@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrgSegreteriaController } from './segreteria.controller';
-import { OrgSegreteriaService } from './segreteria.service';
+import { SegreteriaController } from './segreteria.controller';
+import { SegreteriaService } from './segreteria.service';
 
 @Module({
-  controllers: [OrgSegreteriaController],
-  providers: [OrgSegreteriaService],
-  exports: [OrgSegreteriaService],
+  controllers: [SegreteriaController],
+  providers: [SegreteriaService],
+  exports: [SegreteriaService],
 })
-export class OrgSegreteriaModule {}
+export class SegreteriaModule {}

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrgCorsoDiLaureaController } from './corso-di-laurea.controller';
-import { OrgCorsoDiLaureaService } from './corso-di-laurea.service';
+import { CorsoDiLaureaController } from './corso-di-laurea.controller';
+import { CorsoDiLaureaService } from './corso-di-laurea.service';
 
 @Module({
-  controllers: [OrgCorsoDiLaureaController],
-  providers: [OrgCorsoDiLaureaService],
-  exports: [OrgCorsoDiLaureaService],
+  controllers: [CorsoDiLaureaController],
+  providers: [CorsoDiLaureaService],
+  exports: [CorsoDiLaureaService],
 })
-export class OrgCorsoDiLaureaModule {}
+export class CorsoDiLaureaModule {}

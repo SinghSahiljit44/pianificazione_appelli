@@ -10,11 +10,11 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   const config = new DocumentBuilder()
-    .addBearerAuth()
     .setTitle('Nx-NestJS')
     .setDescription('API DOCUMENTATION')
     .setVersion('1.0')
     .addTag('api')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app,config);

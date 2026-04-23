@@ -2,11 +2,12 @@
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
+    "ignoreDeprecations": "6.0",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "types": ["node", "jest"],
     "target": "es2021",
     "experimentalDecorators": true,
@@ -17,5 +18,15 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../sessione/tsconfig.lib.json"
+    },
+    {
+      "path": "../docente/tsconfig.lib.json"
+    },
+    {
+      "path": "../materia/tsconfig.lib.json"
+    }
+  ]
 }

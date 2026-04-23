@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrgMateriaController } from './materia.controller';
-import { OrgMateriaService } from './materia.service';
+import { MateriaController } from './materia.controller';
+import { MateriaService } from './materia.service';
 
 @Module({
-  controllers: [OrgMateriaController],
-  providers: [OrgMateriaService],
-  exports: [OrgMateriaService],
+  controllers: [MateriaController],
+  providers: [MateriaService],
+  exports: [MateriaService],
 })
-export class OrgMateriaModule {}
+export class MateriaModule {}

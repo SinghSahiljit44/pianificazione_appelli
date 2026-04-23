@@ -31,46 +31,7 @@
       "path": "./libs/server/security"
     },
     {
-      "path": "./libs/server/corso-di-laurea"
-    },
-    {
-      "path": "./libs/server/segreteria"
-    },
-    {
-      "path": "./libs/server/sessione"
-    },
-    {
-      "path": "./libs/server/appello"
-    },
-    {
-      "path": "./libs/server/docente"
-    },
-    {
-      "path": "./libs/server/materia"
-    },
-    {
       "path": "./libs/server/academic"
-    },
-    {
-      "path": "./libs/server/academic/appello"
-    },
-    {
-      "path": "./libs/server/academic/corso-di-laurea"
-    },
-    {
-      "path": "./libs/server/academic/docente"
-    },
-    {
-      "path": "./libs/server/academic/materia"
-    },
-    {
-      "path": "./libs/server/academic/segreteria"
-    },
-    {
-      "path": "./libs/server/academic/sessione"
-    },
-    {
-      "path": "./libs/server/academic/appello/src/lib"
     },
     {
       "path": "./libs/server/academic/appello"

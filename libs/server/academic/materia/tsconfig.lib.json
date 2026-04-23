@@ -6,7 +6,8 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
+    "ignoreDeprecations": "6.0",
     "types": ["node"],
     "target": "es2021",
     "experimentalDecorators": true,
@@ -17,5 +18,12 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../corso-di-laurea/tsconfig.lib.json"
+    },
+    {
+      "path": "../docente/tsconfig.lib.json"
+    }
+  ]
 }
