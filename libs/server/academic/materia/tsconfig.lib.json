@@ -20,6 +20,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../appello/tsconfig.lib.json"
+    },
+    {
       "path": "../corso-di-laurea/tsconfig.lib.json"
     },
     {

@@ -15,10 +15,16 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": true,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*.ts"],
   "references": [
+    {
+      "path": "../materia/tsconfig.lib.json"
+    },
+    {
+      "path": "../appello/tsconfig.lib.json"
+    },
     {
       "path": "../../users/tsconfig.lib.json"
     }

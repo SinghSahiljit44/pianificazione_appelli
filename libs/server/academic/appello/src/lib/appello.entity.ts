@@ -14,27 +14,27 @@ export class AppelloEntity {
     @Column({ type: 'varchar', length: 100 })
     aula: string;
 
-    @Column({ type: 'text', nullable: true }) //Note professore per esame o descrizione, possibile rimozione
+    @Column({ type: 'text', nullable: true }) 
     note: string;
 
-    @ManyToOne(() => MateriaEntity, { onDelete: 'CASCADE' }) //se elimino materia elimino tutti gli appelli relativi
-    @JoinColumn({ name: 'materiaId' })
-    materia: MateriaEntity;
+    @Column()
+    sessioneId: number;
 
     @Column()
-    materiaId: number; //o stringa?
-
-    @ManyToOne(() => DocenteEntity, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'docenteId' })
-    docente: DocenteEntity;
+    materiaId: number;
 
     @Column()
     docenteId: number;
 
-    @ManyToOne(() => SessioneEntity, { onDelete: 'CASCADE' }) //stesso comportamento eliminazione materia
+    @ManyToOne(() => SessioneEntity, (sessione) => sessione.appelli, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'sessioneId' })
     sessione: SessioneEntity;
 
-    @Column()
-    sessioneId: number;
+    @ManyToOne(() => MateriaEntity, (materia) => materia.appelli, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'materiaId' })
+    materia: MateriaEntity;
+
+    @ManyToOne(() => DocenteEntity, (docente) => docente.appelli, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'docenteId' })
+    docente: DocenteEntity;
 }
