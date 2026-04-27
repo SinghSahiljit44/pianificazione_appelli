@@ -5,7 +5,7 @@ import { Roles } from '@server/security';
 import { RolesGuard } from '@server/security'; 
 import { JwtAuthGuard } from '@server/security'; 
 import { UserRole } from '@server/users';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('sessioni') // Raggruppa gli endpoint in Swagger
 @Controller('sessioni')

@@ -23,5 +23,4 @@ export class SegreteriaEntity {
     @OneToMany(() => SessioneEntity, (sessione) => sessione.creataDa)
     sessioniGestite: SessioneEntity[];
 
-    //relazione con insegnanti o no?
 }
