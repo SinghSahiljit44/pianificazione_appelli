@@ -1,63 +1,50 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
+import { Repository, Between, LessThan, MoreThan, Not, And } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
+import { CreateAppelloDto } from './dto/create-appello.dto';
+import { UpdateAppelloDto } from './dto/update-appello.dto';
 
 @Injectable()
 export class AppelloRepository {
   constructor(
     @InjectRepository(AppelloEntity)
-    private readonly repo: Repository<AppelloEntity>
+    private readonly repository: Repository<AppelloEntity>
   ) {}
-
-  async findByDateAndCourse(dataOra: Date, materiaId: number) {
-    return this.repo.findOne({
-      where: {
-        dataOra, //controllare, possibili problemi in quanto timestamp
-        materia: { id: materiaId }
-      }
+  
+  async findAll(): Promise<AppelloEntity[]> {
+    return this.repository.find({
+      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      order: { dataOra: 'ASC' },
     });
   }
 
-  //controllo unicità appello per materia e sessione?
-
   async findAllByDocente(docenteId: number) {
-    return this.repo.find({
-      where: { docente: { id: docenteId } },
+    return this.repository.find({
+      where: { docenteId },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
   async findAllBySessione(sessioneId: number) {
-    return this.repo.find({
-      where: { sessione: { id: sessioneId } },
+    return this.repository.find({
+      where: { sessioneId },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
   async findAllByMateria(materiaId: number) {
-    return this.repo.find({
-      where: { materia: { id: materiaId } },
+    return this.repository.find({
+      where: { materiaId },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async findById(id: number) { //for testing?
-    const appello = await this.repo.findOne({
-      where: { id },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione']
-    });
-    if (!appello) {
-      throw new NotFoundException(`Appello con ID ${id} non trovato`);
-    }
-    return appello;
-  }
-
   async findByDateRange(start: Date, end: Date) {
-    return this.repo.find({
+    return this.repository.find({
       where: {
         dataOra: Between(start, end)
       },
@@ -67,28 +54,57 @@ export class AppelloRepository {
   }
 
   async findByCourse(corsoId: number) {
-    return this.repo.find({
+    return this.repository.find({
       where: {
-        materia: {
-          corsoId
-        }
+        materia: { corsoId }
       },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async create(data: Partial<AppelloEntity>) {
-    const appello = this.repo.create(data);
-    return this.repo.save(appello);
+  async findById(id: number) {
+    return this.repository.findOne({
+      where: { id },
+      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione']
+    });
   }
 
-  async update(id: number, appelloAggiornato: Partial<AppelloEntity>) {
-    await this.repo.update(id, appelloAggiornato);
-    return this.repo.findOne({ where: { id } });
+  async create(data: CreateAppelloDto & { docenteId: number }) {
+    const appello = this.repository.create(data);
+    return this.repository.save(appello);
+  }
+
+  async update(id: number, appelloAggiornato: UpdateAppelloDto) {
+      await this.repository.update(id, appelloAggiornato);
+      return this.findById(id);
   }
 
   async delete(id: number) {
-    return this.repo.delete(id);
+    const result = await this.repository.delete(id);
+    return (result.affected ?? 0) > 0;
+  }
+
+  async findOverlap(aula: string, inizio: Date, fine: Date, excludeId?: number): Promise<AppelloEntity | null> {
+    return this.repository.findOne({
+      where: {
+        aula: aula,
+        dataOra: And(
+          LessThan(fine), 
+          MoreThan(new Date(inizio.getTime() - 2 * 60 * 60 * 1000)) // Range di 2 ore
+        ),
+        ...(excludeId && { id: Not(excludeId) })
+      }
+    });
+  }
+  
+  //per implementare un limite massimo di appelli che un untente può inserire 
+  async countByMateriaAndSessione(materiaId: number, sessioneId: number): Promise<number> {
+    return this.repository.count({
+      where: {
+        materiaId: materiaId,
+        sessioneId: sessioneId
+      }
+    });
   }
 }
