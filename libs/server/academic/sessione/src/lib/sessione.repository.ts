@@ -1,4 +1,3 @@
-// libs/academic/sessione/src/lib/repositories/sessione.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
@@ -53,7 +52,7 @@ export class SessioneRepository {
   }
 
   async setAttiva(id: number, attiva: boolean) {
-    await this.repo.update(id, { attiva }); //da capire meglio
+    await this.repo.update(id, { attiva }); 
   }
 
   create(data: CreateSessioneDto) {

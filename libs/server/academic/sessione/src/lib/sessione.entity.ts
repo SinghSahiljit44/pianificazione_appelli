@@ -17,6 +17,15 @@ export class SessioneEntity {
     @Column({ type: 'date' })
     dataFine: Date;
 
+    @Column({ type: 'int', default: 2 })
+    maxAppelliPerMateria: number;
+
+    @Column({ type: 'timestamp' })
+    inizioInserimento: Date;
+
+    @Column({ type: 'timestamp' })
+    fineInserimento: Date;
+
     @Column({ type: 'boolean', default: false }) //what this
     attiva: boolean;
 

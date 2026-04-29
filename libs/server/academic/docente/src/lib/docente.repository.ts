@@ -29,9 +29,9 @@ export class DocenteRepository {
     return this.repo.find({ where: { dipartimento }, relations: ['user'] });
   }
   
-  findByMateriaId(materiaCodice: string) { //piu' insegnanti per materia?
+  findByMateriaId(materiaId: number) { //piu' insegnanti per materia?
     return this.repo.findOne({
-      where: { materie: { codice: materiaCodice } },
+      where: { materie: { id: materiaId } },
       relations: ['materie']
     });
   }

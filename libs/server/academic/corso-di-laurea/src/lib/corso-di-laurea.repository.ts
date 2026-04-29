@@ -19,20 +19,20 @@ export class CorsoDiLaureaRepository {
     });
   }
 
-  findByCodice(codice: string) {
-    return this.repo.findOne({ where: { codice }, relations: ['materie'] });
+  findById(id: number) {
+    return this.repo.findOne({ where: { id }, relations: ['materie'] });
   }
 
   create(data: CreateCorsoDiLaureaDto) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(codice: string, data: UpdateCorsoDiLaureaDto) {
-    await this.repo.update({ codice }, data);
-    return this.findByCodice(codice);
+  async update(id: number, data: UpdateCorsoDiLaureaDto) {
+    await this.repo.update({ id }, data);
+    return this.findById(id);
   }
 
-  delete(codice: string) {
-    return this.repo.delete({ codice });
+  delete(id: number) {
+    return this.repo.delete({ id });
   }
 }

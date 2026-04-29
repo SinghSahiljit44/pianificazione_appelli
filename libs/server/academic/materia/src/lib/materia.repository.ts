@@ -13,7 +13,7 @@ export class MateriaRepository {
   ) {}
 
   async findAll(): Promise<MateriaEntity[]> {
-    return this.repo.find({ relations: ['docente', 'corso'] });
+    return this.repo.find({ relations: ['docente', 'corsi'] });
   }
 
   async create(data: CreateMateriaDto): Promise<MateriaEntity> {
@@ -21,42 +21,42 @@ export class MateriaRepository {
     return this.repo.save(materia);
   }
 
-  async update(codice: string, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
-    await this.repo.update(codice, data);
-    return this.findByCodice(codice);
+  async update(id: number, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
+    await this.repo.update(id, data);
+    return this.findById(id);
   }
 
-  async delete(codice: string) {
-    await this.repo.delete(codice);
+  async delete(id: number) {
+    await this.repo.delete(id);
   }
 
   findByDocenteId(docenteId: number): Promise<MateriaEntity[]> {
     return this.repo.find({
       where: { docente: { id: docenteId } },
-      relations: ['docente', 'corso']
+      relations: ['docente', 'corsi']
     });
   }
 
-  findByCorsoId(corsoId: string): Promise<MateriaEntity[]> {
+  findByCorsoId(corsoId: number): Promise<MateriaEntity[]> {
     return this.repo.find({
       where: { 
-        corso: { codice: corsoId } 
+        corsi: { corso: { id: corsoId } } 
       },
-      relations: ['docente', 'corso']
+      relations: ['docente', 'corsi']
     });
   }
 
-  findByCodice(codice: string): Promise<MateriaEntity | null> {
+  findById(id: number): Promise<MateriaEntity | null> {
     return this.repo.findOne({
-      where: { codice },
-      relations: ['docente', 'corso']
+      where: { id },
+      relations: ['docente', 'corsi']
     });
   } 
 
-  findWithAppelli(codice: string): Promise<MateriaEntity | null> {
+  findWithAppelli(id: number): Promise<MateriaEntity | null> {
     return this.repo.findOne({
-      where: { codice },
-      relations: ['docente', 'corso', 'appelli']
+      where: { id },
+      relations: ['docente', 'corsi', 'appelli']
     });
   }
 }

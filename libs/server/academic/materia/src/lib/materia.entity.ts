@@ -1,12 +1,12 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DocenteEntity } from '@server/docente';
-import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 import { AppelloEntity } from '@server/appello';
+import { MateriaCorsoEntity } from './materia-corso.entity';
 
 @Entity('materie')
 export class MateriaEntity {
-    @PrimaryColumn()
-    codice: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Column({ type: 'varchar', length: 255 })
     nome: string;
@@ -14,14 +14,13 @@ export class MateriaEntity {
     @Column({ type: 'int' })
     cfu: number;
 
-    @ManyToOne(() => CorsoDiLaureaEntity, (corso) => corso.materie, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'corsoId' })
-    corso: CorsoDiLaureaEntity;
+    @OneToMany(() => MateriaCorsoEntity, (mc) => mc.materia)
+    corsi: MateriaCorsoEntity[];
 
     @OneToMany(() => AppelloEntity, (appello) => appello.materia)
     appelli: AppelloEntity[];
 
-    @ManyToOne(() => DocenteEntity, { onDelete: 'SET NULL', nullable: true }) //rivedere onDelete
+    @ManyToOne(() => DocenteEntity, { onDelete: 'SET NULL', nullable: true })
     @JoinColumn({ name: 'docenteId' })
     docente?: DocenteEntity;
 }

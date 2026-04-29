@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
+import { Repository, Between, Not } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
 import { CreateAppelloDto } from './dto/create-appello.dto';
 import { UpdateAppelloDto } from './dto/update-appello.dto';
-import { CorsoDiLaureaEntity } from '../../../corso-di-laurea/src/lib/corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 
 @Injectable()
 export class AppelloRepository {
@@ -15,7 +15,7 @@ export class AppelloRepository {
   
   async findAll(): Promise<AppelloEntity[] | null> {
     return this.repository.find({
-      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { dataOra: 'ASC' },
     });
   }
@@ -25,7 +25,7 @@ export class AppelloRepository {
       where: { 
         docente: { id: docenteId } 
       },
-      relations: ['materia', 'materia.corso', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -35,17 +35,28 @@ export class AppelloRepository {
       where: { 
         sessione: { id: sessioneId } 
       },
-      relations: ['materia', 'materia.corso', 'docente'],
+      relations: ['materia', 'materia.corsi', 'docente'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async findAllByMateria(materiaCodice: string) {
+  async findDuplicate(dataOra: Date, corsoId: number, anno: number, excludeId?: number) {
+    return this.repository.findOne({
+      where: {
+        dataOra,
+        materia: { corsi: { corso: { id: corsoId }, anno } },
+        ...(excludeId && { id: Not(excludeId) })
+      },
+    });
+  }
+
+
+  async findAllByMateria(materiaId: number) {
     return this.repository.find({
       where: { 
-        materia: { codice: materiaCodice } 
+        materia: { id: materiaId } 
       },
-      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -55,17 +66,17 @@ export class AppelloRepository {
       where: {
         dataOra: Between(start, end)
       },
-      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async findByCourse(corsoDiLaurea: CorsoDiLaureaEntity) { //to be checked
+  async findByCourse(corsoDiLaurea: CorsoDiLaureaEntity) { 
     return this.repository.find({
       where: {
-        materia: { corso: corsoDiLaurea }
+        materia: { corsi: { corso: corsoDiLaurea } }
       },
-      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -73,7 +84,7 @@ export class AppelloRepository {
   async findById(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: ['materia', 'materia.corso', 'docente', 'sessione']
+      relations: ['materia', 'materia.corsi', 'docente', 'sessione']
     });
   }
 
@@ -110,10 +121,10 @@ export class AppelloRepository {
   }
   */
  
-  async countByMateriaAndSessione(materiaCodice: string, sessioneId: number): Promise<number> {
+  async countByMateriaAndSessione(materiaId: number, sessioneId: number): Promise<number> {
     return this.repository.count({
       where: {
-        materia: { codice: materiaCodice },
+        materia: { id: materiaId },
         sessione: { id: sessioneId }
       }
     });
