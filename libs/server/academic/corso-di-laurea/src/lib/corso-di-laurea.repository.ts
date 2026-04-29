@@ -3,7 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
-//da mettere DTO al posto di entity!!!!!
+import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
+import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
+
 @Injectable()
 export class CorsoDiLaureaRepository {
   constructor(
@@ -12,23 +14,25 @@ export class CorsoDiLaureaRepository {
   ) {}
 
   findAll() {
-    return this.repo.find();
+    return this.repo.find({
+      relations: ['materie']
+    });
   }
 
   findByCodice(codice: string) {
-    return this.repo.findOneBy({ codice });
+    return this.repo.findOne({ where: { codice }, relations: ['materie'] });
   }
 
-  create(data: Partial<CorsoDiLaureaEntity>) {
+  create(data: CreateCorsoDiLaureaDto) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(codice: string, data: Partial<CorsoDiLaureaEntity>) {
+  async update(codice: string, data: UpdateCorsoDiLaureaDto) {
     await this.repo.update({ codice }, data);
     return this.findByCodice(codice);
   }
 
-  delete(id: number) {
-    return this.repo.delete(id);
+  delete(codice: string) {
+    return this.repo.delete({ codice });
   }
 }

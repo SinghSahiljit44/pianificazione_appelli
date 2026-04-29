@@ -16,13 +16,6 @@ export class MateriaRepository {
     return this.repo.find({ relations: ['docente', 'corso'] });
   }
 
-  async findById(codice: string): Promise<MateriaEntity | null> {
-    return this.repo.findOne({ 
-      where: { codice },
-      relations: ['docente', 'corso'] 
-    });
-  }
-
   async create(data: CreateMateriaDto): Promise<MateriaEntity> {
     const materia = this.repo.create(data);
     return this.repo.save(materia);
@@ -30,7 +23,7 @@ export class MateriaRepository {
 
   async update(codice: string, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
     await this.repo.update(codice, data);
-    return this.findById(codice);
+    return this.findByCodice(codice);
   }
 
   async delete(codice: string) {

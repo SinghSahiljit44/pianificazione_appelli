@@ -14,15 +14,18 @@ export class SessioneRepository {
   ) {}
 
   findAll() {
-    return this.repo.find({ order: { dataInizio: 'DESC' } });
+    return this.repo.find({ 
+      relations: ['creataDa'],
+      order: { dataInizio: 'DESC' } 
+    });
   }
 
   findById(id: number) {
-    return this.repo.findOneBy({ id });
+    return this.repo.findOne({ where: { id }, relations: ['creataDa'] });
   }
 
   findAttiva() {
-    return this.repo.findOneBy({ attiva: true });
+    return this.repo.findOne({ where: { attiva: true }, relations: ['creataDa'] });
   }
 
   findWithAppelli() {
@@ -50,7 +53,7 @@ export class SessioneRepository {
   }
 
   async setAttiva(id: number, attiva: boolean) {
-    await this.repo.update(id, { attiva });
+    await this.repo.update(id, { attiva }); //da capire meglio
   }
 
   create(data: CreateSessioneDto) {

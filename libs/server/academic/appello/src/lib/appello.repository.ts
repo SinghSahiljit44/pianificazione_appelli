@@ -15,7 +15,7 @@ export class AppelloRepository {
   
   async findAll(): Promise<AppelloEntity[] | null> {
     return this.repository.find({
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
       order: { dataOra: 'ASC' },
     });
   }
@@ -25,7 +25,7 @@ export class AppelloRepository {
       where: { 
         docente: { id: docenteId } 
       },
-      relations: ['materia', 'materia.corsoDiLaurea', 'sessione'],
+      relations: ['materia', 'materia.corso', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -35,7 +35,7 @@ export class AppelloRepository {
       where: { 
         sessione: { id: sessioneId } 
       },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente'],
+      relations: ['materia', 'materia.corso', 'docente'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -45,7 +45,7 @@ export class AppelloRepository {
       where: { 
         materia: { codice: materiaCodice } 
       },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -55,7 +55,7 @@ export class AppelloRepository {
       where: {
         dataOra: Between(start, end)
       },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -65,7 +65,7 @@ export class AppelloRepository {
       where: {
         materia: { corso: corsoDiLaurea }
       },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corso', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
@@ -73,7 +73,7 @@ export class AppelloRepository {
   async findById(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione']
+      relations: ['materia', 'materia.corso', 'docente', 'sessione']
     });
   }
 

@@ -43,7 +43,7 @@ export class DocenteRepository {
     })
   }
 
-  create(data: CreateDocenteDto) { //va controllato nel service
+  create(data: CreateDocenteDto) { 
     const entity = this.repo.create(data);
     return this.repo.save(entity);
   }
