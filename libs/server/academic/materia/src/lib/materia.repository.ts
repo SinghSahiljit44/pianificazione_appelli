@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MateriaEntity } from './materia.entity';
+import { CreateMateriaDto } from './dto/createmateria.dto';
+import { UpdateMateriaDto } from './dto/updatemateria.dto';
 
 @Injectable()
 export class MateriaRepository {
@@ -14,24 +16,54 @@ export class MateriaRepository {
     return this.repo.find({ relations: ['docente', 'corso'] });
   }
 
-  async findById(id: number): Promise<MateriaEntity | null> {
+  async findById(codice: string): Promise<MateriaEntity | null> {
     return this.repo.findOne({ 
-      where: { id }, 
+      where: { codice },
       relations: ['docente', 'corso'] 
     });
   }
 
-  async create(data: Partial<MateriaEntity>): Promise<MateriaEntity> {
+  async create(data: CreateMateriaDto): Promise<MateriaEntity> {
     const materia = this.repo.create(data);
     return this.repo.save(materia);
   }
 
-  async update(id: number, data: Partial<MateriaEntity>): Promise<MateriaEntity | null> {
-    await this.repo.update(id, data);
-    return this.findById(id);
+  async update(codice: string, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
+    await this.repo.update(codice, data);
+    return this.findById(codice);
   }
 
-  async delete(id: number): Promise<void> {
-    await this.repo.delete(id);
+  async delete(codice: string) {
+    await this.repo.delete(codice);
+  }
+
+  findByDocenteId(docenteId: number): Promise<MateriaEntity[]> {
+    return this.repo.find({
+      where: { docente: { id: docenteId } },
+      relations: ['docente', 'corso']
+    });
+  }
+
+  findByCorsoId(corsoId: string): Promise<MateriaEntity[]> {
+    return this.repo.find({
+      where: { 
+        corso: { codice: corsoId } 
+      },
+      relations: ['docente', 'corso']
+    });
+  }
+
+  findByCodice(codice: string): Promise<MateriaEntity | null> {
+    return this.repo.findOne({
+      where: { codice },
+      relations: ['docente', 'corso']
+    });
+  } 
+
+  findWithAppelli(codice: string): Promise<MateriaEntity | null> {
+    return this.repo.findOne({
+      where: { codice },
+      relations: ['docente', 'corso', 'appelli']
+    });
   }
 }

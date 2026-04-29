@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DocenteEntity } from './docente.entity';
+import { UpdateDocenteDto } from './dto/updatedocente.dto';
+import { CreateDocenteDto } from './dto/createdocente.dto';
 
 @Injectable()
 export class DocenteRepository {
@@ -19,12 +21,34 @@ export class DocenteRepository {
     return this.repo.findOne({ where: { id }, relations: ['user'] });
   }
 
-  create(data: Partial<DocenteEntity>) {
+  findByUserId(userId: number) {
+    return this.repo.findOne({ where: { user: { id: userId } }, relations: ['user'] });
+  }
+
+  findByDipartimento(dipartimento: string) {
+    return this.repo.find({ where: { dipartimento }, relations: ['user'] });
+  }
+  
+  findByMateriaId(materiaCodice: string) { //piu' insegnanti per materia?
+    return this.repo.findOne({
+      where: { materie: { codice: materiaCodice } },
+      relations: ['materie']
+    });
+  }
+
+  findAppelliByDocenteId(docenteId: number) {
+    return this.repo.find({
+      where: { id: docenteId },
+      relations: ['appelli', 'appelli.materia', 'appelli.sessione']
+    })
+  }
+
+  create(data: CreateDocenteDto) { //va controllato nel service
     const entity = this.repo.create(data);
     return this.repo.save(entity);
   }
 
-  async update(id: number, data: Partial<DocenteEntity>) {
+  async update(id: number, data: UpdateDocenteDto) {
     await this.repo.update(id, data);
     return this.findById(id);
   }

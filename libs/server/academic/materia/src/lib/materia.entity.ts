@@ -1,27 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { DocenteEntity } from '@server/docente';
 import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 import { AppelloEntity } from '@server/appello';
 
 @Entity('materie')
 export class MateriaEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryColumn()
+    codice: string;
 
     @Column({ type: 'varchar', length: 255 })
     nome: string;
 
     @Column({ type: 'int' })
     cfu: number;
-
-    @Column({ type: 'varchar', length: 20, unique: true })
-    codice: string; // es. "INF-01"
-
-    @Column({ nullable: true })
-    docenteId?: number;
-
-    @Column()
-    corsoId: number;
 
     @ManyToOne(() => CorsoDiLaureaEntity, (corso) => corso.materie, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'corsoId' })

@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SegreteriaEntity } from './segreteria.entity';
+import { UpdateSegreteriaDto } from './dto/updatesegreteria.dto';
+import { CreateSegreteriaDto } from './dto/createsegreteria.dto';
 
 @Injectable()
 export class SegreteriaRepository {
@@ -19,11 +21,11 @@ export class SegreteriaRepository {
     return this.repo.findOne({ where: { id }, relations: ['user'] });
   }
 
-  create(data: Partial<SegreteriaEntity>) {
+  create(data: CreateSegreteriaDto) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(id: number, data: Partial<SegreteriaEntity>) {
+  async update(id: number, data: UpdateSegreteriaDto) {
     await this.repo.update(id, data);
     return this.findById(id);
   }

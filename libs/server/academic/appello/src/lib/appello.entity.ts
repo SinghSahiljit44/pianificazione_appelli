@@ -11,20 +11,11 @@ export class AppelloEntity {
     @Column({ type: 'timestamp' })
     dataOra: Date;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'text' }) 
     aula: string;
 
     @Column({ type: 'text', nullable: true }) 
     note: string;
-
-    @Column()
-    sessioneId: number;
-
-    @Column()
-    materiaId: number;
-
-    @Column()
-    docenteId: number;
 
     @ManyToOne(() => SessioneEntity, (sessione) => sessione.appelli, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'sessioneId' })

@@ -1,63 +1,57 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
+import { CreateAppelloDto } from './dto/create-appello.dto';
+import { UpdateAppelloDto } from './dto/update-appello.dto';
+import { CorsoDiLaureaEntity } from '../../../corso-di-laurea/src/lib/corso-di-laurea.entity';
 
 @Injectable()
 export class AppelloRepository {
   constructor(
     @InjectRepository(AppelloEntity)
-    private readonly repo: Repository<AppelloEntity>
+    private readonly repository: Repository<AppelloEntity>
   ) {}
-
-  async findByDateAndCourse(dataOra: Date, materiaId: number) {
-    return this.repo.findOne({
-      where: {
-        dataOra, //controllare, possibili problemi in quanto timestamp
-        materia: { id: materiaId }
-      }
+  
+  async findAll(): Promise<AppelloEntity[] | null> {
+    return this.repository.find({
+      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+      order: { dataOra: 'ASC' },
     });
   }
 
-  //controllo unicità appello per materia e sessione?
-
   async findAllByDocente(docenteId: number) {
-    return this.repo.find({
-      where: { docente: { id: docenteId } },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+    return this.repository.find({
+      where: { 
+        docente: { id: docenteId } 
+      },
+      relations: ['materia', 'materia.corsoDiLaurea', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
   async findAllBySessione(sessioneId: number) {
-    return this.repo.find({
-      where: { sessione: { id: sessioneId } },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
+    return this.repository.find({
+      where: { 
+        sessione: { id: sessioneId } 
+      },
+      relations: ['materia', 'materia.corsoDiLaurea', 'docente'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async findAllByMateria(materiaId: number) {
-    return this.repo.find({
-      where: { materia: { id: materiaId } },
+  async findAllByMateria(materiaCodice: string) {
+    return this.repository.find({
+      where: { 
+        materia: { codice: materiaCodice } 
+      },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
-  }
-
-  async findById(id: number) { //for testing?
-    const appello = await this.repo.findOne({
-      where: { id },
-      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione']
-    });
-    if (!appello) {
-      throw new NotFoundException(`Appello con ID ${id} non trovato`);
-    }
-    return appello;
   }
 
   async findByDateRange(start: Date, end: Date) {
-    return this.repo.find({
+    return this.repository.find({
       where: {
         dataOra: Between(start, end)
       },
@@ -66,29 +60,62 @@ export class AppelloRepository {
     });
   }
 
-  async findByCourse(corsoId: number) {
-    return this.repo.find({
+  async findByCourse(corsoDiLaurea: CorsoDiLaureaEntity) { //to be checked
+    return this.repository.find({
       where: {
-        materia: {
-          corsoId
-        }
+        materia: { corso: corsoDiLaurea }
       },
       relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione'],
       order: { dataOra: 'ASC' }
     });
   }
 
-  async create(data: Partial<AppelloEntity>) {
-    const appello = this.repo.create(data);
-    return this.repo.save(appello);
+  async findById(id: number) {
+    return this.repository.findOne({
+      where: { id },
+      relations: ['materia', 'materia.corsoDiLaurea', 'docente', 'sessione']
+    });
   }
 
-  async update(id: number, appelloAggiornato: Partial<AppelloEntity>) {
-    await this.repo.update(id, appelloAggiornato);
-    return this.repo.findOne({ where: { id } });
+  async create(data: CreateAppelloDto & { docenteId: number }) {
+    const appello = this.repository.create(data);
+    return this.repository.save(appello);
+  }
+
+  async update(id: number, appelloAggiornato: UpdateAppelloDto) {
+      await this.repository.update(id, appelloAggiornato);
+      return this.findById(id);
   }
 
   async delete(id: number) {
-    return this.repo.delete(id);
+    const result = await this.repository.delete(id);
+    return (result.affected ?? 0) > 0;
+  }
+  /*
+
+  Metodo generato per verificare sovrapposizioni di appelli per aula. Risulta problematico in quanto
+  uno troviamo un magic number (2 ore) due non necessario forse implementarlo in quanto anche non abbiamo durata esame
+
+  async findOverlap(aula: string, inizio: Date, fine: Date, excludeId?: number): Promise<AppelloEntity | null> {
+    return this.repository.findOne({
+      where: {
+        aula: aula,
+        dataOra: And(
+          LessThan(fine), 
+          MoreThan(new Date(inizio.getTime() - 2 * 60 * 60 * 1000)) // Range di 2 ore: scelto da chi?
+        ),
+        ...(excludeId && { id: Not(excludeId) })
+      }
+    });
+  }
+  */
+ 
+  async countByMateriaAndSessione(materiaCodice: string, sessioneId: number): Promise<number> {
+    return this.repository.count({
+      where: {
+        materia: { codice: materiaCodice },
+        sessione: { id: sessioneId }
+      }
+    });
   }
 }

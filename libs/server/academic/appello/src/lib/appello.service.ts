@@ -1,15 +1,15 @@
 import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { AppelloRepository } from './appello.repository';
 import { AppelloEntity } from './appello.entity';
-import { SessioneEntity, SessioneRepository } from '@server/sessione'; // Assumi esista
+import { SessioneEntity } from '@server/sessione'; // Assumi esista
 
 @Injectable()
 export class AppelloService {
   constructor(
     private readonly repository: AppelloRepository,
-    private readonly sessioneRepo: SessioneRepository 
+    //private readonly sessioneRepo: SessioneRepository 
   ) {}
-
+  /*
   async create(data: AppelloEntity, docenteId: number) {
     SessioneEntity sessione = await this.sessioneRepo.findById(data.sessione.id);
     if (!sessione) throw new NotFoundException("Sessione non trovata");
@@ -84,4 +84,5 @@ export class AppelloService {
   async getAppelliByMateria(materiaId: number) {
     return this.repository.findAllByMateria(materiaId);
   }
+    */
 }

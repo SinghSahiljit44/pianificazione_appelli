@@ -29,7 +29,6 @@
     { "path": "../../libs/server/academic/appello/tsconfig.lib.json" },
     { "path": "../../libs/server/auth/tsconfig.lib.json" },
     { "path": "../../libs/database/tsconfig.lib.json" },
-    { "path": "../../libs/server/books/tsconfig.lib.json" },
     { "path": "../../libs/server/users/tsconfig.lib.json" }
   ]
 }
