@@ -14,11 +14,11 @@ export class DocenteRepository {
   ) {}
 
   findAll() {
-    return this.repo.find({ relations: ['user'] });
+    return this.repo.find({ relations: ['user', 'materie'] });
   }
 
-  findById(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['user'] });
+  findById(id: number): Promise<DocenteEntity | null> {
+    return this.repo.findOne({ where: { id }, relations: ['user', 'appelli'] });
   }
 
   findByUserId(userId: number) {

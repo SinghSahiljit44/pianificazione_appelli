@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { MateriaEntity } from './materia.entity';
-import { CorsoDiLaureaEntity } from '../../../corso-di-laurea/src/lib/corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 
 @Entity('materie_corsi')
 @Unique(['materiaId', 'corsoId', 'anno'])

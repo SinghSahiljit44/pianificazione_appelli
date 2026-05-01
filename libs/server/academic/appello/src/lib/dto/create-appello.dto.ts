@@ -4,12 +4,9 @@ export class CreateAppelloDto {
 
     // L'aula scelta per l'esame
     aula: string;
-
+    note?: string;
     // Corso di laurea (es. «INFLM-I») [cite: 13]
-    corsoId: string;
-
-    // Anno di frequenza relativo al corso [cite: 13]
-    annoFrequenza: number;
+    corsoId: number;
 
     // ID della materia per cui si fissa l'appello
     materiaId: number;

@@ -16,7 +16,7 @@ export class AppelloRepository {
   async findAll(): Promise<AppelloEntity[] | null> {
     return this.repository.find({
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
-      order: { dataOra: 'ASC' },
+      order: { data: 'ASC' },
     });
   }
 
@@ -26,7 +26,7 @@ export class AppelloRepository {
         docente: { id: docenteId } 
       },
       relations: ['materia', 'materia.corsi', 'sessione'],
-      order: { dataOra: 'ASC' }
+      order: { data: 'ASC' }
     });
   }
 
@@ -36,20 +36,19 @@ export class AppelloRepository {
         sessione: { id: sessioneId } 
       },
       relations: ['materia', 'materia.corsi', 'docente'],
-      order: { dataOra: 'ASC' }
+      order: { data: 'ASC' }
     });
   }
-
-  async findDuplicate(dataOra: Date, corsoId: number, anno: number, excludeId?: number) {
+  //createQueryBuilder per query più complesse, da vedere
+  async findDuplicate(data: Date, corsoId: number, anno: number, excludeId?: number) {
     return this.repository.findOne({
       where: {
-        dataOra,
+        data, //need to check only for the day!!!!
         materia: { corsi: { corso: { id: corsoId }, anno } },
         ...(excludeId && { id: Not(excludeId) })
       },
     });
   }
-
 
   async findAllByMateria(materiaId: number) {
     return this.repository.find({
@@ -57,17 +56,17 @@ export class AppelloRepository {
         materia: { id: materiaId } 
       },
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
-      order: { dataOra: 'ASC' }
+      order: { data: 'ASC' }
     });
   }
 
   async findByDateRange(start: Date, end: Date) {
     return this.repository.find({
       where: {
-        dataOra: Between(start, end)
+        data: Between(start, end)
       },
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
-      order: { dataOra: 'ASC' }
+      order: { data: 'ASC' }
     });
   }
 
@@ -77,7 +76,7 @@ export class AppelloRepository {
         materia: { corsi: { corso: corsoDiLaurea } }
       },
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
-      order: { dataOra: 'ASC' }
+      order: { data: 'ASC' }
     });
   }
 

@@ -1,8 +1,7 @@
 export class UpdateAppelloDto {
-    dataOra?: Date;
-    aula?: string;
+    data?: Date;
+    ora?: string;
+    note?: string;
     materiaId?: number;
     sessioneId?: number;
-    corsoId?: string;
-    annoFrequenza?: number;
 }

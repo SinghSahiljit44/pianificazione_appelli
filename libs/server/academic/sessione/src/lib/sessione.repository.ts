@@ -19,7 +19,7 @@ export class SessioneRepository {
     });
   }
 
-  findById(id: number) {
+  findById(id: number): Promise<SessioneEntity|null> {
     return this.repo.findOne({ where: { id }, relations: ['creataDa'] });
   }
 

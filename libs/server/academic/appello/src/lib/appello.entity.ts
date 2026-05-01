@@ -8,8 +8,11 @@ export class AppelloEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'timestamp' })
-    dataOra: Date;
+    @Column({ type: 'date' })
+    data: Date;
+
+    @Column({ type: 'time' })
+    ora: string; // es. "09:30:00"
 
     @Column({ type: 'text' }) 
     aula: string;
