@@ -4,7 +4,6 @@ import { SessioneService } from '@server/sessione';
 import { CreateAppelloDto } from './dto/create-appello.dto';
 import { UpdateAppelloDto } from './dto/update-appello.dto';
 import { MateriaService } from '@server/materia';
-import { DocenteService } from '@server/docente';
 
 @Injectable()
 export class AppelloService {
@@ -12,7 +11,6 @@ export class AppelloService {
     private readonly repository: AppelloRepository,
     private readonly sessioneService: SessioneService,
     private readonly materiaService: MateriaService,
-    private readonly docenteService: DocenteService
   ) {}
 
   async create(data: CreateAppelloDto, docenteId: number) {
@@ -33,8 +31,16 @@ export class AppelloService {
     await this.checkValidityForAppello(data.sessioneId ?? appello.sessione.id, 
                                         data.data ?? appello.data);
     
+    if (data.data || data.materiaId) {
+      await this.checkDuplicateAppello(
+            data.data ?? appello.data, 
+            data.materiaId ?? appello.materia.id, 
+            id
+          );
+    }
+    
     if (data.data) {
-      await this.checkDuplicateAppello(data.data, data.materiaId ?? appello.materia.id, id);
+      await this.checkDuplicateAppelloForDocente(data.data, docenteId, id);
     }
 
 
@@ -92,15 +98,18 @@ export class AppelloService {
 
   }
 
-  private async checkDuplicateAppelloForDocente(dataScelta: Date, docenteId: number) {
-    const appelliIds = (await this.docenteService.getAppelliIdsByDocenteId(docenteId));
-    for (const id of appelliIds) {
-      const appello = await this.repository.findById(id);
-      if (appello && (appello.data.toDateString()  === dataScelta.toDateString() )) {
-        throw new BadRequestException('Hai già un appello fissato in questa data');
-      }
+  private async checkDuplicateAppelloForDocente(dataScelta: Date, docenteId: number, excludeId?: number) {
+    const appelli = await this.repository.findAllByDocente(docenteId);
+    const giorno = dataScelta.toDateString();
+    const conflitto = appelli.some(a => 
+      a.id !== excludeId && a.data.toDateString() === giorno
+    );
+    if (conflitto) {
+      throw new BadRequestException('Hai già un appello fissato in questa data');
     }
   }
+
+
 
   getAll() {
     return this.repository.findAll();

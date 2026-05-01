@@ -13,7 +13,7 @@ export class AppelloRepository {
     private readonly repository: Repository<AppelloEntity>
   ) {}
   
-  async findAll(): Promise<AppelloEntity[] | null> {
+  async findAll(): Promise<AppelloEntity[]> {
     return this.repository.find({
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { data: 'ASC' },

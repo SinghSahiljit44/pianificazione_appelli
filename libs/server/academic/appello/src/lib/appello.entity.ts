@@ -18,7 +18,7 @@ export class AppelloEntity {
     aula: string;
 
     @Column({ type: 'text', nullable: true }) 
-    note: string;
+    note?: string;
 
     @ManyToOne(() => SessioneEntity, (sessione) => sessione.appelli, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'sessioneId' })
