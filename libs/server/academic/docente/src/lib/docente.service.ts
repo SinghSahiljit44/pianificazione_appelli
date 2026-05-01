@@ -1,7 +1,5 @@
-// libs/academic/docente/src/lib/docente.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DocenteRepository } from './docente.repository';
-import { DocenteEntity } from './docente.entity';
 import { CreateDocenteDto } from './dto/createdocente.dto';
 import { UpdateDocenteDto } from './dto/updatedocente.dto';
 
@@ -13,11 +11,7 @@ export class DocenteService {
   async getAppelliIdsByDocenteId(docenteId: number): Promise<number[]> {
     const docente = await this.repository.findById(docenteId);
     if (!docente) throw new NotFoundException(`Docente ${docenteId} non trovato`);
-    const appelliIds: number[] = [];
-    for (const appello of docente.appelli) {
-      appelliIds.push(appello.id);
-    }
-    return appelliIds;
+    return docente.appelli.map(a => a.id);
   }
 
   async getAll() {
@@ -31,15 +25,18 @@ export class DocenteService {
   }
 
   async create(data: CreateDocenteDto) {
-    // Qui potresti iniettare UserService per validare l'esistenza dello userId
     return this.repository.create(data);
   }
 
   async update(id: number, data: UpdateDocenteDto) {
+    const docente = await this.repository.findById(id);
+    if (!docente) throw new NotFoundException(`Docente ${id} non trovato`);
     return this.repository.update(id, data);
   }
 
   async remove(id: number) {
+    const docente = await this.repository.findById(id);
+    if (!docente) throw new NotFoundException(`Docente ${id} non trovato`);
     return this.repository.delete(id);
   }
 }

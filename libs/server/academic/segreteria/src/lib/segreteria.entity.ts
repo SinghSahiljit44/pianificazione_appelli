@@ -11,7 +11,7 @@ export class SegreteriaEntity {
     ufficio: string; // es. "Ufficio Didattica"
 
     @Column({ type: 'varchar', length: 50, nullable: true })
-    telefonoInterno: string; // ???? why in the why would we need a phone number
+    telefonoInterno?: string; 
 
     @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })

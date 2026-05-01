@@ -54,8 +54,7 @@ export class AppelloService {
       throw new ForbiddenException('Non puoi cancellare un appello che non è tuo');
     }
 
-    const sessione = await this.sessioneService.getById(appello.sessione.id);
-    if (new Date() > sessione.dataFineInserimento) {
+    if (new Date() > appello.sessione.dataFineInserimento) {
       throw new BadRequestException('Non puoi cancellare un appello dopo la chiusura del periodo di inserimento');
     }
 
@@ -64,21 +63,20 @@ export class AppelloService {
 
 
   private async checkValidityForAppello(sessioneId: number, dataOra: Date){
-    //controllo sessione aperta
-    const sessione = await this.sessioneService.getById(sessioneId); 
-    if (!(await this.sessioneService.isSessioneOpen(sessioneId))) {
+    const sessione = await this.sessioneService.getById(sessioneId);
+
+    const now = new Date();
+    if (now < sessione.dataInizioInserimento || now > sessione.dataFineInserimento) {
       throw new BadRequestException('Il periodo di inserimento per questa sessione è chiuso');
     }
 
-    //controllo giorno inserito
     const giorno = dataOra.getDay();
-    if (giorno === 0 || giorno === 6) { //magic number: da tenere sott'occhio
+    if (giorno === 0 || giorno === 6) {
       throw new BadRequestException('Non è possibile fissare appelli nel weekend');
     }
     if (dataOra < new Date(sessione.dataInizio) || dataOra > new Date(sessione.dataFine)) {
       throw new BadRequestException("La data dell'appello è fuori dal range della sessione");
     }
-
   }
 
   private async checkDuplicateAppello(dataScelta: Date, materiaId: number, excludeId?: number) {
@@ -131,5 +129,9 @@ export class AppelloService {
 
   getByMateria(materiaId: number) {
     return this.repository.findAllByMateria(materiaId);
+  }
+
+  getByCourse(corsoId: number) {
+    return this.repository.findByCourseId(corsoId);
   }
 }

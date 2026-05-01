@@ -1,5 +1,6 @@
 export class UpdateMateriaDto {
     nome?: string
+    cfu?: number
     docenteId?: number;
-    corsoId?: string;
+    corsi?: { corsoId: number; anno: number }[];
 }

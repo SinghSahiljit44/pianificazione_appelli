@@ -23,7 +23,7 @@ export class SessioneEntity {
     @Column({ type: 'timestamp' })
     dataFineInserimento: Date;
 
-    @Column({ type: 'boolean', default: false }) //what this
+    @Column({ type: 'boolean', default: false })
     attiva: boolean;
 
     @OneToMany(() => AppelloEntity, (appello) => appello.sessione)

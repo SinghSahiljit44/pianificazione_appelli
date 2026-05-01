@@ -3,7 +3,7 @@ import { MateriaEntity } from './materia.entity';
 import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 
 @Entity('materie_corsi')
-@Unique(['materiaId', 'corsoId', 'anno'])
+@Unique(['materia', 'corso', 'anno'])
 export class MateriaCorsoEntity {
 
     @PrimaryGeneratedColumn()

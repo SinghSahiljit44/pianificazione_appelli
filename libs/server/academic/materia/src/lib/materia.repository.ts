@@ -16,7 +16,7 @@ export class MateriaRepository {
   ) {}
 
   async findAll(): Promise<MateriaEntity[]> {
-    return this.repo.find({ relations: ['docente', 'corsi'] });
+    return this.repo.find({ relations: ['docente', 'corsi', 'corsi.corso'] });
   }
 
   findMateriaCorso(materiaId: number, corsoId: number): Promise<MateriaCorsoEntity | null> {
@@ -31,17 +31,57 @@ export class MateriaRepository {
 
 
   async create(data: CreateMateriaDto): Promise<MateriaEntity> {
-    const materia = this.repo.create(data);
-    return this.repo.save(materia);
+    const { corsi, ...rest } = data;
+    const saved = await this.repo.save(this.repo.create(rest));
+
+    if (corsi && corsi.length > 0) {
+      await this.materiaCorsoRepo.save(
+        corsi.map(c => this.materiaCorsoRepo.create({
+          materia: { id: saved.id },
+          corso: { id: c.corsoId },
+          anno: c.anno,
+        }))
+      );
+    }
+
+    return this.findById(saved.id) as Promise<MateriaEntity>;
   }
 
   async update(id: number, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
-    await this.repo.update(id, data);
+    const { corsi, ...rest } = data;
+
+    if (Object.keys(rest).length > 0) {
+      await this.repo.update(id, rest);
+    }
+
+    if (corsi !== undefined) {
+      await this.materiaCorsoRepo.delete({ materia: { id } });
+      if (corsi.length > 0) {
+        await this.materiaCorsoRepo.save(
+          corsi.map(c => this.materiaCorsoRepo.create({
+            materia: { id },
+            corso: { id: c.corsoId },
+            anno: c.anno,
+          }))
+        );
+      }
+    }
+
     return this.findById(id);
   }
 
   async delete(id: number) {
     await this.repo.delete(id);
+  }
+
+  async addCorso(materiaId: number, corsoId: number, anno: number): Promise<MateriaCorsoEntity> {
+    return this.materiaCorsoRepo.save(
+      this.materiaCorsoRepo.create({ materia: { id: materiaId }, corso: { id: corsoId }, anno })
+    );
+  }
+
+  async removeCorso(materiaId: number, corsoId: number): Promise<void> {
+    await this.materiaCorsoRepo.delete({ materia: { id: materiaId }, corso: { id: corsoId } });
   }
 
   findByDocenteId(docenteId: number): Promise<MateriaEntity[]> {

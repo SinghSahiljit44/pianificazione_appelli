@@ -3,6 +3,7 @@ import { Injectable, ConflictException, NotFoundException } from '@nestjs/common
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';
 import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
 import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
+import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
 
 @Injectable()
 export class CorsoDiLaureaService {
@@ -24,11 +25,13 @@ export class CorsoDiLaureaService {
     return this.repository.create(data);
   }
 
-  async update(id: number, data: Partial<CreateCorsoDiLaureaDto>) {
+  async update(id: number, data: UpdateCorsoDiLaureaDto) {
+    await this.getById(id);
     return this.repository.update(id, data);
   }
 
   async remove(id: number) {
+    await this.getById(id);
     return this.repository.delete(id);
   }
 }

@@ -18,7 +18,7 @@ export class DocenteRepository {
   }
 
   findById(id: number): Promise<DocenteEntity | null> {
-    return this.repo.findOne({ where: { id }, relations: ['user', 'appelli'] });
+    return this.repo.findOne({ where: { id }, relations: ['user', 'materie', 'appelli'] });
   }
 
   findByUserId(userId: number) {

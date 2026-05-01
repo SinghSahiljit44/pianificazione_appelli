@@ -4,7 +4,6 @@ import { Repository, Between, Not } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
 import { CreateAppelloDto } from './dto/create-appello.dto';
 import { UpdateAppelloDto } from './dto/update-appello.dto';
-import { CorsoDiLaureaEntity } from '@server/corso-di-laurea';
 
 @Injectable()
 export class AppelloRepository {
@@ -70,10 +69,10 @@ export class AppelloRepository {
     });
   }
 
-  async findByCourse(corsoDiLaurea: CorsoDiLaureaEntity) { 
+  async findByCourseId(corsoId: number) {
     return this.repository.find({
       where: {
-        materia: { corsi: { corso: corsoDiLaurea } }
+        materia: { corsi: { corso: { id: corsoId } } }
       },
       relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
       order: { data: 'ASC' }
