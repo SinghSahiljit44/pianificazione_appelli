@@ -13,44 +13,44 @@ export class AppelloService {
     private readonly materiaService: MateriaService,
   ) {}
 
-  async create(data: CreateAppelloDto, docenteId: number) {
-    await this.checkValidityForAppello(data.sessioneId, data.data);
-    await this.checkDuplicateAppello(data.data, data.materiaId);
-    await this.checkDuplicateAppelloForDocente(data.data, docenteId);
+  async create(dataDTO: CreateAppelloDto, docenteId: number) {
+    await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
+    await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
+    await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
 
-    return this.repository.create({ ...data, docenteId });
+    return this.repository.create({ ...dataDTO, docenteId });
   }
 
-  async update(id: number, data: UpdateAppelloDto, docenteId: number) {
+  async update(id: number, dataDTO: UpdateAppelloDto, docenteId: number) {
     const appello = await this.getById(id);
 
     if (appello.docente.id !== docenteId) {
       throw new ForbiddenException('Non puoi modificare un appello che non è tuo');
     }
 
-    await this.checkValidityForAppello(data.sessioneId ?? appello.sessione.id, 
-                                        data.data ?? appello.data);
+    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, 
+                                        dataDTO.data ?? appello.data);
     
-    if (data.data || data.materiaId) {
+    if (dataDTO.data || dataDTO.materiaId) {
       await this.checkDuplicateAppello(
-            data.data ?? appello.data, 
-            data.materiaId ?? appello.materia.id, 
+            dataDTO.data ?? appello.data, 
+            dataDTO.materiaId ?? appello.materia.id, 
             id
           );
     }
     
-    if (data.data) {
-      await this.checkDuplicateAppelloForDocente(data.data, docenteId, id);
+    if (dataDTO.data) {
+      await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId, id);
     }
 
 
-    return this.repository.update(id, data);
+    return this.repository.update(id, dataDTO);
   }
 
   async remove(id: number, docenteId: number) {
     const appello = await this.getById(id);
 
-    if (appello.docente.id !== docenteId) {
+    if (appello.docente.id !== docenteId) { //TODO potrebbe farlo anche la segreteria!!
       throw new ForbiddenException('Non puoi cancellare un appello che non è tuo');
     }
 
@@ -79,6 +79,8 @@ export class AppelloService {
     }
   }
 
+
+  //TODO controllare logica di duplicato, in quanto materia collegata a piu' corsi
   private async checkDuplicateAppello(dataScelta: Date, materiaId: number, excludeId?: number) {
     const corsi: number[] = await this.materiaService.getCorsiIDsByMateria(materiaId);
     if (corsi.length === 0) {

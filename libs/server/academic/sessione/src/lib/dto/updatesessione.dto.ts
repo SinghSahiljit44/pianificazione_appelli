@@ -1,4 +1,3 @@
-
 export class UpdateSessioneDto {
     nome?: string;
     dataInizio?: Date;

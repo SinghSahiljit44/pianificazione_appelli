@@ -12,31 +12,5 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nes
 export class SessioneController {
   constructor(private readonly service: SessioneService) {}
 
-  @Get()
-  findAll() {
-    return this.service.getAll();
-  }
 
-  @Get('attiva')
-  findAttiva() {
-    return this.service.getActiveSession();
-  }
-
-  @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN) 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Crea una nuova sessione (Solo Segreteria)' })
-  @ApiResponse({ status: 403, description: 'Forbidden: Permessi insufficienti' })
-  create(@Body() data: any) {
-    return this.service.create(data);
-  }
-
-  @Delete(':id')
-  @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN) 
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
-  }
 }

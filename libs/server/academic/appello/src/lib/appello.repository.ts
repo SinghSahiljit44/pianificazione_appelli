@@ -100,24 +100,6 @@ export class AppelloRepository {
     const result = await this.repository.delete(id);
     return (result.affected ?? 0) > 0;
   }
-  /*
-
-  Metodo generato per verificare sovrapposizioni di appelli per aula. Risulta problematico in quanto
-  uno troviamo un magic number (2 ore) due non necessario forse implementarlo in quanto anche non abbiamo durata esame
-
-  async findOverlap(aula: string, inizio: Date, fine: Date, excludeId?: number): Promise<AppelloEntity | null> {
-    return this.repository.findOne({
-      where: {
-        aula: aula,
-        dataOra: And(
-          LessThan(fine), 
-          MoreThan(new Date(inizio.getTime() - 2 * 60 * 60 * 1000)) // Range di 2 ore: scelto da chi?
-        ),
-        ...(excludeId && { id: Not(excludeId) })
-      }
-    });
-  }
-  */
  
   async countByMateriaAndSessione(materiaId: number, sessioneId: number): Promise<number> {
     return this.repository.count({

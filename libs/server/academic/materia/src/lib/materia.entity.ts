@@ -15,7 +15,7 @@ export class MateriaEntity {
     cfu: number;
 
     @OneToMany(() => MateriaCorsoEntity, (mc) => mc.materia)
-    corsi: MateriaCorsoEntity[];
+    corsi: MateriaCorsoEntity[]; //In tutta materia, corso sta a indicare corso di laurea
 
     @OneToMany(() => AppelloEntity, (appello) => appello.materia)
     appelli: AppelloEntity[];
