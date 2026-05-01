@@ -19,6 +19,10 @@ export class CorsoDiLaureaRepository {
     });
   }
 
+  findByNome(nome: string) {
+    return this.repo.findOne({ where: { nome } });
+  }
+
   findById(id: number) {
     return this.repo.findOne({ where: { id }, relations: ['materie'] });
   }

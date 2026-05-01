@@ -55,7 +55,7 @@ export class AppelloService {
     }
 
     const sessione = await this.sessioneService.getById(appello.sessione.id);
-    if (new Date() > sessione.fineInserimento) {
+    if (new Date() > sessione.dataFineInserimento) {
       throw new BadRequestException('Non puoi cancellare un appello dopo la chiusura del periodo di inserimento');
     }
 
