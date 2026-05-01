@@ -1,8 +1,9 @@
-// libs/academic/sessione/src/lib/repositories/sessione.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { SessioneEntity } from './sessione.entity';
+import { UpdateSessioneDto } from './dto/updatesessione.dto';
+import { CreateSessioneDto } from './dto/createsessione.dto';
 
 @Injectable()
 export class SessioneRepository {
@@ -12,22 +13,53 @@ export class SessioneRepository {
   ) {}
 
   findAll() {
-    return this.repo.find({ order: { dataInizio: 'DESC' } });
+    return this.repo.find({ 
+      relations: ['creataDa'],
+      order: { dataInizio: 'DESC' } 
+    });
   }
 
-  findById(id: number) {
-    return this.repo.findOneBy({ id });
+  findById(id: number): Promise<SessioneEntity|null> {
+    return this.repo.findOne({ where: { id }, relations: ['creataDa'] });
   }
 
   findAttiva() {
-    return this.repo.findOneBy({ attiva: true });
+    return this.repo.findOne({ where: { attiva: true }, relations: ['creataDa'] });
   }
 
-  create(data: Partial<SessioneEntity>) {
+  findWithAppelli() {
+    return this.repo.find({
+      relations: ['appelli', 'appelli.materia', 'appelli.docente'],
+      order: { dataInizio: 'DESC' }
+    });
+  }
+
+  findByCreataDa(segreteriaId: number) {
+    return this.repo.find({
+      where: { creataDa: { id: segreteriaId } },
+      relations: ['creataDa'],
+      order: { dataInizio: 'DESC' }
+    });
+  }
+
+  findByDateRange(start: Date, end: Date) {
+    return this.repo.find({
+      where: {
+        dataInizio: Between(start, end)
+      },
+      order: { dataInizio: 'DESC' }
+    });
+  }
+
+  async setAttiva(id: number, attiva: boolean) {
+    await this.repo.update(id, { attiva }); 
+  }
+
+  create(data: CreateSessioneDto) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(id: number, data: Partial<SessioneEntity>) {
+  async update(id: number, data: UpdateSessioneDto) {
     await this.repo.update(id, data);
     return this.findById(id);
   }

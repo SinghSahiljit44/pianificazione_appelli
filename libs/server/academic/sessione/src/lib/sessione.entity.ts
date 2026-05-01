@@ -9,10 +9,7 @@ export class SessioneEntity {
     id: number;
 
     @Column({ type: 'varchar', length: 100 })
-    nome: string; // es. "Sessione Estiva"
-
-    @Column({ type: 'varchar', length: 9 })
-    annoAccademico: string; // es. "2023/2024"
+    nome: string; 
 
     @Column({ type: 'date' })
     dataInizio: Date;
@@ -20,17 +17,15 @@ export class SessioneEntity {
     @Column({ type: 'date' })
     dataFine: Date;
 
-    @Column({ type: 'int', default: 2 })
-    maxAppelliPerMateria: number;
+    @Column({ type: 'timestamp' })
+    dataInizioInserimento: Date;
 
     @Column({ type: 'timestamp' })
-    inizioInserimento: Date;
+    dataFineInserimento: Date;
 
-    @Column({ type: 'timestamp' })
-    fineInserimento: Date;
-
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: false })
     attiva: boolean;
+
     @OneToMany(() => AppelloEntity, (appello) => appello.sessione)
     appelli: AppelloEntity[];
 
@@ -38,6 +33,4 @@ export class SessioneEntity {
     @JoinColumn({ name: 'creataDaId' })
     creataDa: SegreteriaEntity;
 
-    @Column({ nullable: true })
-    creataDaId: number;
 }

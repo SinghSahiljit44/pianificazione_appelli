@@ -4,9 +4,12 @@ import { AppelloEntity } from './appello.entity';
 import { AppelloService } from './appello.service';
 import { AppelloController } from './appello.controller';
 import { AppelloRepository } from './appello.repository';
+import { SessioneModule } from '@server/sessione';
+import { MateriaModule } from '@server/materia';
+import { DocenteModule } from '@server/docente';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AppelloEntity])],
+  imports: [TypeOrmModule.forFeature([AppelloEntity]), SessioneModule, MateriaModule, DocenteModule],
   controllers: [AppelloController],
   providers: [AppelloService, AppelloRepository],
   exports: [AppelloService],

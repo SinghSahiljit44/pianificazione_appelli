@@ -5,7 +5,7 @@ import { MateriaEntity } from '@server/materia';
 
 @Entity('docenti')
 export class DocenteEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn() //it do be number tho
     id: number;
 
     @Column({ type: 'varchar', length: 100 })
@@ -13,9 +13,6 @@ export class DocenteEntity {
 
     @Column({ type: 'varchar', length: 100 })
     dipartimento: string;
-
-    @Column()
-    userId: number;
 
     @OneToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })

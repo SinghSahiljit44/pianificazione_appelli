@@ -8,23 +8,17 @@ export class AppelloEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'timestamp' })
-    dataOra: Date;
+    @Column({ type: 'date' })
+    data: Date;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'time' })
+    ora: string; // es. "09:30:00"
+
+    @Column({ type: 'text' }) 
     aula: string;
 
     @Column({ type: 'text', nullable: true }) 
-    note: string;
-
-    @Column()
-    sessioneId: number;
-
-    @Column()
-    materiaId: number;
-
-    @Column()
-    docenteId: number;
+    note?: string;
 
     @ManyToOne(() => SessioneEntity, (sessione) => sessione.appelli, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'sessioneId' })

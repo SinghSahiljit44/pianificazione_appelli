@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { MateriaEntity } from '@server/materia';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MateriaCorsoEntity } from '@server/materia';
 
 @Entity('corsi_di_laurea')
 export class CorsoDiLaureaEntity {
@@ -7,10 +7,7 @@ export class CorsoDiLaureaEntity {
     id: number;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    nome: string; // es. "Informatica", "Economia"
-
-    @Column({ type: 'varchar', length: 10, unique: true, nullable: false })
-    codice: string; // es. "L-31"
+    nome: string;
 
     @Column({ type: 'text', nullable: true })
     descrizione: string;
@@ -18,7 +15,7 @@ export class CorsoDiLaureaEntity {
     @Column({ type: 'int', default: 3 })
     durataAnni: number;
 
-    @OneToMany(() => MateriaEntity, (materia) => materia.corso)
-    materie: MateriaEntity[];
+    @OneToMany(() => MateriaCorsoEntity, (mc: MateriaCorsoEntity) => mc.corso)
+    materie: MateriaCorsoEntity[];
 
 }

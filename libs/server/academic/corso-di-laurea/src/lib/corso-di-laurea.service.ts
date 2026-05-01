@@ -2,31 +2,36 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';
 import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
+import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
+import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
 
 @Injectable()
 export class CorsoDiLaureaService {
   constructor(private readonly repository: CorsoDiLaureaRepository) {}
 
-  async getAll() {
-    return this.repository.findAll();
-  }
-
-  async getOne(id: number) {
+  async getById(id: number): Promise<CorsoDiLaureaEntity> {
     const corso = await this.repository.findById(id);
-    if (!corso) throw new NotFoundException('Corso di laurea non trovato');
+    if (!corso) throw new NotFoundException(`Corso di laurea ${id} non trovato`);
     return corso;
   }
 
-  async create(data: Partial<CorsoDiLaureaEntity>) {
-    if (data.codice) {
-      const existing = await this.repository.findByCodice(data.codice);
-      if (existing) throw new ConflictException('Codice corso già esistente');
-    }
+  getAll(): Promise<CorsoDiLaureaEntity[]> {
+    return this.repository.findAll();
+  }
+
+  async create(data: CreateCorsoDiLaureaDto): Promise<CorsoDiLaureaEntity> {
+    const existing = await this.repository.findByNome(data.nome);
+    if (existing) throw new ConflictException(`Corso di laurea con nome ${data.nome} già esistente`);
     return this.repository.create(data);
   }
 
+  async update(id: number, data: UpdateCorsoDiLaureaDto) {
+    await this.getById(id);
+    return this.repository.update(id, data);
+  }
+
   async remove(id: number) {
-    const corso = await this.getOne(id);
-    return this.repository.delete(corso.id);
+    await this.getById(id);
+    return this.repository.delete(id);
   }
 }

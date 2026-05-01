@@ -1,7 +1,7 @@
-import { CorsoDiLaureaDto } from './corso-di-laurea.dto';
+import { CreateCorsoDiLaureaDto } from './createcorsodilaurea.dto';
 
-describe('CorsoDiLaureaDto', () => {
+describe('CreateCorsoDiLaureaDto', () => {
   it('should be defined', () => {
-    expect(new CorsoDiLaureaDto()).toBeDefined();
+    expect(new CreateCorsoDiLaureaDto()).toBeDefined();
   });
 });

@@ -5,18 +5,5 @@ import { AppelloService } from './appello.service';
 export class AppelloController {
   constructor(private readonly service: AppelloService) {}
 
-  @Get()
-  findAll() {
-    return this.service.create({}); // Nota: correggere con getAll se implementato
-  }
 
-  @Post()
-  create(@Body() data: any) {
-    return this.service.create(data);
-  }
-
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
-  }
 }

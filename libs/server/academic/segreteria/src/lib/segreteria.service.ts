@@ -1,6 +1,8 @@
 // libs/academic/segreteria/src/lib/segreteria.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SegreteriaRepository } from './segreteria.repository';
+import { CreateSegreteriaDto } from './dto/createsegreteria.dto';
+import { UpdateSegreteriaDto } from './dto/updatesegreteria.dto';
 
 @Injectable()
 export class SegreteriaService {
@@ -16,12 +18,17 @@ export class SegreteriaService {
     return profilo;
   }
 
-  async create(data: any) {
-    // In un caso reale, qui potresti forzare il ruolo dell'User a 'ADMIN' o 'STAFF'
+  async create(data: CreateSegreteriaDto) {
     return this.repository.create(data);
   }
 
+  async update(id: number, data: UpdateSegreteriaDto) {
+    await this.getOne(id);
+    return this.repository.update(id, data);
+  }
+
   async remove(id: number) {
+    await this.getOne(id);
     return this.repository.delete(id);
   }
 }
