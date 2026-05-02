@@ -22,7 +22,12 @@ export class SegreteriaRepository {
   }
 
   create(data: CreateSegreteriaDto) {
-    return this.repo.save(this.repo.create(data));
+    const entity = this.repo.create({
+      ufficio: data.ufficio,
+      telefonoInterno: data.telefonoInterno,
+      user: { id: data.userId } as any,
+    });
+    return this.repo.save(entity);
   }
 
   async update(id: number, data: UpdateSegreteriaDto) {

@@ -26,7 +26,13 @@
       "path": "../appello/tsconfig.lib.json"
     },
     {
+      "path": "../../auth/tsconfig.lib.json"
+    },
+    {
       "path": "../../users/tsconfig.lib.json"
+    },
+    {
+      "path": "../../security/tsconfig.lib.json"
     }
   ]
 }
