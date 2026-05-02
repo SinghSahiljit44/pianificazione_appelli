@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
 import { UserRole } from '@server/users';
@@ -28,18 +28,8 @@ export class CorsoDiLaureaController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Ingegneria Informatica' },
-        descrizione: { type: 'string', example: 'Corso triennale in Ingegneria Informatica' },
-        durataAnni: { type: 'number', example: 3 },
-      },
-      required: ['nome'],
-    },
-  })
-  create(@Body() data: CreateCorsoDiLaureaDto) {
+  @ApiBody({ type: CreateCorsoDiLaureaDto })
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateCorsoDiLaureaDto) {
     return this.service.create(data);
   }
 
@@ -47,17 +37,11 @@ export class CorsoDiLaureaController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Ingegneria Informatica' },
-        descrizione: { type: 'string', example: 'Corso triennale in Ingegneria Informatica' },
-        durataAnni: { type: 'number', example: 3 },
-      },
-    },
-  })
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateCorsoDiLaureaDto) {
+  @ApiBody({ type: UpdateCorsoDiLaureaDto })
+  update(
+    @Param('id', ParseIntPipe) id: number, 
+    @Body(new ValidationPipe({ transform: true, whitelist: true })) data: UpdateCorsoDiLaureaDto
+  ) {
     return this.service.update(id, data);
   }
 
