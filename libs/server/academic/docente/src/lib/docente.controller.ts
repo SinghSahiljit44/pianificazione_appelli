@@ -1,32 +1,77 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard, RolesGuard, Roles, CurrentUser } from '@server/security';
+import { UserRole } from '@server/users';
+import type { AuthenticatedUser } from '@server/auth';
 import { DocenteService } from './docente.service';
-import { DocenteEntity } from './docente.entity';
+import { CreateDocenteDto } from './dto/createdocente.dto';
+import { UpdateDocenteDto } from './dto/updatedocente.dto';
 
-@Controller('docente')
+@ApiTags('Docenti APIs')
+@Controller('docenti')
+@UseGuards(JwtAuthGuard)
 export class DocenteController {
   constructor(private readonly service: DocenteService) {}
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.service.getAll();
   }
 
+  @Get('me')
+  @ApiBearerAuth()
+  getMe(@CurrentUser() user: AuthenticatedUser) {
+    return this.service.getByUserId(user.id);
+  }
+
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.getOne(id);
   }
 
   @Post()
-  create(@Body() data: Partial<DocenteEntity>) {
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        titolo: { type: 'string', example: 'Prof. Associato' },
+        dipartimento: { type: 'string', example: 'Ingegneria Informatica' },
+        userId: { type: 'number', example: 1 },
+      },
+      required: ['titolo', 'dipartimento', 'userId'],
+    },
+  })
+  create(@Body() data: CreateDocenteDto) {
     return this.service.create(data);
   }
 
-  @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: Partial<DocenteEntity>) {
+  @Patch(':id')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        titolo: { type: 'string', example: 'Prof. Ordinario' },
+        dipartimento: { type: 'string', example: 'Ingegneria Informatica' },
+        userId: { type: 'number', example: 1 },
+      },
+    },
+  })
+  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDocenteDto) {
     return this.service.update(id, data);
   }
 
   @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id);
   }
