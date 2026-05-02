@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard, RolesGuard, Roles, CurrentUser } from '@server/security';
 import { UserRole } from '@server/users';
@@ -35,18 +35,8 @@ export class DocenteController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        titolo: { type: 'string', example: 'Prof. Associato' },
-        dipartimento: { type: 'string', example: 'Ingegneria Informatica' },
-        userId: { type: 'number', example: 1 },
-      },
-      required: ['titolo', 'dipartimento', 'userId'],
-    },
-  })
-  create(@Body() data: CreateDocenteDto) {
+  @ApiBody({ type: CreateDocenteDto }) 
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateDocenteDto) {
     return this.service.create(data);
   }
 
@@ -54,17 +44,11 @@ export class DocenteController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        titolo: { type: 'string', example: 'Prof. Ordinario' },
-        dipartimento: { type: 'string', example: 'Ingegneria Informatica' },
-        userId: { type: 'number', example: 1 },
-      },
-    },
-  })
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateDocenteDto) {
+  @ApiBody({ type: UpdateDocenteDto }) 
+  update(
+    @Param('id', ParseIntPipe) id: number, 
+    @Body(new ValidationPipe({ transform: true, whitelist: true })) data: UpdateDocenteDto
+  ) {
     return this.service.update(id, data);
   }
 
