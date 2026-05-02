@@ -7,7 +7,6 @@ import { UpdateDocenteDto } from './dto/updatedocente.dto';
 export class DocenteService {
   constructor(private readonly repository: DocenteRepository) {}
 
-
   async getAppelliIdsByDocenteId(docenteId: number): Promise<number[]> {
     const docente = await this.repository.findById(docenteId);
     if (!docente) throw new NotFoundException(`Docente ${docenteId} non trovato`);
@@ -16,6 +15,12 @@ export class DocenteService {
 
   async getAll() {
     return this.repository.findAll();
+  }
+
+  async getByUserId(userId: number) {
+    const docente = await this.repository.findByUserId(userId);
+    if (!docente) throw new NotFoundException(`Profilo docente non trovato per l'utente ${userId}`);
+    return docente;
   }
 
   async getOne(id: number) {
