@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAppelloDto {
     @ApiProperty({ example: '2025-06-15' })
-    @IsDateString() // Controlla che sia una stringa in formato data valido
+    @IsDateString() 
     data: Date;
 
     @ApiProperty({ example: '09:30:00' })
@@ -17,12 +17,12 @@ export class CreateAppelloDto {
     aula: string;
 
     @ApiProperty({ required: false, example: 'Portare calcolatrice' })
-    @IsOptional() // Dice alla Pipe che questo campo può mancare
+    @IsOptional() 
     @IsString()
     note?: string;
 
     @ApiProperty({ example: 1 })
-    @IsInt() // Controlla che sia un numero intero
+    @IsInt() 
     materiaId: number;
 
     @ApiProperty({ example: 1 })

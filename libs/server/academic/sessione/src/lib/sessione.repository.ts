@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, Repository, Not, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 import { SessioneEntity } from './sessione.entity';
 import { UpdateSessioneDto } from './dto/updatesessione.dto';
 import { CreateSessioneDto } from './dto/createsessione.dto';
@@ -66,5 +66,17 @@ export class SessioneRepository {
 
   delete(id: number) {
     return this.repo.delete(id);
+  }
+
+  async existsOverlap(dataInizio: Date, dataFine: Date, excludeId?: number): Promise<boolean> {
+    const count = await this.repo.count({
+      where: {
+        dataInizio: LessThanOrEqual(dataFine),
+        dataFine: MoreThanOrEqual(dataInizio),
+        ...(excludeId && { id: Not(excludeId) })
+      }
+    });
+
+    return count > 0;
   }
 }
