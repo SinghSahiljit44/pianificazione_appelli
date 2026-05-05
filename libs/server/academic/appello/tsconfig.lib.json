@@ -23,10 +23,19 @@
       "path": "../sessione/tsconfig.lib.json"
     },
     {
+      "path": "../materia/tsconfig.lib.json"
+    },
+    {
       "path": "../docente/tsconfig.lib.json"
     },
     {
-      "path": "../materia/tsconfig.lib.json"
+      "path": "../../auth/tsconfig.lib.json"
+    },
+    {
+      "path": "../../users/tsconfig.lib.json"
+    },
+    {
+      "path": "../../security/tsconfig.lib.json"
     }
   ]
 }

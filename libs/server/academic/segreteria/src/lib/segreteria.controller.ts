@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
 import { UserRole } from '@server/users';
@@ -27,33 +27,15 @@ export class SegreteriaController {
 
   @Post()
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        ufficio: { type: 'string', example: 'Ufficio Didattica' },
-        telefonoInterno: { type: 'string', example: '0321' },
-        userId: { type: 'number', example: 1 },
-      },
-      required: ['ufficio', 'userId'],
-    },
-  })
-  create(@Body() data: CreateSegreteriaDto) {
+  @ApiBody({ type: CreateSegreteriaDto })
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateSegreteriaDto) {
     return this.service.create(data);
   }
 
   @Patch(':id')
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        ufficio: { type: 'string', example: 'Ufficio Didattica' },
-        telefonoInterno: { type: 'string', example: '0321' },
-      },
-    },
-  })
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateSegreteriaDto) {
+  @ApiBody({ type: UpdateSegreteriaDto })
+  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({ transform: true, whitelist: true })) data: UpdateSegreteriaDto) {
     return this.service.update(id, data);
   }
 

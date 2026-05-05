@@ -43,13 +43,21 @@ export class DocenteRepository {
     })
   }
 
-  create(data: CreateDocenteDto) { 
-    const entity = this.repo.create(data);
+  create(data: CreateDocenteDto) {
+    const entity = this.repo.create({
+      titolo: data.titolo,
+      dipartimento: data.dipartimento,
+      user: { id: data.userId } as any,
+    });
     return this.repo.save(entity);
   }
 
   async update(id: number, data: UpdateDocenteDto) {
-    await this.repo.update(id, data);
+    const payload: any = {};
+    if (data.titolo !== undefined) payload.titolo = data.titolo;
+    if (data.dipartimento !== undefined) payload.dipartimento = data.dipartimento;
+    if (data.userId !== undefined) payload.user = { id: data.userId };
+    await this.repo.update(id, payload);
     return this.findById(id);
   }
 

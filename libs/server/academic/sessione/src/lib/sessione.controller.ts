@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, ParseIntPipe, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
 import { UserRole } from '@server/users';
@@ -50,20 +50,8 @@ export class SessioneController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Sessione Estiva 2025' },
-        dataInizio: { type: 'string', format: 'date', example: '2025-06-01' },
-        dataFine: { type: 'string', format: 'date', example: '2025-07-31' },
-        dataInizioInserimento: { type: 'string', format: 'date-time', example: '2025-05-01T09:00:00' },
-        dataFineInserimento: { type: 'string', format: 'date-time', example: '2025-05-31T23:59:59' },
-      },
-      required: ['nome', 'dataInizio', 'dataFine', 'dataInizioInserimento', 'dataFineInserimento'],
-    },
-  })
-  create(@Body() data: CreateSessioneDto) {
+  @ApiBody({ type: CreateSessioneDto })
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateSessioneDto) {
     return this.service.create(data);
   }
 
@@ -71,19 +59,8 @@ export class SessioneController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Sessione Estiva 2025' },
-        dataInizio: { type: 'string', format: 'date', example: '2025-06-01' },
-        dataFine: { type: 'string', format: 'date', example: '2025-07-31' },
-        dataInizioInserimento: { type: 'string', format: 'date-time', example: '2025-05-01T09:00:00' },
-        dataFineInserimento: { type: 'string', format: 'date-time', example: '2025-05-31T23:59:59' },
-      },
-    },
-  })
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateSessioneDto) {
+  @ApiBody({ type: UpdateSessioneDto })
+  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({ transform: true, whitelist: true })) data: UpdateSessioneDto) {
     return this.service.update(id, data);
   }
 

@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiBody, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
 import { UserRole } from '@server/users';
 import { MateriaService } from './materia.service';
-import { CreateMateriaDto } from './dto/createmateria.dto';
+import { CreateMateriaDto, CorsoAnnoDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
 
 @ApiTags('Materie APIs')
@@ -47,29 +47,8 @@ export class MateriaController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Analisi Matematica' },
-        cfu: { type: 'number', example: 9 },
-        docenteId: { type: 'number', example: 1 },
-        corsi: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              corsoId: { type: 'number', example: 1 },
-              anno: { type: 'number', example: 1 },
-            },
-            required: ['corsoId', 'anno'],
-          },
-        },
-      },
-      required: ['nome', 'cfu', 'corsi'],
-    },
-  })
-  create(@Body() data: CreateMateriaDto) {
+  @ApiBody({ type: CreateMateriaDto })
+  create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateMateriaDto) {
     return this.service.create(data);
   }
 
@@ -77,28 +56,8 @@ export class MateriaController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nome: { type: 'string', example: 'Analisi Matematica' },
-        cfu: { type: 'number', example: 9 },
-        docenteId: { type: 'number', example: 1 },
-        corsi: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              corsoId: { type: 'number', example: 1 },
-              anno: { type: 'number', example: 1 },
-            },
-            required: ['corsoId', 'anno'],
-          },
-        },
-      },
-    },
-  })
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateMateriaDto) {
+  @ApiBody({ type: UpdateMateriaDto })
+  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({ transform: true, whitelist: true })) data: UpdateMateriaDto) {
     return this.service.update(id, data);
   }
 
@@ -115,20 +74,10 @@ export class MateriaController {
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Associa la materia a un corso di laurea' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        corsoId: { type: 'number', example: 1 },
-        anno: { type: 'number', example: 2 },
-      },
-      required: ['corsoId', 'anno'],
-    },
-  })
+  @ApiBody({ type: CorsoAnnoDto })
   addCorso(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: { corsoId: number; anno: number },
-  ) {
+    @Body(new ValidationPipe({ transform: true, whitelist: true })) body: CorsoAnnoDto,  ) {
     return this.service.addMateriaToCorso(id, body.corsoId, body.anno);
   }
 

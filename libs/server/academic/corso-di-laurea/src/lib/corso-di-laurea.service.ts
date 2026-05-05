@@ -27,6 +27,14 @@ export class CorsoDiLaureaService {
 
   async update(id: number, data: UpdateCorsoDiLaureaDto) {
     await this.getById(id);
+    if (data.nome) {
+      const existing = await this.repository.findByNome(data.nome);
+      if (existing && existing.id !== id) {
+        throw new ConflictException(
+          `Impossibile rinominare: il corso "${data.nome}" esiste già (ID: ${existing.id})`
+        );
+      }
+    }
     return this.repository.update(id, data);
   }
 

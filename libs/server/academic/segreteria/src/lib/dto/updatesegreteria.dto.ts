@@ -1,5 +1,15 @@
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+
 export class UpdateSegreteriaDto {
-    ufficio?: string;
-    telefonoInterno?: string;
-    //user?: UserEntity; da controllare
+  @ApiProperty({ example: 'Nuovo Ufficio Esterno', required: false })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  ufficio?: string;
+
+  @ApiProperty({ example: '030-999888', required: false })
+  @IsOptional()
+  @IsString()
+  telefonoInterno?: string;
 }

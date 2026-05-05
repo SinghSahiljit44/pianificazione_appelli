@@ -6,7 +6,7 @@ export class CorsoDiLaureaEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
+    @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
     nome: string;
 
     @Column({ type: 'text', nullable: true })

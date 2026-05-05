@@ -1,5 +1,5 @@
 // libs/academic/materia/src/lib/materia.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { MateriaRepository } from './materia.repository';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
@@ -47,7 +47,14 @@ export class MateriaService {
   }
 
   async create(data: CreateMateriaDto) {
-    //cosa deve controllare?
+    // Controllo duplicati nell'array inviato (es. se l'utente mette due volte lo stesso corso/anno nel JSON)
+    const combinations = data.corsi.map(c => `${c.corsoId}-${c.anno}`);
+    const hasDuplicates = new Set(combinations).size !== combinations.length;
+    
+    if (hasDuplicates) {
+      throw new ConflictException("L'elenco dei corsi contiene duplicati (stesso corso e stesso anno).");
+    }
+
     return this.repository.create(data);
   }
 
@@ -63,8 +70,21 @@ export class MateriaService {
     return this.repository.delete(id);
   }
 
-  async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
+  /*async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
     await this.getOne(materiaId);
+    return this.repository.addCorso(materiaId, corsoId, anno);
+  }*/
+
+  async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
+    // Verifichiamo se l'associazione esiste già per quell'anno
+    const existing = await this.repository.findMateriaCorsoSpecific(materiaId, corsoId, anno);
+
+    if (existing) {
+      throw new ConflictException(
+        `La materia ${materiaId} è già associata al corso ${corsoId} per l'anno ${anno}`
+      );
+    }
+
     return this.repository.addCorso(materiaId, corsoId, anno);
   }
 

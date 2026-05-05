@@ -95,13 +95,22 @@ export class SessioneService {
     }
   }
 
-  private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
+  /*private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
     const sessioni = await this.repository.findAll();
     const sovrapposizione = sessioni.some(s =>
       s.id !== excludeId &&
       dataInizio <= s.dataFine &&
       dataFine >= s.dataInizio
     );
+    if (sovrapposizione) {
+      throw new BadRequestException('La sessione si sovrappone con una sessione esistente');
+    }
+  }*/
+
+  //Metodo senza problemi di performance
+  private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
+    const sovrapposizione = await this.repository.existsOverlap(dataInizio, dataFine, excludeId);
+    
     if (sovrapposizione) {
       throw new BadRequestException('La sessione si sovrappone con una sessione esistente');
     }

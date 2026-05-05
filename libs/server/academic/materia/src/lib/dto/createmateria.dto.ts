@@ -1,6 +1,40 @@
+import { IsString, IsNotEmpty, IsInt, IsOptional, IsArray, ValidateNested, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CorsoAnnoDto {
+  @ApiProperty({ example: 1 })
+  @IsInt()
+  @IsNotEmpty()
+  corsoId: number;
+
+  @ApiProperty({ example: 1 })
+  @IsInt()
+  @IsNotEmpty()
+  @Min(1)
+  anno: number;
+}
+
 export class CreateMateriaDto {
+  @ApiProperty({ example: 'Analisi Matematica I' })
+  @IsString()
+  @IsNotEmpty()
   nome: string;
+
+  @ApiProperty({ example: 9 })
+  @IsInt()
+  @IsNotEmpty()
+  @Min(1)
   cfu: number;
+
+  @ApiProperty({ required: false, example: 1 })
+  @IsOptional()
+  @IsInt()
   docenteId?: number;
-  corsi: { corsoId: number; anno: number }[];
+
+  @ApiProperty({ type: [CorsoAnnoDto] })
+  @IsArray()
+  @ValidateNested({ each: true }) 
+  @Type(() => CorsoAnnoDto)       
+  corsi: CorsoAnnoDto[];
 }
