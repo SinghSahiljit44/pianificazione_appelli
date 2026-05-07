@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { AppelloEntity } from '@server/appello'; 
 import { ManyToOne, JoinColumn } from 'typeorm';
-import { SegreteriaEntity } from '@server/segreteria';
 
 @Entity('sessioni')
 export class SessioneEntity {
@@ -28,9 +27,5 @@ export class SessioneEntity {
 
     @OneToMany(() => AppelloEntity, (appello) => appello.sessione)
     appelli: AppelloEntity[];
-
-    @ManyToOne(() => SegreteriaEntity, (segreteria) => segreteria.sessioniGestite, { nullable: true })
-    @JoinColumn({ name: 'creataDaId' })
-    creataDa: SegreteriaEntity;
 
 }

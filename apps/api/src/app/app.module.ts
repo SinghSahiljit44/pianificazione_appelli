@@ -9,7 +9,6 @@ import { ServerAuthModule } from '@server/auth';
 import { AppelloModule } from '@server/appello'; 
 import { DocenteModule } from '@server/docente'; 
 import { SessioneModule } from '@server/sessione'; 
-import { SegreteriaModule } from '@server/segreteria'; 
 import { MateriaModule } from '@server/materia'; 
 import { CorsoDiLaureaModule } from '@server/corso-di-laurea'; 
 
@@ -22,7 +21,6 @@ import { CorsoDiLaureaModule } from '@server/corso-di-laurea';
     SessioneModule,
     MateriaModule,
     CorsoDiLaureaModule,
-    SegreteriaModule,
     DocenteModule,
     AppelloModule
   ],

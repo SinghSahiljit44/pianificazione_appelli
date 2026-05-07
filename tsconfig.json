@@ -43,9 +43,6 @@
       "path": "./libs/server/academic/materia"
     },
     {
-      "path": "./libs/server/academic/segreteria"
-    },
-    {
       "path": "./libs/server/academic/sessione"
     }
   ]
