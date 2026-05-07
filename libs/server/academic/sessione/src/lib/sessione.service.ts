@@ -28,10 +28,6 @@ export class SessioneService {
     return this.repository.findWithAppelli();
   }
 
-  getByCreataDa(segreteriaId: number) {
-    return this.repository.findByCreataDa(segreteriaId);
-  }
-
   async isSessioneOpen(sessioneId: number): Promise<boolean> {
     const sessione = await this.getById(sessioneId);
     const now = new Date();

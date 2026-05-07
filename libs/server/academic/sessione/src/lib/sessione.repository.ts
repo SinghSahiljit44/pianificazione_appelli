@@ -14,30 +14,21 @@ export class SessioneRepository {
 
   findAll() {
     return this.repo.find({ 
-      relations: ['creataDa'],
       order: { dataInizio: 'DESC' } 
     });
   }
 
   findById(id: number): Promise<SessioneEntity|null> {
-    return this.repo.findOne({ where: { id }, relations: ['creataDa'] });
+    return this.repo.findOne({ where: { id } });
   }
 
   findAttiva() {
-    return this.repo.findOne({ where: { attiva: true }, relations: ['creataDa'] });
+    return this.repo.findOne({ where: { attiva: true } });
   }
 
   findWithAppelli() {
     return this.repo.find({
       relations: ['appelli', 'appelli.materia', 'appelli.docente'],
-      order: { dataInizio: 'DESC' }
-    });
-  }
-
-  findByCreataDa(segreteriaId: number) {
-    return this.repo.find({
-      where: { creataDa: { id: segreteriaId } },
-      relations: ['creataDa'],
       order: { dataInizio: 'DESC' }
     });
   }
