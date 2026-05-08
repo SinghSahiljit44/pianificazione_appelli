@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { AppelloEntity } from '@server/appello'; 
-import { ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('sessioni')
 export class SessioneEntity {

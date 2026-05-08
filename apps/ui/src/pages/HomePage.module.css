@@ -1,0 +1,179 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #081c15;
+  color: #1a1a2e;
+}
+
+/* Header */
+.header {
+  background: #1b4332;
+  color: rgb(211, 214, 8);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoIcon {
+  font-size: 1.5rem;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navLink {
+  color: #cdd3de;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: white;
+}
+
+.loginBtn {
+  background: #3054c7;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loginBtn:hover {
+  background: #357abd;
+}
+
+/* Hero */
+.hero {
+  background: repeating-radial-gradient(circle, #081c15, #081c15 15px, #1b4332 15px, #1b4332 30px);
+  color: rgb(211, 214, 8);
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+.heroSub {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Cards */
+.sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* numero di cards, magic number!!! */
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  flex: 1;
+}
+
+.card {
+  background: #1b4332;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.cardDisabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.cardDisabled:hover {
+  transform: none;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.cardIcon {
+  font-size: 2.5rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: rgb(211, 214, 8);
+}
+
+.cardDesc {
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cardLink {
+  font-size: 0.9rem;
+  color: #5bd94a;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Footer */
+.footer {
+  background: #081c15;
+  color: #33e12d;
+  text-align: center;
+  padding: 1.25rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .sections {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+}
