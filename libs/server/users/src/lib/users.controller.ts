@@ -27,11 +27,6 @@ export class ServerUsersController {
         return user;
     }
 
-    @Get('interns') // GET /users/interns
-    getInternUsers() {
-        return "API non implementata";
-    }
-
     @Get(':id') // GET /users/:id
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN,UserRole.USER)

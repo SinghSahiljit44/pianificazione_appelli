@@ -16,14 +16,11 @@ export class SessioneEntity {
     @Column({ type: 'date' })
     dataFine: Date;
 
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'date' })
     dataInizioInserimento: Date;
 
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'date' })
     dataFineInserimento: Date;
-
-    @Column({ type: 'boolean', default: false })
-    attiva: boolean;
 
     @OneToMany(() => AppelloEntity, (appello) => appello.sessione)
     appelli: AppelloEntity[];

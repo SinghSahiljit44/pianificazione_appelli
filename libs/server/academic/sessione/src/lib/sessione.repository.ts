@@ -23,7 +23,14 @@ export class SessioneRepository {
   }
 
   findAttiva() {
-    return this.repo.findOne({ where: { attiva: true } });
+    // La sessione attiva è quella con dataInizioInserimento <= now <= dataFineInserimento
+    const now = new Date();
+    return this.repo.findOne({
+      where: {
+        dataInizioInserimento: LessThanOrEqual(now),
+        dataFineInserimento: MoreThanOrEqual(now)
+      }
+    });
   }
 
   findWithAppelli() {
@@ -40,10 +47,6 @@ export class SessioneRepository {
       },
       order: { dataInizio: 'DESC' }
     });
-  }
-
-  async setAttiva(id: number, attiva: boolean) {
-    await this.repo.update(id, { attiva }); 
   }
 
   create(data: CreateSessioneDto) {
