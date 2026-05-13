@@ -59,16 +59,6 @@ export class SessioneService {
     return this.repository.update(id, data);
   }
 
-  async setAttiva(id: number) {
-    await this.getById(id);
-    const attuale = await this.repository.findAttiva();
-    if (attuale && attuale.id !== id) {
-      await this.repository.setAttiva(attuale.id, false);
-    }
-    await this.repository.setAttiva(id, true);
-    return this.getById(id);
-  }
-
   async delete(id: number) {
     await this.getById(id);
     return this.repository.delete(id);
@@ -90,18 +80,6 @@ export class SessioneService {
       throw new BadRequestException('La fine del periodo di inserimento non può superare la fine della sessione');
     }
   }
-
-  /*private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
-    const sessioni = await this.repository.findAll();
-    const sovrapposizione = sessioni.some(s =>
-      s.id !== excludeId &&
-      dataInizio <= s.dataFine &&
-      dataFine >= s.dataInizio
-    );
-    if (sovrapposizione) {
-      throw new BadRequestException('La sessione si sovrappone con una sessione esistente');
-    }
-  }*/
 
   //Metodo senza problemi di performance
   private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {

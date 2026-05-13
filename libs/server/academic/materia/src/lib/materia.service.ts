@@ -1,12 +1,20 @@
 // libs/academic/materia/src/lib/materia.service.ts
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, Inject, forwardRef } from '@nestjs/common';
 import { MateriaRepository } from './materia.repository';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
+import { DocenteService } from '@server/docente';
+import { CorsoDiLaureaService } from '@server/corso-di-laurea';
 
 @Injectable()
 export class MateriaService {
-  constructor(private readonly repository: MateriaRepository) {}
+  constructor(
+    private readonly repository: MateriaRepository,
+    @Inject(forwardRef(() => DocenteService))
+    private readonly docenteService: DocenteService,
+    @Inject(forwardRef(() => CorsoDiLaureaService))
+    private readonly corsoDiLaureaService: CorsoDiLaureaService,
+  ) {}
 
   async getAll() {
     return this.repository.findAll();
@@ -47,13 +55,12 @@ export class MateriaService {
   }
 
   async create(data: CreateMateriaDto) {
-    // Controllo duplicati nell'array inviato (es. se l'utente mette due volte lo stesso corso/anno nel JSON)
     const combinations = data.corsi.map(c => `${c.corsoId}-${c.anno}`);
     const hasDuplicates = new Set(combinations).size !== combinations.length;
-    
-    if (hasDuplicates) {
-      throw new ConflictException("L'elenco dei corsi contiene duplicati (stesso corso e stesso anno).");
-    }
+    if (hasDuplicates) throw new ConflictException("L'elenco dei corsi contiene duplicati (stesso corso e stesso anno).");
+
+    if (data.docenteId !== undefined) await this.docenteService.getOne(data.docenteId);
+    await Promise.all(data.corsi.map(c => this.corsoDiLaureaService.getById(c.corsoId)));
 
     return this.repository.create(data);
   }
@@ -61,6 +68,10 @@ export class MateriaService {
   async update(id: number, data: UpdateMateriaDto) {
     const materia = await this.repository.findById(id);
     if (!materia) throw new NotFoundException(`Materia ${id} non trovata`);
+
+    if (data.docenteId !== undefined) await this.docenteService.getOne(data.docenteId);
+    if (data.corsi?.length) await Promise.all(data.corsi.map(c => this.corsoDiLaureaService.getById(c.corsoId)));
+
     return this.repository.update(id, data);
   }
 

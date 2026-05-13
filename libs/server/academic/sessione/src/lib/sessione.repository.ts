@@ -23,14 +23,24 @@ export class SessioneRepository {
   }
 
   findAttiva() {
-    return this.repo.findOne({ where: { attiva: true } });
+    // La sessione attiva è quella con dataInizioInserimento <= now <= dataFineInserimento
+    const now = new Date();
+    return this.repo.findOne({
+      where: {
+        dataInizioInserimento: LessThanOrEqual(now),
+        dataFineInserimento: MoreThanOrEqual(now)
+      }
+    });
   }
 
   findWithAppelli() {
-    return this.repo.find({
-      relations: ['appelli', 'appelli.materia', 'appelli.docente'],
-      order: { dataInizio: 'DESC' }
-    });
+    return this.repo
+      .createQueryBuilder('sessione')
+      .innerJoinAndSelect('sessione.appelli', 'appello')
+      .leftJoinAndSelect('appello.materia', 'materia')
+      .leftJoinAndSelect('appello.docente', 'docente')
+      .orderBy('sessione.dataInizio', 'DESC')
+      .getMany();
   }
 
   findByDateRange(start: Date, end: Date) {
@@ -40,10 +50,6 @@ export class SessioneRepository {
       },
       order: { dataInizio: 'DESC' }
     });
-  }
-
-  async setAttiva(id: number, attiva: boolean) {
-    await this.repo.update(id, { attiva }); 
   }
 
   create(data: CreateSessioneDto) {

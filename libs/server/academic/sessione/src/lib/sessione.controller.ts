@@ -64,15 +64,6 @@ export class SessioneController {
     return this.service.update(id, data);
   }
 
-  @Patch(':id/attiva')
-  @UseGuards(RolesGuard)
-  @Roles(UserRole.ADMIN)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Imposta questa sessione come attiva (disattiva le altre)' })
-  setAttiva(@Param('id', ParseIntPipe) id: number) {
-    return this.service.setAttiva(id);
-  }
-
   @Delete(':id')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
