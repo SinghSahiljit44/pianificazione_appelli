@@ -33,14 +33,12 @@ export class SessioneRepository {
     });
   }
 
-  findWithAppelli() {
-    return this.repo
-      .createQueryBuilder('sessione')
-      .innerJoinAndSelect('sessione.appelli', 'appello')
-      .leftJoinAndSelect('appello.materia', 'materia')
-      .leftJoinAndSelect('appello.docente', 'docente')
-      .orderBy('sessione.dataInizio', 'DESC')
-      .getMany();
+  async findWithAppelli() {
+    const sessioni = await this.repo.find({
+      relations: ['appelli', 'appelli.materia', 'appelli.docente'],
+      order: { dataInizio: 'DESC' },
+    });
+    return sessioni.filter(s => s.appelli.length > 0);
   }
 
   findByDateRange(start: Date, end: Date) {
