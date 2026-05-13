@@ -14,6 +14,7 @@ export class AppelloService {
   ) {}
 
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
+    await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
     await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
     await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
     await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
@@ -27,6 +28,8 @@ export class AppelloService {
     if (appello.docente.id !== docenteId) {
       throw new ForbiddenException('Non puoi modificare un appello che non è tuo');
     }
+
+    await this.checkDocenteOwnsMateria(dataDTO.materiaId ?? appello.materia.id, docenteId);
 
     await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, 
                                         dataDTO.data ?? appello.data);
@@ -96,6 +99,13 @@ export class AppelloService {
       }
     }
 
+  }
+
+  private async checkDocenteOwnsMateria(materiaId: number, docenteId: number) {
+    const materia = await this.materiaService.getOne(materiaId);
+    if (materia.docente?.id !== docenteId) {
+      throw new ForbiddenException('Non sei il docente responsabile di questa materia');
+    }
   }
 
   private async checkDuplicateAppelloForDocente(dataScelta: Date, docenteId: number, excludeId?: number) {
