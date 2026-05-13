@@ -125,4 +125,14 @@ export class AppelloRepository {
       }
     });
   }
+
+  async countByDocenteAndSessione(docenteId: number, sessioneId: number, excludeId?: number): Promise<number> {
+    return this.repository.count({
+      where: {
+        docente: { id: docenteId },
+        sessione: { id: sessioneId },
+        ...(excludeId && { id: Not(excludeId) })
+      }
+    });
+  }
 }

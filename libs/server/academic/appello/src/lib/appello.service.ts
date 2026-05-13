@@ -16,6 +16,7 @@ export class AppelloService {
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
     await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
     await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
+    await this.checkLimiteAppelliPerSessione(docenteId, dataDTO.sessioneId);
     await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
     await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
 
@@ -31,7 +32,11 @@ export class AppelloService {
 
     await this.checkDocenteOwnsMateria(dataDTO.materiaId ?? appello.materia.id, docenteId);
 
-    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, 
+    if (dataDTO.sessioneId && dataDTO.sessioneId !== appello.sessione.id) {
+      await this.checkLimiteAppelliPerSessione(docenteId, dataDTO.sessioneId, id);
+    }
+
+    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id,
                                         dataDTO.data ?? appello.data);
     
     if (dataDTO.data || dataDTO.materiaId) {
@@ -99,6 +104,13 @@ export class AppelloService {
       }
     }
 
+  }
+
+  private async checkLimiteAppelliPerSessione(docenteId: number, sessioneId: number, excludeId?: number) {
+    const count = await this.repository.countByDocenteAndSessione(docenteId, sessioneId, excludeId);
+    if (count >= 2) {
+      throw new BadRequestException('Hai già raggiunto il limite di 2 appelli per questa sessione');
+    }
   }
 
   private async checkDocenteOwnsMateria(materiaId: number, docenteId: number) {
