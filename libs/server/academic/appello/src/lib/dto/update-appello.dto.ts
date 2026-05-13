@@ -1,10 +1,18 @@
 import { IsString, IsOptional, IsInt, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
+
+const toValidDate = ({ value }: { value: unknown }) => {
+  if (typeof value !== 'string') return value;
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return null;
+  const [y, m, d] = value.split('-').map(Number);
+  return date.getFullYear() === y && date.getMonth() + 1 === m && date.getDate() === d ? date : null;
+};
 
 export class UpdateAppelloDto {
     @IsOptional()
-    @IsDate()
-    @Type(() => Date)
+    @Transform(toValidDate)
+    @IsDate({ message: 'La data non esiste nel calendario' })
     data?: Date;
 
     @IsOptional()
