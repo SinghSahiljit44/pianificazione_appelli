@@ -20,13 +20,13 @@ export class UpdateSessioneDto {
   @IsDate()
   dataFine?: Date;
 
-  @ApiPropertyOptional({ example: '2025-05-01T09:00:00Z' })
+  @ApiPropertyOptional({ example: '2025-05-01' })
   @IsOptional()
   @Type(() => Date)
   @IsDate()
   dataInizioInserimento?: Date;
 
-  @ApiPropertyOptional({ example: '2025-05-31T23:59:59Z' })
+  @ApiPropertyOptional({ example: '2025-05-31' })
   @IsOptional()
   @Type(() => Date)
   @IsDate()

@@ -18,12 +18,12 @@ export class CreateSessioneDto {
   @IsDate()
   dataFine: Date;
 
-  @ApiProperty({ example: '2025-05-01T09:00:00Z' })
+  @ApiProperty({ example: '2025-05-01' })
   @Type(() => Date)
   @IsDate()
   dataInizioInserimento: Date;
 
-  @ApiProperty({ example: '2025-05-31T23:59:59Z' })
+  @ApiProperty({ example: '2025-05-31' })
   @Type(() => Date)
   @IsDate()
   dataFineInserimento: Date;

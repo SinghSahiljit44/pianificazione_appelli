@@ -31,8 +31,10 @@ export class MateriaRepository {
 
 
   async create(data: CreateMateriaDto): Promise<MateriaEntity> {
-    const { corsi, ...rest } = data;
-    const saved = await this.repo.save(this.repo.create(rest));
+    const { corsi, docenteId, ...scalars } = data;
+    const entity = this.repo.create(scalars);
+    if (docenteId !== undefined) (entity as any).docente = { id: docenteId };
+    const saved = await this.repo.save(entity);
 
     if (corsi && corsi.length > 0) {
       await this.materiaCorsoRepo.save(
@@ -48,10 +50,14 @@ export class MateriaRepository {
   }
 
   async update(id: number, data: UpdateMateriaDto): Promise<MateriaEntity | null> {
-    const { corsi, ...rest } = data;
+    const { corsi, docenteId, ...scalars } = data;
+    const defined = Object.fromEntries(Object.entries(scalars).filter(([, v]) => v !== undefined));
 
-    if (Object.keys(rest).length > 0) {
-      await this.repo.update(id, rest);
+    if (Object.keys(defined).length > 0) {
+      await this.repo.update(id, defined);
+    }
+    if (docenteId !== undefined) {
+      await this.repo.save({ id, docente: { id: docenteId } } as any);
     }
 
     if (corsi !== undefined) {

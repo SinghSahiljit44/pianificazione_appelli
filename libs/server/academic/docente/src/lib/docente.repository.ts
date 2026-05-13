@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DocenteEntity } from './docente.entity';
 import { UpdateDocenteDto } from './dto/updatedocente.dto';
-import { CreateDocenteDto } from './dto/createdocente.dto';
 
 @Injectable()
 export class DocenteRepository {
@@ -43,7 +42,7 @@ export class DocenteRepository {
     })
   }
 
-  create(data: CreateDocenteDto) {
+  create(data: { titolo: string; dipartimento: string; userId: number }) {
     const entity = this.repo.create({
       titolo: data.titolo,
       dipartimento: data.dipartimento,

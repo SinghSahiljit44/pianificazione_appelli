@@ -1,8 +1,10 @@
-import { IsString, IsOptional, IsInt, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UpdateAppelloDto {
     @IsOptional()
-    @IsDateString()
+    @IsDate()
+    @Type(() => Date)
     data?: Date;
 
     @IsOptional()

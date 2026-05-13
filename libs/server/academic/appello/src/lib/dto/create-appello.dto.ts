@@ -1,9 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsInt, IsDateString } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsInt, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAppelloDto {
     @ApiProperty({ example: '2025-06-15' })
-    @IsDateString() 
+    @IsDate()
+    @Type(() => Date)
     data: Date;
 
     @ApiProperty({ example: '09:30:00' })

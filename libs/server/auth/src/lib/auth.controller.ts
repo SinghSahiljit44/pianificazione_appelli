@@ -5,6 +5,7 @@ import { RegisterDto } from './dto/register.dto';
 import { AuthenticatedUser } from './interfaces/authenticated-user.interface';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserRole } from '@server/users';
+import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
 
 type RequestWithUser = Request & {
   user: AuthenticatedUser;
@@ -33,6 +34,8 @@ export class ServerAuthController {
   }
 
   @Post('register')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @ApiBody({
           schema: {
               type: 'object',
