@@ -101,8 +101,8 @@ export class AppelloService {
   private async checkDuplicateAppelloForDocente(dataScelta: Date, docenteId: number, excludeId?: number) {
     const appelli = await this.repository.findAllByDocente(docenteId);
     const giorno = dataScelta.toDateString();
-    const conflitto = appelli.some(a => 
-      a.id !== excludeId && a.data.toDateString() === giorno
+    const conflitto = appelli.some(a =>
+      a.id !== excludeId && new Date(a.data).toDateString() === giorno
     );
     if (conflitto) {
       throw new BadRequestException('Hai già un appello fissato in questa data');
