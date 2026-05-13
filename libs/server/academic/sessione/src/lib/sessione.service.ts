@@ -76,7 +76,7 @@ export class SessioneService {
     if (inizioInserimento >= fineInserimento) {
       throw new BadRequestException('La data di inizio inserimento deve essere precedente alla fine');
     }
-    if (fineInserimento > dataInizio) {
+    if (fineInserimento >= dataInizio) {
       throw new BadRequestException('La fine del periodo di inserimento non può superare l\'inizio della sessione');
     }
     if (inizioInserimento < new Date()) {
