@@ -117,11 +117,12 @@ export class AppelloRepository {
     return (result.affected ?? 0) > 0;
   }
  
-  async countByMateriaAndSessione(materiaId: number, sessioneId: number): Promise<number> {
+  async countByMateriaAndSessione(materiaId: number, sessioneId: number, excludeId?: number): Promise<number> {
     return this.repository.count({
       where: {
         materia: { id: materiaId },
-        sessione: { id: sessioneId }
+        sessione: { id: sessioneId },
+        ...(excludeId && { id: Not(excludeId) })
       }
     });
   }

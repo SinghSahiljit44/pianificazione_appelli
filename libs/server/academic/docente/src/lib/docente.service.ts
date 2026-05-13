@@ -72,6 +72,6 @@ export class DocenteService {
   async remove(id: number) {
     const docente = await this.repository.findById(id);
     if (!docente) throw new NotFoundException(`Docente ${id} non trovato`);
-    return this.repository.delete(id);
+    await this.usersService.removeUser(docente.user.id);
   }
 }

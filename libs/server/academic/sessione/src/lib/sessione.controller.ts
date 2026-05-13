@@ -19,11 +19,18 @@ export class SessioneController {
     return this.service.getAll();
   }
 
-  @Get('attiva')
+  @Get('attiva-per-inserimento')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Restituisce la sessione attualmente attiva' })
   findAttiva() {
     return this.service.getAttiva();
+  }
+
+  @Get(':id/aperta-iniziata')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Verifica se il periodo di inserimento è aperto' })
+  isAperta(@Param('id', ParseIntPipe) id: number) {
+    return this.service.isSessioneOpen(id);
   }
 
   @Get('con-appelli')
@@ -37,13 +44,6 @@ export class SessioneController {
   @ApiBearerAuth()
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.getById(id);
-  }
-
-  @Get(':id/aperta')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Verifica se il periodo di inserimento è aperto' })
-  isAperta(@Param('id', ParseIntPipe) id: number) {
-    return this.service.isSessioneOpen(id);
   }
 
   @Post()
