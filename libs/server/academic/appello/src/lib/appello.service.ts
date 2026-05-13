@@ -14,7 +14,9 @@ export class AppelloService {
   ) {}
 
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
+    await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
     await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
+    await this.checkLimiteAppelliPerSessione(dataDTO.materiaId, dataDTO.sessioneId);
     await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
     await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
 
@@ -28,7 +30,17 @@ export class AppelloService {
       throw new ForbiddenException('Non puoi modificare un appello che non è tuo');
     }
 
-    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, 
+    await this.checkDocenteOwnsMateria(dataDTO.materiaId ?? appello.materia.id, docenteId);
+
+    if (dataDTO.sessioneId !== undefined || dataDTO.materiaId !== undefined) {
+      await this.checkLimiteAppelliPerSessione(
+        dataDTO.materiaId ?? appello.materia.id,
+        dataDTO.sessioneId ?? appello.sessione.id,
+        id
+      );
+    }
+
+    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id,
                                         dataDTO.data ?? appello.data);
     
     if (dataDTO.data || dataDTO.materiaId) {
@@ -98,11 +110,25 @@ export class AppelloService {
 
   }
 
+  private async checkLimiteAppelliPerSessione(materiaId: number, sessioneId: number, excludeId?: number) {
+    const count = await this.repository.countByMateriaAndSessione(materiaId, sessioneId, excludeId);
+    if (count >= 2) {
+      throw new BadRequestException('Sono già presenti 2 appelli per questa materia in questa sessione');
+    }
+  }
+
+  private async checkDocenteOwnsMateria(materiaId: number, docenteId: number) {
+    const materia = await this.materiaService.getOne(materiaId);
+    if (materia.docente?.id !== docenteId) {
+      throw new ForbiddenException('Non sei il docente responsabile di questa materia');
+    }
+  }
+
   private async checkDuplicateAppelloForDocente(dataScelta: Date, docenteId: number, excludeId?: number) {
     const appelli = await this.repository.findAllByDocente(docenteId);
     const giorno = dataScelta.toDateString();
-    const conflitto = appelli.some(a => 
-      a.id !== excludeId && a.data.toDateString() === giorno
+    const conflitto = appelli.some(a =>
+      a.id !== excludeId && new Date(a.data).toDateString() === giorno
     );
     if (conflitto) {
       throw new BadRequestException('Hai già un appello fissato in questa data');

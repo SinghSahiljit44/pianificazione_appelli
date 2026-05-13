@@ -1,5 +1,5 @@
 // libs/academic/materia/src/lib/materia.service.ts
-import { Injectable, NotFoundException, ConflictException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { MateriaRepository } from './materia.repository';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
@@ -60,7 +60,12 @@ export class MateriaService {
     if (hasDuplicates) throw new ConflictException("L'elenco dei corsi contiene duplicati (stesso corso e stesso anno).");
 
     if (data.docenteId !== undefined) await this.docenteService.getOne(data.docenteId);
-    await Promise.all(data.corsi.map(c => this.corsoDiLaureaService.getById(c.corsoId)));
+    await Promise.all(data.corsi.map(async c => {
+      const corso = await this.corsoDiLaureaService.getById(c.corsoId);
+      if (c.anno < 1 || c.anno > corso.durataAnni) {
+        throw new BadRequestException(`Anno ${c.anno} non valido per il corso "${corso.nome}" (durata: ${corso.durataAnni} anni)`);
+      }
+    }));
 
     return this.repository.create(data);
   }
@@ -70,7 +75,12 @@ export class MateriaService {
     if (!materia) throw new NotFoundException(`Materia ${id} non trovata`);
 
     if (data.docenteId !== undefined) await this.docenteService.getOne(data.docenteId);
-    if (data.corsi?.length) await Promise.all(data.corsi.map(c => this.corsoDiLaureaService.getById(c.corsoId)));
+    if (data.corsi?.length) await Promise.all(data.corsi.map(async c => {
+      const corso = await this.corsoDiLaureaService.getById(c.corsoId);
+      if (c.anno < 1 || c.anno > corso.durataAnni) {
+        throw new BadRequestException(`Anno ${c.anno} non valido per il corso "${corso.nome}" (durata: ${corso.durataAnni} anni)`);
+      }
+    }));
 
     return this.repository.update(id, data);
   }

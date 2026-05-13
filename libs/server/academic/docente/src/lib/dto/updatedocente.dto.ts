@@ -12,8 +12,4 @@ export class UpdateDocenteDto {
     @IsString()
     dipartimento?: string;
 
-    @ApiProperty({ required: false, example: 1 })
-    @IsOptional()
-    @IsInt()
-    userId?: number;
 }

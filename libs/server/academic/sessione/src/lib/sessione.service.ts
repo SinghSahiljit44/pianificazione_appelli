@@ -24,14 +24,14 @@ export class SessioneService {
     return sessione;
   }
 
-  getWithAppelli() {
-    return this.repository.findWithAppelli();
-  }
-
   async isSessioneOpen(sessioneId: number): Promise<boolean> {
     const sessione = await this.getById(sessioneId);
     const now = new Date();
-    return now >= sessione.dataInizioInserimento && now <= sessione.dataFineInserimento;
+    return now >= new Date(sessione.dataInizio) && now <= new Date(sessione.dataFine);
+  }
+
+  getWithAppelli() {
+    return this.repository.findWithAppelli();
   }
 
   async create(data: CreateSessioneDto): Promise<SessioneEntity> {
@@ -48,10 +48,10 @@ export class SessioneService {
   async update(id: number, data: UpdateSessioneDto) {
     const sessione = await this.getById(id);
 
-    const dataInizio = data.dataInizio ?? sessione.dataInizio;
-    const dataFine = data.dataFine ?? sessione.dataFine;
-    const inizioIns = data.dataInizioInserimento ?? sessione.dataInizioInserimento;
-    const fineIns = data.dataFineInserimento ?? sessione.dataFineInserimento;
+    const dataInizio = data.dataInizio ?? new Date(sessione.dataInizio);
+    const dataFine = data.dataFine ?? new Date(sessione.dataFine);
+    const inizioIns = data.dataInizioInserimento ?? new Date(sessione.dataInizioInserimento);
+    const fineIns = data.dataFineInserimento ?? new Date(sessione.dataFineInserimento);
 
     this.checkDateConsistency(dataInizio, dataFine, inizioIns, fineIns);
     await this.checkOverlap(dataInizio, dataFine, id);
@@ -76,8 +76,11 @@ export class SessioneService {
     if (inizioInserimento >= fineInserimento) {
       throw new BadRequestException('La data di inizio inserimento deve essere precedente alla fine');
     }
-    if (fineInserimento > dataFine) {
-      throw new BadRequestException('La fine del periodo di inserimento non può superare la fine della sessione');
+    if (fineInserimento >= dataInizio) {
+      throw new BadRequestException('La fine del periodo di inserimento non può superare l\'inizio della sessione');
+    }
+    if (inizioInserimento < new Date()) {
+      throw new BadRequestException('La data di inizio inserimento non può essere nel passato');
     }
   }
 
