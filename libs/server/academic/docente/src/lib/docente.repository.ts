@@ -55,7 +55,6 @@ export class DocenteRepository {
     const payload: any = {};
     if (data.titolo !== undefined) payload.titolo = data.titolo;
     if (data.dipartimento !== undefined) payload.dipartimento = data.dipartimento;
-    if (data.userId !== undefined) payload.user = { id: data.userId };
     await this.repo.update(id, payload);
     return this.findById(id);
   }
