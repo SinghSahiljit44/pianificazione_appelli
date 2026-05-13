@@ -16,7 +16,7 @@ export class AppelloService {
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
     await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
     await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
-    await this.checkLimiteAppelliPerSessione(docenteId, dataDTO.sessioneId);
+    await this.checkLimiteAppelliPerSessione(dataDTO.materiaId, dataDTO.sessioneId);
     await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
     await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
 
@@ -32,8 +32,12 @@ export class AppelloService {
 
     await this.checkDocenteOwnsMateria(dataDTO.materiaId ?? appello.materia.id, docenteId);
 
-    if (dataDTO.sessioneId && dataDTO.sessioneId !== appello.sessione.id) {
-      await this.checkLimiteAppelliPerSessione(docenteId, dataDTO.sessioneId, id);
+    if (dataDTO.sessioneId !== undefined || dataDTO.materiaId !== undefined) {
+      await this.checkLimiteAppelliPerSessione(
+        dataDTO.materiaId ?? appello.materia.id,
+        dataDTO.sessioneId ?? appello.sessione.id,
+        id
+      );
     }
 
     await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id,
@@ -106,10 +110,10 @@ export class AppelloService {
 
   }
 
-  private async checkLimiteAppelliPerSessione(docenteId: number, sessioneId: number, excludeId?: number) {
-    const count = await this.repository.countByDocenteAndSessione(docenteId, sessioneId, excludeId);
+  private async checkLimiteAppelliPerSessione(materiaId: number, sessioneId: number, excludeId?: number) {
+    const count = await this.repository.countByMateriaAndSessione(materiaId, sessioneId, excludeId);
     if (count >= 2) {
-      throw new BadRequestException('Hai già raggiunto il limite di 2 appelli per questa sessione');
+      throw new BadRequestException('Sono già presenti 2 appelli per questa materia in questa sessione');
     }
   }
 
