@@ -87,13 +87,29 @@ export class AppelloRepository {
   }
 
   async create(data: CreateAppelloDto & { docenteId: number }) {
-    const appello = this.repository.create(data);
-    return this.repository.save(appello);
+    const appello = this.repository.create({
+      data: data.data,
+      ora: data.ora,
+      aula: data.aula,
+      note: data.note,
+      materia: { id: data.materiaId } as any,
+      sessione: { id: data.sessioneId } as any,
+      docente: { id: data.docenteId } as any,
+    });
+    const saved = await this.repository.save(appello);
+    return this.findById(saved.id);
   }
 
-  async update(id: number, appelloAggiornato: UpdateAppelloDto) {
-      await this.repository.update(id, appelloAggiornato);
-      return this.findById(id);
+  async update(id: number, data: UpdateAppelloDto) {
+    const payload: any = {};
+    if (data.data !== undefined) payload.data = data.data;
+    if (data.ora !== undefined) payload.ora = data.ora;
+    if (data.aula !== undefined) payload.aula = data.aula;
+    if (data.note !== undefined) payload.note = data.note;
+    if (data.materiaId !== undefined) payload.materia = { id: data.materiaId };
+    if (data.sessioneId !== undefined) payload.sessione = { id: data.sessioneId };
+    if (Object.keys(payload).length > 0) await this.repository.update(id, payload);
+    return this.findById(id);
   }
 
   async delete(id: number) {
