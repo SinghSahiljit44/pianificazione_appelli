@@ -5,9 +5,9 @@ import { ApiProperty } from '@nestjs/swagger';
 const toValidDate = ({ value }: { value: unknown }) => {
   if (typeof value !== 'string') return value;
   const date = new Date(value);
-  if (isNaN(date.getTime())) return null;
+  if (isNaN(date.getTime())) return new Date(NaN);
   const [y, m, d] = value.split('-').map(Number);
-  return date.getFullYear() === y && date.getMonth() + 1 === m && date.getDate() === d ? date : null;
+  return date.getFullYear() === y && date.getMonth() + 1 === m && date.getDate() === d ? date : new Date(NaN);
 };
 
 export class CreateAppelloDto {
