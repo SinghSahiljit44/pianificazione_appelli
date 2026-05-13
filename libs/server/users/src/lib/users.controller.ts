@@ -29,12 +29,12 @@ export class ServerUsersController {
 
     @Get(':id') // GET /users/:id
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(UserRole.ADMIN,UserRole.USER)
+    @Roles(UserRole.ADMIN)
     @ApiBearerAuth()
     getOneUser(@Param('id', ParseIntPipe) id: number) {
         return this.serverUsersService.getOneUser(id);
     }
-
+    /*
     @Post() // POST /users
     @ApiBody({
         schema: {
@@ -51,7 +51,8 @@ export class ServerUsersController {
     create(@Body(ValidationPipe) user: CreateUserDto) {
         return this.serverUsersService.create(user);
     }
-
+    */
+    /*
     @Patch(':id') // PATCH /users/:id
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Roles(UserRole.ADMIN)
@@ -71,12 +72,16 @@ export class ServerUsersController {
         //return {id, ...userUpdate};
         return this.serverUsersService.update(id,userUpdate);
     }
-
+    */
     @Delete(':id') // DELETE /users/:id
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Roles(UserRole.ADMIN)
     @ApiBearerAuth()
-    removeUser(@Param('id', ParseIntPipe) id: number) {
-        return this.serverUsersService.removeUser(id);    
+    async removeUser(@Param('id', ParseIntPipe) id: number) {
+        const roleOfUserToDelete = (await this.serverUsersService.getOneUser(id)).role;
+        if (roleOfUserToDelete === UserRole.ADMIN) {
+            return { message: 'You cannot delete a user with the ADMIN role.' };
+        }
+        else return this.serverUsersService.removeUser(id);    
     }
 }

@@ -34,10 +34,13 @@ export class SessioneRepository {
   }
 
   findWithAppelli() {
-    return this.repo.find({
-      relations: ['appelli', 'appelli.materia', 'appelli.docente'],
-      order: { dataInizio: 'DESC' }
-    });
+    return this.repo
+      .createQueryBuilder('sessione')
+      .innerJoinAndSelect('sessione.appelli', 'appello')
+      .leftJoinAndSelect('appello.materia', 'materia')
+      .leftJoinAndSelect('appello.docente', 'docente')
+      .orderBy('sessione.dataInizio', 'DESC')
+      .getMany();
   }
 
   findByDateRange(start: Date, end: Date) {

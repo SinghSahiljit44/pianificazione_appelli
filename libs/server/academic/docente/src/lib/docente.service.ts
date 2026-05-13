@@ -1,11 +1,16 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DocenteRepository } from './docente.repository';
 import { CreateDocenteDto } from './dto/createdocente.dto';
 import { UpdateDocenteDto } from './dto/updatedocente.dto';
+import { ServerUsersService } from '@server/users';
+import { UserRole } from '@server/users';
 
 @Injectable()
 export class DocenteService {
-  constructor(private readonly repository: DocenteRepository) {}
+  constructor(
+    private readonly repository: DocenteRepository,
+    private readonly usersService: ServerUsersService,
+  ) {}
 
   async getAppelliIdsByDocenteId(docenteId: number): Promise<number[]> {
     const docente = await this.repository.findById(docenteId);
@@ -30,13 +35,13 @@ export class DocenteService {
   }
 
   async create(data: CreateDocenteDto) {
-    const existing = await this.repository.findByUserId(data.userId);
-    if (existing) {
-      throw new ConflictException(
-        `L'utente con ID ${data.userId} è già associato al docente ID ${existing.id}`
-      );
-    }
-    return this.repository.create(data);
+    const user = await this.usersService.create({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: UserRole.USER,
+    });
+    return this.repository.create({ titolo: data.titolo, dipartimento: data.dipartimento, userId: user.id });
   }
 
   async update(id: number, data: UpdateDocenteDto) {
