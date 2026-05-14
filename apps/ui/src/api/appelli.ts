@@ -28,6 +28,11 @@ export async function getMieiAppelli(): Promise<Appello[]> {
   return res.data;
 }
 
+export async function getAppelliBySessione(sessioneId: number): Promise<Appello[]> {
+  const res = await client.get<Appello[]>(`/appelli/sessione/${sessioneId}`);
+  return res.data;
+}
+
 export async function createAppello(data: CreateAppelloDto): Promise<Appello> {
   const res = await client.post<Appello>('/appelli', data);
   return res.data;

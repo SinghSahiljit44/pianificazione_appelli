@@ -1,0 +1,98 @@
+.sessioniList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sessioneCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.sessioneHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sessioneInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sessioneNome {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: white;
+}
+
+.sessioneDate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #a8c5b0;
+  flex-wrap: wrap;
+}
+
+.separator {
+  opacity: 0.4;
+}
+
+.noAppelli {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #4a7c5f;
+  font-style: italic;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  color: #a8c5b0;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.table td {
+  padding: 0.6rem 0.75rem;
+  color: #e0f0e8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.corsiChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.chip {
+  font-size: 0.72rem;
+  background: rgba(48, 84, 199, 0.2);
+  color: #a8c5b0;
+  border: 1px solid rgba(48, 84, 199, 0.3);
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}

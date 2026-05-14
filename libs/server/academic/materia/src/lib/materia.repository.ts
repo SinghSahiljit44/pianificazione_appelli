@@ -16,7 +16,7 @@ export class MateriaRepository {
   ) {}
 
   async findAll(): Promise<MateriaEntity[]> {
-    return this.repo.find({ relations: ['docente', 'corsi', 'corsi.corso'] });
+    return this.repo.find({ relations: ['docente', 'docente.user', 'corsi', 'corsi.corso'] });
   }
 
   findMateriaCorso(materiaId: number, corsoId: number): Promise<MateriaCorsoEntity | null> {
@@ -93,7 +93,7 @@ export class MateriaRepository {
   findByDocenteId(docenteId: number): Promise<MateriaEntity[]> {
     return this.repo.find({
       where: { docente: { id: docenteId } },
-      relations: ['docente', 'corsi', 'corsi.corso']
+      relations: ['docente', 'docente.user', 'corsi', 'corsi.corso']
     });
   }
 
@@ -102,21 +102,21 @@ export class MateriaRepository {
       where: { 
         corsi: { corso: { id: corsoId } } 
       },
-      relations: ['docente', 'corsi', 'corsi.corso']
+      relations: ['docente', 'docente.user', 'corsi', 'corsi.corso']
     });
   }
 
   findById(id: number): Promise<MateriaEntity | null> {
     return this.repo.findOne({
       where: { id },
-      relations: ['docente', 'corsi', 'corsi.corso']
+      relations: ['docente', 'docente.user', 'corsi', 'corsi.corso']
     });
   } 
 
   findWithAppelli(id: number): Promise<MateriaEntity | null> {
     return this.repo.findOne({
       where: { id },
-      relations: ['docente', 'corsi', 'corsi.corso', 'appelli']
+      relations: ['docente', 'docente.user', 'corsi', 'corsi.corso', 'appelli']
     });
   }
 

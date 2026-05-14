@@ -31,10 +31,10 @@ export class AppelloRepository {
 
   async findAllBySessione(sessioneId: number) {
     return this.repository.find({
-      where: { 
-        sessione: { id: sessioneId } 
+      where: {
+        sessione: { id: sessioneId }
       },
-      relations: ['materia', 'materia.corsi', 'docente'],
+      relations: ['materia', 'materia.corsi', 'materia.corsi.corso', 'docente', 'docente.user'],
       order: { data: 'ASC' }
     });
   }

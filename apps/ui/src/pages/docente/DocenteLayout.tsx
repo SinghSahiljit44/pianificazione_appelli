@@ -4,6 +4,7 @@ import styles from '../admin/AdminLayout.module.css';
 
 const NAV_ITEMS = [
   { to: '/docente/appelli', icon: '📋', label: 'I miei appelli' },
+  { to: '/docente/sessioni', icon: '🗓️', label: 'Sessioni' },
 ];
 
 export default function DocenteLayout() {

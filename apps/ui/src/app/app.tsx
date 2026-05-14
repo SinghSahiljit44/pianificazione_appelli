@@ -10,6 +10,7 @@ import MateriePage from '../pages/admin/MateriePage';
 import CorsiLaureaPage from '../pages/admin/CorsiLaureaPage';
 import DocenteLayout from '../pages/docente/DocenteLayout';
 import AppelliPage from '../pages/docente/AppelliPage';
+import SessioniDocentePage from '../pages/docente/SessioniDocentePage';
 
 export function App() {
   return (
@@ -43,6 +44,7 @@ export function App() {
       >
         <Route index element={<Navigate to="/docente/appelli" replace />} />
         <Route path="appelli" element={<AppelliPage />} />
+        <Route path="sessioni" element={<SessioniDocentePage />} />
       </Route>
     </Routes>
   );
