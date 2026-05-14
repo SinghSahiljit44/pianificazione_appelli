@@ -1,0 +1,36 @@
+.bannerOpen,
+.bannerClosed {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.bannerOpen {
+  background: rgba(91, 217, 74, 0.1);
+  border: 1px solid rgba(91, 217, 74, 0.3);
+  color: #a8e6a0;
+}
+
+.bannerClosed {
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.25);
+  color: #f5a0a0;
+}
+
+.bannerIcon {
+  font-size: 0.75rem;
+}
+
+.infoBox {
+  background: rgba(211, 214, 8, 0.08);
+  border: 1px solid rgba(211, 214, 8, 0.25);
+  color: rgb(211, 214, 8);
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}

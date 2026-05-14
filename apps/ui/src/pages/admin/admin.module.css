@@ -1,0 +1,258 @@
+/* Stili condivisi per le pagine admin */
+
+.page {
+  padding: 2rem;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.875rem;
+  color: #a8c5b0;
+  margin: 0.25rem 0 0;
+}
+
+/* Bottone principale */
+.btnPrimary {
+  background: #3054c7;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.btnPrimary:hover {
+  background: #357abd;
+}
+
+/* Bottone secondario */
+.btnSecondary {
+  background: none;
+  color: #a8c5b0;
+  border: 1px solid #2d6a4f;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+/* Bottone pericolo */
+.btnDanger {
+  background: none;
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnDanger:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+/* Tabella */
+.tableWrap {
+  background: #0d2818;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #2d6a4f;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: #081c15;
+  color: rgb(211, 214, 8);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #2d6a4f;
+}
+
+.table td {
+  padding: 0.85rem 1rem;
+  color: #d4e8da;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #1b4332;
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgb(211, 214, 8);
+}
+
+.input,
+.select,
+.textarea {
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #2d6a4f;
+  background: #081c15;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #4a7c5f;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: rgb(211, 214, 8);
+}
+
+.select option {
+  background: #1b4332;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: #4a7c5f;
+  margin: 0;
+}
+
+.formError {
+  background: rgba(220, 53, 69, 0.12);
+  border: 1px solid rgba(220, 53, 69, 0.35);
+  color: #ff6b6b;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+/* Stato vuoto / loading */
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #4a7c5f;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #a8c5b0;
+}
+
+.pageError {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #ff6b6b;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Badge stato sessione */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.badgeGreen {
+  background: rgba(91, 217, 74, 0.15);
+  color: #5bd94a;
+}
+
+.badgeYellow {
+  background: rgba(211, 214, 8, 0.15);
+  color: rgb(211, 214, 8);
+}
+
+.badgeGray {
+  background: rgba(168, 197, 176, 0.12);
+  color: #a8c5b0;
+}
+
+.badgeBlue {
+  background: rgba(48, 84, 199, 0.2);
+  color: #7a9ef5;
+}
