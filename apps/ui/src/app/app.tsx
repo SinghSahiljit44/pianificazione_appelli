@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
-import AteneoPage from '../pages/AteneoPage';
 import LoginPage from '../pages/LoginPage';
 import ProtectedRoute from '../components/ProtectedRoute';
 import AdminLayout from '../pages/admin/AdminLayout';
@@ -16,7 +15,6 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/ateneo" element={<AteneoPage />} />
       <Route path="/login" element={<LoginPage />} />
 
       <Route

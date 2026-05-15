@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
 import styles from './AdminLayout.module.css';
 
@@ -11,7 +11,10 @@ const NAV_ITEMS = [
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = authStore.getUser();
+
+  const currentPage = NAV_ITEMS.find((item) => location.pathname === item.to);
 
   function handleLogout() {
     authStore.clear();
@@ -62,6 +65,12 @@ export default function AdminLayout() {
       </aside>
 
       <main className={styles.main}>
+        {currentPage && (
+          <div className={styles.topbar}>
+            <span className={styles.topbarIcon}>{currentPage.icon}</span>
+            <span className={styles.topbarTitle}>{currentPage.label}</span>
+          </div>
+        )}
         <Outlet />
       </main>
     </div>
