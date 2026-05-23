@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
-import styles from '../admin/AdminLayout.module.css';
+import styles from './AdminLayout.module.css';
 
 const NAV_ITEMS = [
   { to: '/docente/appelli', icon: '📋', label: 'I miei appelli' },

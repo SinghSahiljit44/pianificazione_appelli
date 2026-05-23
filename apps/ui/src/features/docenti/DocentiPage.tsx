@@ -7,9 +7,9 @@ import {
   type Docente,
   type CreateDocenteDto,
   type UpdateDocenteDto,
-} from '../../api/docenti';
+} from './docenti.api';
 import Modal from '../../components/Modal';
-import s from './admin.module.css';
+import s from '../layouts/admin.module.css';
 
 interface CreateForm {
   titolo: string;
@@ -81,7 +81,7 @@ export default function DocentiPage() {
         const dto: UpdateDocenteDto = editForm;
         await updateDocente(editing.id, dto);
       } else {
-        const dto: CreateDocenteDto = { ...createForm, role: 'USER' };
+        const dto: CreateDocenteDto = createForm;
         await createDocente(dto);
       }
       closeModal();

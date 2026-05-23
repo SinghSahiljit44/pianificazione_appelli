@@ -1,15 +1,15 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
-import LoginPage from '../pages/LoginPage';
-import ProtectedRoute from '../components/ProtectedRoute';
-import AdminLayout from '../pages/admin/AdminLayout';
-import SessioniPage from '../pages/admin/SessioniPage';
-import DocentiPage from '../pages/admin/DocentiPage';
-import MateriePage from '../pages/admin/MateriePage';
-import CorsiLaureaPage from '../pages/admin/CorsiLaureaPage';
-import DocenteLayout from '../pages/docente/DocenteLayout';
-import AppelliPage from '../pages/docente/AppelliPage';
-import SessioniDocentePage from '../pages/docente/SessioniDocentePage';
+import LoginPage from '../features/auth/LoginPage';
+import ProtectedRoute from '../features/auth/ProtectedRoute';
+import AdminLayout from '../features/layouts/AdminLayout';
+import SessioniPage from '../features/sessioni/SessioniPage';
+import DocentiPage from '../features/docenti/DocentiPage';
+import MateriePage from '../features/materie/MateriePage';
+import CorsiLaureaPage from '../features/corsi-laurea/CorsiLaureaPage';
+import DocenteLayout from '../features/layouts/DocenteLayout';
+import AppelliPage from '../features/appelli/AppelliPage';
+import SessioniDocentePage from '../features/sessioni/SessioniDocentePage';
 
 export function App() {
   return (

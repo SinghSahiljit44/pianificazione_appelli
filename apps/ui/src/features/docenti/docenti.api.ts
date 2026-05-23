@@ -1,32 +1,5 @@
-import client from './client';
-
-export interface DocenteUser {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
-
-export interface Docente {
-  id: number;
-  titolo: string;
-  dipartimento: string;
-  user: DocenteUser;
-}
-
-export interface CreateDocenteDto {
-  titolo: string;
-  dipartimento: string;
-  name: string;
-  email: string;
-  password: string;
-  role: 'USER';
-}
-
-export interface UpdateDocenteDto {
-  titolo?: string;
-  dipartimento?: string;
-}
+import client from '../../api/client';
+import { Docente, CreateDocenteDto, UpdateDocenteDto } from '@server/docente';
 
 export async function getDocenti(): Promise<Docente[]> {
   const res = await client.get<Docente[]>('/docenti');

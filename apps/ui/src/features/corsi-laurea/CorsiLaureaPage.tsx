@@ -6,9 +6,9 @@ import {
   deleteCorsoLaurea,
   type CorsoLaurea,
   type CreateCorsoLaureaDto,
-} from '../../api/corsi-laurea';
+} from './corsi-laurea.api';
 import Modal from '../../components/Modal';
-import s from './admin.module.css';
+import s from '../layouts/admin.module.css';
 
 interface CorsoForm {
   nome: string;

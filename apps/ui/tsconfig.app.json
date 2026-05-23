@@ -32,5 +32,25 @@
     "eslint.config.cjs",
     "eslint.config.mjs"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+  "references": [
+    {
+      "path": "../../libs/server/academic/sessione/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/materia/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/docente/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/corso-di-laurea/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/appello/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/auth/tsconfig.lib.json"
+    }
+  ]
 }

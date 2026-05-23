@@ -5,7 +5,6 @@
   background: #081c15;
 }
 
-/* ── Sidebar ─────────────────────────────── */
 .sidebar {
   width: 240px;
   flex-shrink: 0;
@@ -97,7 +96,6 @@
   flex-shrink: 0;
 }
 
-/* ── Sidebar footer ──────────────────────── */
 .sidebarFooter {
   padding: 0.9rem;
   border-top: 1px solid #1b4332;
@@ -165,7 +163,6 @@
   background: rgba(255, 107, 107, 0.1);
 }
 
-/* ── Main content ────────────────────────── */
 .main {
   margin-left: 240px;
   flex: 1;
@@ -175,7 +172,6 @@
   background: #081c15;
 }
 
-/* ── Topbar ──────────────────────────────── */
 .topbar {
   background: #0a1e10;
   border-bottom: 1px solid #1b4332;
@@ -200,13 +196,11 @@
   color: #d4e8da;
 }
 
-/* ── Content area ────────────────────────── */
 .content {
   flex: 1;
   padding: 1.75rem 2rem;
 }
 
-/* kept for backward compat — pages use admin.module.css .page instead */
 .pageTitle {
   font-size: 1.05rem;
   font-weight: 600;

@@ -4,3 +4,6 @@ export * from './lib/materia.module';
 export * from './lib/materia.entity';
 export * from './lib/materia-corso.entity';
 
+export * from './lib/interfaces/materia.interfaces';
+export * from './lib/dto/createmateria.dto';
+export * from './lib/dto/updatemateria.dto';

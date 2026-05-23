@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getSessioni, type Sessione } from '../../api/sessioni';
-import { getAppelliBySessione, type Appello } from '../../api/appelli';
-import s from '../admin/admin.module.css';
+import { getSessioni, type Sessione } from './sessioni.api';
+import { getAppelliBySessione, type Appello } from '../appelli/appelli.api';
+import s from '../layouts/admin.module.css';
 import ls from './SessioniDocentePage.module.css';
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
@@ -33,8 +33,8 @@ export default function SessioniDocentePage() {
           sess.map((s) => getAppelliBySessione(s.id))
         );
         const map: Record<number, Appello[]> = {};
-        sess.forEach((s, i) => {
-          map[s.id] = results[i].sort((a, b) => a.data.localeCompare(b.data));
+        sess.forEach((sessione, i) => {
+          map[sessione.id] = results[i].sort((a, b) => a.data.localeCompare(b.data));
         });
         setAppelli(map);
       } catch {

@@ -1,4 +1,4 @@
-import type { AuthUser } from '../api/auth';
+import type { AuthenticatedUser } from '@server/auth';
 
 const TOKEN_KEY = 'token';
 const USER_KEY = 'auth_user';
@@ -8,12 +8,12 @@ export const authStore = {
     return localStorage.getItem(TOKEN_KEY);
   },
 
-  getUser(): AuthUser | null {
+  getUser(): AuthenticatedUser | null {
     const raw = localStorage.getItem(USER_KEY);
     return raw ? JSON.parse(raw) : null;
   },
 
-  save(token: string, user: AuthUser) {
+  save(token: string, user: AuthenticatedUser) {
     localStorage.setItem(TOKEN_KEY, token);
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   },

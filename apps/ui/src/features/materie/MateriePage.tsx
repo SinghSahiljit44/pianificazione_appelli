@@ -5,11 +5,11 @@ import {
   updateMateria,
   deleteMateria,
   type Materia,
-} from '../../api/materie';
-import { getDocenti, type Docente } from '../../api/docenti';
-import { getCorsiLaurea, type CorsoLaurea } from '../../api/corsi-laurea';
+} from './materie.api';
+import { getDocenti, type Docente } from '../docenti/docenti.api';
+import { getCorsiLaurea, type CorsoLaurea } from '../corsi-laurea/corsi-laurea.api';
 import Modal from '../../components/Modal';
-import s from './admin.module.css';
+import s from '../layouts/admin.module.css';
 import ls from './MateriePage.module.css';
 
 interface CorsoRow {
@@ -104,7 +104,6 @@ export default function MateriePage() {
     setForm((f) => {
       const corsi = [...f.corsi];
       corsi[i] = { ...corsi[i], [field]: value };
-      // reset anno to '1' when corso changes
       if (field === 'corsoId') corsi[i].anno = '1';
       return { ...f, corsi };
     });
@@ -270,7 +269,6 @@ export default function MateriePage() {
               </div>
             </div>
 
-            {/* Corsi di laurea */}
             <div className={s.field}>
               <label className={s.label}>Corsi di laurea</label>
               {form.corsi.length > 0 && (

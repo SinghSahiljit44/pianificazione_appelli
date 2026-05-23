@@ -1,21 +1,5 @@
-import client from './client';
-
-export interface Sessione {
-  id: number;
-  nome: string;
-  dataInizio: string;
-  dataFine: string;
-  dataInizioInserimento: string;
-  dataFineInserimento: string;
-}
-
-export interface CreateSessioneDto {
-  nome: string;
-  dataInizio: string;
-  dataFine: string;
-  dataInizioInserimento: string;
-  dataFineInserimento: string;
-}
+import client from '../../api/client';
+import { Sessione, CreateSessioneDto, UpdateSessioneDto } from '@server/sessione';
 
 export async function getSessioni(): Promise<Sessione[]> {
   const res = await client.get<Sessione[]>('/sessioni');
@@ -27,7 +11,7 @@ export async function createSessione(data: CreateSessioneDto): Promise<Sessione>
   return res.data;
 }
 
-export async function updateSessione(id: number, data: Partial<CreateSessioneDto>): Promise<Sessione> {
+export async function updateSessione(id: number, data: UpdateSessioneDto): Promise<Sessione> {
   const res = await client.patch<Sessione>(`/sessioni/${id}`, data);
   return res.data;
 }

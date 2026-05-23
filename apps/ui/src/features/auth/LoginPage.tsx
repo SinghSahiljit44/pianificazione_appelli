@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../api/auth';
-import { authStore } from '../store/authStore';
+import { login } from './auth.api';
+import { authStore } from '../../store/authStore';
 import styles from './LoginPage.module.css';
 
 export default function LoginPage() {

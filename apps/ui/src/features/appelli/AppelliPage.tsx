@@ -6,12 +6,12 @@ import {
   deleteAppello,
   type Appello,
   type CreateAppelloDto,
-} from '../../api/appelli';
-import { getDocenteMe, type Docente } from '../../api/docenti';
-import { getMaterieByDocente, type Materia } from '../../api/materie';
-import { getSessioneAttivaPerInserimento, type Sessione } from '../../api/sessioni';
+} from './appelli.api';
+import { getDocenteMe, type Docente } from '../docenti/docenti.api';
+import { getMaterieByDocente, type Materia } from '../materie/materie.api';
+import { getSessioneAttivaPerInserimento, type Sessione } from '../sessioni/sessioni.api';
 import Modal from '../../components/Modal';
-import s from '../admin/admin.module.css';
+import s from '../layouts/admin.module.css';
 import ls from './AppelliPage.module.css';
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
@@ -101,7 +101,7 @@ export default function AppelliPage() {
     setSaving(true);
 
     const dto: CreateAppelloDto = {
-      data: form.data,
+      data: form.data as unknown as Date,
       ora: `${form.ora}:00`,
       aula: form.aula,
       materiaId: Number(form.materiaId),
@@ -132,7 +132,7 @@ export default function AppelliPage() {
       await deleteAppello(id);
       await load();
     } catch {
-      setPageError('Impossibile eliminare l\'appello.');
+      setPageError("Impossibile eliminare l'appello.");
     }
   }
 
@@ -159,7 +159,7 @@ export default function AppelliPage() {
           disabled={!canCreate}
           title={
             !inserimentoAperto
-              ? 'Nessuna sessione aperta per l\'inserimento'
+              ? "Nessuna sessione aperta per l'inserimento"
               : !haMaterie
               ? 'Nessuna materia assegnata'
               : undefined
@@ -169,7 +169,6 @@ export default function AppelliPage() {
         </button>
       </div>
 
-      {/* Banner sessione */}
       <div className={inserimentoAperto ? ls.bannerOpen : ls.bannerClosed}>
         {inserimentoAperto ? (
           <>

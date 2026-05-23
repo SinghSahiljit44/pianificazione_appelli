@@ -6,9 +6,18 @@ import {
   deleteSessione,
   type Sessione,
   type CreateSessioneDto,
-} from '../../api/sessioni';
+  type UpdateSessioneDto,
+} from './sessioni.api';
+
+type SessioneForm = {
+  nome: string;
+  dataInizio: string;
+  dataFine: string;
+  dataInizioInserimento: string;
+  dataFineInserimento: string;
+};
 import Modal from '../../components/Modal';
-import s from './admin.module.css';
+import s from '../layouts/admin.module.css';
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
 const toInput = (d: string) => d?.split('T')[0] ?? '';
@@ -23,7 +32,7 @@ function getStatoBadge(sessione: Sessione) {
   return { label: 'Conclusa', cls: s.badgeGray };
 }
 
-const EMPTY_FORM: CreateSessioneDto = {
+const EMPTY_FORM: SessioneForm = {
   nome: '',
   dataInizio: '',
   dataFine: '',
@@ -38,7 +47,7 @@ export default function SessioniPage() {
 
   const [modal, setModal] = useState<'create' | 'edit' | null>(null);
   const [editing, setEditing] = useState<Sessione | null>(null);
-  const [form, setForm] = useState<CreateSessioneDto>(EMPTY_FORM);
+  const [form, setForm] = useState<SessioneForm>(EMPTY_FORM);
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -63,16 +72,16 @@ export default function SessioniPage() {
     setModal('create');
   }
 
-  function openEdit(s: Sessione) {
+  function openEdit(sessione: Sessione) {
     setForm({
-      nome: s.nome,
-      dataInizio: toInput(s.dataInizio),
-      dataFine: toInput(s.dataFine),
-      dataInizioInserimento: toInput(s.dataInizioInserimento),
-      dataFineInserimento: toInput(s.dataFineInserimento),
+      nome: sessione.nome,
+      dataInizio: toInput(sessione.dataInizio),
+      dataFine: toInput(sessione.dataFine),
+      dataInizioInserimento: toInput(sessione.dataInizioInserimento),
+      dataFineInserimento: toInput(sessione.dataFineInserimento),
     });
     setFormError(null);
-    setEditing(s);
+    setEditing(sessione);
     setModal('edit');
   }
 
@@ -81,7 +90,7 @@ export default function SessioniPage() {
     setEditing(null);
   }
 
-  function setField(key: keyof CreateSessioneDto, value: string) {
+  function setField(key: keyof SessioneForm, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
@@ -91,9 +100,9 @@ export default function SessioniPage() {
     setSaving(true);
     try {
       if (modal === 'edit' && editing) {
-        await updateSessione(editing.id, form);
+        await updateSessione(editing.id, form as unknown as UpdateSessioneDto);
       } else {
-        await createSessione(form);
+        await createSessione(form as unknown as CreateSessioneDto);
       }
       closeModal();
       await load();
