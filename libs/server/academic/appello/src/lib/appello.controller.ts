@@ -63,13 +63,11 @@ export class AppelloController {
     return this.service.getById(id);
   }
 
-  //Le segreterie possono inserire appelli?
   @Post()
   @UseGuards(RolesGuard)
   @Roles(UserRole.USER)
   @ApiBearerAuth()
   @ApiBody({ type: CreateAppelloDto })
-  //Ho messo whitelist pk il mio lato cybersecurity ha preso il soppravvento (toglie dati che non ci sono dichiarati nel dto)
   async create(@Body(new ValidationPipe({ transform: true, whitelist: true })) data: CreateAppelloDto, @CurrentUser() user: AuthenticatedUser) {
     const docente = await this.docenteService.getByUserId(user.id);
     return this.service.create(data, docente.id);
