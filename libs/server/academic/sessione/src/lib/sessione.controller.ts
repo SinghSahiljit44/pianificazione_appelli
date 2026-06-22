@@ -26,6 +26,13 @@ export class SessioneController {
     return this.service.getAttiva();
   }
 
+  @Get('attive-per-inserimento')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Restituisce tutte le sessioni con inserimento aperto' })
+  findAttive() {
+    return this.service.getAttive();
+  }
+
   @Get(':id/aperta-iniziata')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Verifica se il periodo di inserimento è aperto' })

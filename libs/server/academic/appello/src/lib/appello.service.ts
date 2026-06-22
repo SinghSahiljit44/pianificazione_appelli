@@ -14,13 +14,14 @@ export class AppelloService {
   ) {}
 
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
+    const data = new Date(dataDTO.data);
     await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
-    await this.checkValidityForAppello(dataDTO.sessioneId, dataDTO.data);
+    await this.checkValidityForAppello(dataDTO.sessioneId, data);
     await this.checkLimiteAppelliPerSessione(dataDTO.materiaId, dataDTO.sessioneId);
-    await this.checkDuplicateAppello(dataDTO.data, dataDTO.materiaId);
-    await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId);
+    await this.checkDuplicateAppello(data, dataDTO.materiaId);
+    await this.checkDuplicateAppelloForDocente(data, docenteId);
 
-    return this.repository.create({ ...dataDTO, docenteId });
+    return this.repository.create({ ...dataDTO, data, docenteId });
   }
 
   async update(id: number, dataDTO: UpdateAppelloDto, docenteId: number) {
@@ -40,23 +41,30 @@ export class AppelloService {
       );
     }
 
-    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id,
-                                        dataDTO.data ?? appello.data);
-    
+    const data = dataDTO.data ? new Date(dataDTO.data) : new Date(appello.data);
+
+    await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, data);
+
     if (dataDTO.data || dataDTO.materiaId) {
       await this.checkDuplicateAppello(
-            dataDTO.data ?? appello.data, 
-            dataDTO.materiaId ?? appello.materia.id, 
+            data,
+            dataDTO.materiaId ?? appello.materia.id,
             id
           );
     }
-    
+
     if (dataDTO.data) {
-      await this.checkDuplicateAppelloForDocente(dataDTO.data, docenteId, id);
+      await this.checkDuplicateAppelloForDocente(data, docenteId, id);
     }
 
-
-    return this.repository.update(id, dataDTO);
+    return this.repository.update(id, {
+      data: dataDTO.data !== undefined ? data : undefined,
+      ora: dataDTO.ora,
+      aula: dataDTO.aula,
+      note: dataDTO.note,
+      materiaId: dataDTO.materiaId,
+      sessioneId: dataDTO.sessioneId,
+    });
   }
 
   async remove(id: number, docenteId: number) {

@@ -8,6 +8,9 @@ import {
   type CreateSessioneDto,
   type UpdateSessioneDto,
 } from './sessioni.api';
+import Modal from '../../components/Modal';
+import DateInput from '../../components/DateInput';
+import s from '../layouts/admin.module.css';
 
 type SessioneForm = {
   nome: string;
@@ -16,8 +19,6 @@ type SessioneForm = {
   dataInizioInserimento: string;
   dataFineInserimento: string;
 };
-import Modal from '../../components/Modal';
-import s from '../layouts/admin.module.css';
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
 const toInput = (d: string) => d?.split('T')[0] ?? '';
@@ -206,21 +207,19 @@ export default function SessioniPage() {
             <div className={s.fieldRow}>
               <div className={s.field}>
                 <label className={s.label}>Inizio inserimento</label>
-                <input
-                  type="date"
+                <DateInput
                   className={s.input}
                   value={form.dataInizioInserimento}
-                  onChange={(e) => setField('dataInizioInserimento', e.target.value)}
+                  onChange={(v) => setField('dataInizioInserimento', v)}
                   required
                 />
               </div>
               <div className={s.field}>
                 <label className={s.label}>Fine inserimento</label>
-                <input
-                  type="date"
+                <DateInput
                   className={s.input}
                   value={form.dataFineInserimento}
-                  onChange={(e) => setField('dataFineInserimento', e.target.value)}
+                  onChange={(v) => setField('dataFineInserimento', v)}
                   required
                 />
               </div>
@@ -229,21 +228,19 @@ export default function SessioniPage() {
             <div className={s.fieldRow}>
               <div className={s.field}>
                 <label className={s.label}>Inizio esami</label>
-                <input
-                  type="date"
+                <DateInput
                   className={s.input}
                   value={form.dataInizio}
-                  onChange={(e) => setField('dataInizio', e.target.value)}
+                  onChange={(v) => setField('dataInizio', v)}
                   required
                 />
               </div>
               <div className={s.field}>
                 <label className={s.label}>Fine esami</label>
-                <input
-                  type="date"
+                <DateInput
                   className={s.input}
                   value={form.dataFine}
-                  onChange={(e) => setField('dataFine', e.target.value)}
+                  onChange={(v) => setField('dataFine', v)}
                   required
                 />
               </div>

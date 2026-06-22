@@ -1,6 +1,7 @@
 import { IsString, IsNotEmpty, IsInt, IsOptional, IsArray, ValidateNested, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import type { ICreateMateria } from '@shared/api-types';
 
 export class CorsoAnnoDto {
   @ApiProperty({ example: 1 })
@@ -15,7 +16,7 @@ export class CorsoAnnoDto {
   anno: number;
 }
 
-export class CreateMateriaDto {
+export class CreateMateriaDto implements ICreateMateria {
   @ApiProperty({ example: 'Analisi Matematica I' })
   @IsString()
   @IsNotEmpty()

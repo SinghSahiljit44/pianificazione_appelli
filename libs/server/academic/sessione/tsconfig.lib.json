@@ -27,6 +27,9 @@
     },
     {
       "path": "../../security/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../shared/api-types/tsconfig.lib.json"
     }
   ]
 }

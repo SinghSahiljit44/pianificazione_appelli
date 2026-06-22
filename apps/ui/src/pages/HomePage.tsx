@@ -6,7 +6,7 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <main className={styles.container}>
         <div className={styles.logo}>
           <span className={styles.logoIcon}>🎓</span>
           <span className={styles.logoText}>UniSingh</span>
@@ -22,7 +22,7 @@ export default function HomePage() {
         <button className={styles.loginBtn} onClick={() => navigate('/login')}>
           Accedi al portale
         </button>
-      </div>
+      </main>
 
       <footer className={styles.footer}>
         © 2026 UniSingh — Pianificazione appelli universitari

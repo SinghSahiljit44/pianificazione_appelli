@@ -4,6 +4,5 @@ export * from './lib/sessione.module';
 export * from './lib/sessione.entity';
 export * from './lib/sessione.repository';
 
-export * from './lib/interfaces/sessione.interfaces';
 export * from './lib/dto/createsessione.dto';
 export * from './lib/dto/updatesessione.dto';

@@ -33,6 +33,9 @@
     },
     {
       "path": "../corso-di-laurea/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../shared/api-types/tsconfig.lib.json"
     }
   ]
 }

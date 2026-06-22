@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
+      <main className={styles.card}>
         <div className={styles.logo}>🎓</div>
         <h1 className={styles.title}>Accedi</h1>
         <p className={styles.subtitle}>Inserisci le tue credenziali universitarie</p>
@@ -78,7 +78,7 @@ export default function LoginPage() {
         <button className={styles.backLink} onClick={() => navigate('/')}>
           ← Torna alla home
         </button>
-      </div>
+      </main>
     </div>
   );
 }

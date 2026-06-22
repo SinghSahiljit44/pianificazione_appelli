@@ -1,8 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsOptional, IsDateString } from 'class-validator';
+import type { IUpdateSessione } from '@shared/api-types';
 
-export class UpdateSessioneDto {
+export class UpdateSessioneDto implements IUpdateSessione {
   @ApiPropertyOptional({ example: 'Sessione Estiva 2025 (Aggiornata)' })
   @IsOptional()
   @IsString()
@@ -10,25 +10,21 @@ export class UpdateSessioneDto {
 
   @ApiPropertyOptional({ example: '2025-06-01' })
   @IsOptional()
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataInizio?: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataInizio?: string;
 
   @ApiPropertyOptional({ example: '2025-07-31' })
   @IsOptional()
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataFine?: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataFine?: string;
 
   @ApiPropertyOptional({ example: '2025-05-01' })
   @IsOptional()
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataInizioInserimento?: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataInizioInserimento?: string;
 
   @ApiPropertyOptional({ example: '2025-05-31' })
   @IsOptional()
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataFineInserimento?: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataFineInserimento?: string;
 }

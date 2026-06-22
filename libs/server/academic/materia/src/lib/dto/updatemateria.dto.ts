@@ -2,8 +2,9 @@ import { IsString, IsInt, IsOptional, IsArray, ValidateNested, Min } from 'class
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { CorsoAnnoDto } from './createmateria.dto';
+import type { IUpdateMateria } from '@shared/api-types';
 
-export class UpdateMateriaDto {
+export class UpdateMateriaDto implements IUpdateMateria {
   @ApiProperty({ required: false, example: 'Analisi Matematica I' })
   @IsOptional()
   @IsString()

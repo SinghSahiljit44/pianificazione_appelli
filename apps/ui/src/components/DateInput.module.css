@@ -1,0 +1,32 @@
+.wrap {
+  position: relative;
+  display: flex;
+}
+
+.native {
+  width: 100%;
+  /* icona del calendario chiara su sfondo scuro */
+  color-scheme: dark;
+}
+
+/* Nasconde il testo nativo (nel formato della lingua del browser)
+   mantenendo visibile l'icona del calendario. */
+.native::-webkit-datetime-edit {
+  color: transparent;
+}
+
+/* Testo italiano sovrapposto, allineato al padding di .input (0.85rem). */
+.overlay {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: white;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.placeholder {
+  color: #4a7c5f;
+}

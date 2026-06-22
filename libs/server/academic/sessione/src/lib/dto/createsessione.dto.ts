@@ -1,30 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsDateString } from 'class-validator';
+import type { ICreateSessione } from '@shared/api-types';
 
-export class CreateSessioneDto {
+export class CreateSessioneDto implements ICreateSessione {
   @ApiProperty({ example: 'Sessione Estiva 2025' })
   @IsString()
   @IsNotEmpty()
   nome: string;
 
   @ApiProperty({ example: '2025-06-01' })
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataInizio: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataInizio: string;
 
   @ApiProperty({ example: '2025-07-31' })
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataFine: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataFine: string;
 
   @ApiProperty({ example: '2025-05-01' })
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataInizioInserimento: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataInizioInserimento: string;
 
   @ApiProperty({ example: '2025-05-31' })
-  @Type(() => Date)
-  @IsDate({ message: 'La data non esiste nel calendario' })
-  dataFineInserimento: Date;
+  @IsDateString({}, { message: 'La data non è una data ISO valida' })
+  dataFineInserimento: string;
 }

@@ -24,6 +24,10 @@ export class SessioneService {
     return sessione;
   }
 
+  getAttive(): Promise<SessioneEntity[]> {
+    return this.repository.findAttive();
+  }
+
   async isSessioneOpen(sessioneId: number): Promise<boolean> {
     const sessione = await this.getById(sessioneId);
     const now = new Date();
@@ -35,28 +39,40 @@ export class SessioneService {
   }
 
   async create(data: CreateSessioneDto): Promise<SessioneEntity> {
-    this.checkDateConsistency(
-      data.dataInizio,
-      data.dataFine,
-      data.dataInizioInserimento,
-      data.dataFineInserimento
-    );
-    await this.checkOverlap(data.dataInizio, data.dataFine);
-    return this.repository.create(data);
+    const dataInizio = new Date(data.dataInizio);
+    const dataFine = new Date(data.dataFine);
+    const dataInizioInserimento = new Date(data.dataInizioInserimento);
+    const dataFineInserimento = new Date(data.dataFineInserimento);
+
+    this.checkDateConsistency(dataInizio, dataFine, dataInizioInserimento, dataFineInserimento);
+    await this.checkOverlap(dataInizio, dataFine);
+    return this.repository.create({
+      nome: data.nome,
+      dataInizio,
+      dataFine,
+      dataInizioInserimento,
+      dataFineInserimento,
+    });
   }
 
   async update(id: number, data: UpdateSessioneDto) {
     const sessione = await this.getById(id);
 
-    const dataInizio = data.dataInizio ?? new Date(sessione.dataInizio);
-    const dataFine = data.dataFine ?? new Date(sessione.dataFine);
-    const inizioIns = data.dataInizioInserimento ?? new Date(sessione.dataInizioInserimento);
-    const fineIns = data.dataFineInserimento ?? new Date(sessione.dataFineInserimento);
+    const dataInizio = data.dataInizio ? new Date(data.dataInizio) : new Date(sessione.dataInizio);
+    const dataFine = data.dataFine ? new Date(data.dataFine) : new Date(sessione.dataFine);
+    const inizioIns = data.dataInizioInserimento ? new Date(data.dataInizioInserimento) : new Date(sessione.dataInizioInserimento);
+    const fineIns = data.dataFineInserimento ? new Date(data.dataFineInserimento) : new Date(sessione.dataFineInserimento);
 
     this.checkDateConsistency(dataInizio, dataFine, inizioIns, fineIns);
     await this.checkOverlap(dataInizio, dataFine, id);
 
-    return this.repository.update(id, data);
+    return this.repository.update(id, {
+      ...(data.nome !== undefined && { nome: data.nome }),
+      ...(data.dataInizio !== undefined && { dataInizio }),
+      ...(data.dataFine !== undefined && { dataFine }),
+      ...(data.dataInizioInserimento !== undefined && { dataInizioInserimento: inizioIns }),
+      ...(data.dataFineInserimento !== undefined && { dataFineInserimento: fineIns }),
+    });
   }
 
   async delete(id: number) {
@@ -79,7 +95,11 @@ export class SessioneService {
     if (fineInserimento >= dataInizio) {
       throw new BadRequestException('La fine del periodo di inserimento non può superare l\'inizio della sessione');
     }
-    if (inizioInserimento < new Date()) {
+    const oggi = new Date();
+    oggi.setHours(0, 0, 0, 0);
+    inizioInserimento.setHours(0, 0, 0, 0);
+
+    if (inizioInserimento < oggi) {
       throw new BadRequestException('La data di inizio inserimento non può essere nel passato');
     }
   }

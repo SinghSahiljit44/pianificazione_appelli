@@ -2,8 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, Not } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
-import { CreateAppelloDto } from './dto/create-appello.dto';
-import { UpdateAppelloDto } from './dto/update-appello.dto';
+
+// Dati normalizzati (date come Date) usati dal service verso la persistenza.
+type CreateAppelloData = {
+  data: Date;
+  ora: string;
+  aula: string;
+  note?: string;
+  materiaId: number;
+  sessioneId: number;
+  docenteId: number;
+};
+
+type UpdateAppelloData = {
+  data?: Date;
+  ora?: string;
+  aula?: string;
+  note?: string;
+  materiaId?: number;
+  sessioneId?: number;
+};
 
 @Injectable()
 export class AppelloRepository {
@@ -86,7 +104,7 @@ export class AppelloRepository {
     });
   }
 
-  async create(data: CreateAppelloDto & { docenteId: number }) {
+  async create(data: CreateAppelloData) {
     const appello = this.repository.create({
       data: data.data,
       ora: data.ora,
@@ -100,7 +118,7 @@ export class AppelloRepository {
     return this.findById(saved.id);
   }
 
-  async update(id: number, data: UpdateAppelloDto) {
+  async update(id: number, data: UpdateAppelloData) {
     const payload: any = {};
     if (data.data !== undefined) payload.data = data.data;
     if (data.ora !== undefined) payload.ora = data.ora;

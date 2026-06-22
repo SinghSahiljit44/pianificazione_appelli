@@ -57,6 +57,7 @@
     "jest-util": "^30.0.2",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
+    "jsonc-eslint-parser": "^2.1.0",
     "nx": "22.5.1",
     "prettier": "^3.8.3",
     "ts-jest": "^29.4.0",
@@ -77,7 +78,8 @@
     "libs/db/*",
     "libs/*",
     "libs/server/academic/*",
-    "libs/server/academic/appello/src/*"
+    "libs/server/academic/appello/src/*",
+    "libs/shared/*"
   ],
   "dependencies": {
     "@nestjs/common": "^11.0.0",

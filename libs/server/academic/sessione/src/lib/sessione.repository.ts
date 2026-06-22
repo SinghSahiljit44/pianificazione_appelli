@@ -2,8 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository, Not, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 import { SessioneEntity } from './sessione.entity';
-import { UpdateSessioneDto } from './dto/updatesessione.dto';
-import { CreateSessioneDto } from './dto/createsessione.dto';
+
+// Dati normalizzati (date come Date) usati dal service verso la persistenza.
+type CreateSessioneData = {
+  nome: string;
+  dataInizio: Date;
+  dataFine: Date;
+  dataInizioInserimento: Date;
+  dataFineInserimento: Date;
+};
+
+type UpdateSessioneData = Partial<CreateSessioneData>;
 
 @Injectable()
 export class SessioneRepository {
@@ -33,6 +42,18 @@ export class SessioneRepository {
     });
   }
 
+  findAttive() {
+    // Tutte le sessioni con la finestra di inserimento attualmente aperta
+    const now = new Date();
+    return this.repo.find({
+      where: {
+        dataInizioInserimento: LessThanOrEqual(now),
+        dataFineInserimento: MoreThanOrEqual(now)
+      },
+      order: { dataInizio: 'ASC' }
+    });
+  }
+
   async findWithAppelli() {
     const sessioni = await this.repo.find({
       relations: ['appelli', 'appelli.materia', 'appelli.docente'],
@@ -50,11 +71,11 @@ export class SessioneRepository {
     });
   }
 
-  create(data: CreateSessioneDto) {
+  create(data: CreateSessioneData) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(id: number, data: UpdateSessioneDto) {
+  async update(id: number, data: UpdateSessioneData) {
     await this.repo.update(id, data);
     return this.findById(id);
   }

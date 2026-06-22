@@ -1,12 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsInt, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsOptional, IsInt, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import type { ICreateAppello } from '@shared/api-types';
 
-export class CreateAppelloDto {
+export class CreateAppelloDto implements ICreateAppello {
     @ApiProperty({ example: '2025-06-15' })
-    @Type(() => Date)
-    @IsDate({ message: 'La data non esiste nel calendario' })
-    data: Date;
+    @IsDateString({}, { message: 'La data non è una data ISO valida' })
+    data: string;
 
     @ApiProperty({ example: '09:30:00' })
     @IsString()

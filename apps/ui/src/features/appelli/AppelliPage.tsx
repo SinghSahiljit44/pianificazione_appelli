@@ -1,16 +1,10 @@
 import { useEffect, useState } from 'react';
-import {
-  getMieiAppelli,
-  createAppello,
-  updateAppello,
-  deleteAppello,
-  type Appello,
-  type CreateAppelloDto,
-} from './appelli.api';
+import { getMieiAppelli, createAppello, updateAppello, deleteAppello, type Appello, type CreateAppelloDto } from './appelli.api';
 import { getDocenteMe, type Docente } from '../docenti/docenti.api';
 import { getMaterieByDocente, type Materia } from '../materie/materie.api';
-import { getSessioneAttivaPerInserimento, type Sessione } from '../sessioni/sessioni.api';
+import { getSessioniAttivePerInserimento, type Sessione } from '../sessioni/sessioni.api';
 import Modal from '../../components/Modal';
+import DateInput from '../../components/DateInput';
 import s from '../layouts/admin.module.css';
 import ls from './AppelliPage.module.css';
 
@@ -24,15 +18,16 @@ interface AppelloForm {
   aula: string;
   note: string;
   materiaId: string;
+  sessioneId: string;
 }
 
-const EMPTY_FORM: AppelloForm = { data: '', ora: '', aula: '', note: '', materiaId: '' };
+const EMPTY_FORM: AppelloForm = { data: '', ora: '', aula: '', note: '', materiaId: '', sessioneId: '' };
 
 export default function AppelliPage() {
   const [appelli, setAppelli] = useState<Appello[]>([]);
   const [docente, setDocente] = useState<Docente | null>(null);
   const [materie, setMaterie] = useState<Materia[]>([]);
-  const [sessioneAttiva, setSessioneAttiva] = useState<Sessione | null>(null);
+  const [sessioniAttive, setSessioniAttive] = useState<Sessione[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
 
@@ -45,13 +40,13 @@ export default function AppelliPage() {
   async function load() {
     try {
       setPageError(null);
-      const [me, sessione, miei] = await Promise.all([
+      const [me, sessioni, miei] = await Promise.all([
         getDocenteMe(),
-        getSessioneAttivaPerInserimento(),
+        getSessioniAttivePerInserimento(),
         getMieiAppelli(),
       ]);
       setDocente(me);
-      setSessioneAttiva(sessione);
+      setSessioniAttive(sessioni);
       setAppelli(miei);
 
       const mat = await getMaterieByDocente(me.id);
@@ -66,7 +61,9 @@ export default function AppelliPage() {
   useEffect(() => { load(); }, []);
 
   function openCreate() {
-    setForm(EMPTY_FORM);
+    // Se c'è una sola sessione aperta la pre-seleziono, altrimenti la sceglie il docente
+    const preset = sessioniAttive.length === 1 ? String(sessioniAttive[0].id) : '';
+    setForm({ ...EMPTY_FORM, sessioneId: preset });
     setFormError(null);
     setEditing(null);
     setModal('create');
@@ -79,6 +76,7 @@ export default function AppelliPage() {
       aula: a.aula,
       note: a.note ?? '',
       materiaId: String(a.materia.id),
+      sessioneId: String(a.sessione.id),
     });
     setFormError(null);
     setEditing(a);
@@ -96,16 +94,18 @@ export default function AppelliPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!sessioneAttiva) return;
+    // In modifica la sessione resta quella dell'appello; in creazione è quella scelta nel form
+    const sessioneId = modal === 'edit' && editing ? editing.sessione.id : Number(form.sessioneId);
+    if (!sessioneId) return;
     setFormError(null);
     setSaving(true);
 
     const dto: CreateAppelloDto = {
-      data: form.data as unknown as Date,
+      data: form.data,
       ora: `${form.ora}:00`,
       aula: form.aula,
       materiaId: Number(form.materiaId),
-      sessioneId: sessioneAttiva.id,
+      sessioneId,
       ...(form.note ? { note: form.note } : {}),
     };
 
@@ -136,9 +136,15 @@ export default function AppelliPage() {
     }
   }
 
-  const inserimentoAperto = sessioneAttiva !== null;
+  const inserimentoAperto = sessioniAttive.length > 0;
   const haMaterie = materie.length > 0;
   const canCreate = inserimentoAperto && haMaterie;
+
+  // Sessione di riferimento per il form: in modifica quella dell'appello, in creazione quella selezionata
+  const sessioneForm =
+    modal === 'edit' && editing
+      ? editing.sessione
+      : sessioniAttive.find((x) => String(x.id) === form.sessioneId) ?? null;
 
   const sorted = [...appelli].sort(
     (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
@@ -174,8 +180,17 @@ export default function AppelliPage() {
           <>
             <span className={ls.bannerIcon}>🟢</span>
             <span>
-              Inserimento aperto — <strong>{sessioneAttiva.nome}</strong>
-              {' '}(esami: {fmt(sessioneAttiva.dataInizio)} → {fmt(sessioneAttiva.dataFine)})
+              {sessioniAttive.length === 1 ? (
+                <>
+                  Inserimento aperto — <strong>{sessioniAttive[0].nome}</strong>
+                  {' '}(esami: {fmt(sessioniAttive[0].dataInizio)} → {fmt(sessioniAttive[0].dataFine)})
+                </>
+              ) : (
+                <>
+                  Inserimento aperto — <strong>{sessioniAttive.length} sessioni</strong>
+                  {' '}disponibili (scegli la sessione quando crei l'appello)
+                </>
+              )}
             </span>
           </>
         ) : (
@@ -248,7 +263,7 @@ export default function AppelliPage() {
         )}
       </div>
 
-      {modal && sessioneAttiva && (
+      {modal && inserimentoAperto && (
         <Modal
           title={modal === 'create' ? 'Nuovo appello' : 'Modifica appello'}
           onClose={closeModal}
@@ -256,12 +271,28 @@ export default function AppelliPage() {
           <form className={s.form} onSubmit={handleSubmit}>
             <div className={s.field}>
               <label className={s.label}>Sessione</label>
-              <input
-                className={s.input}
-                value={sessioneAttiva.nome}
-                readOnly
-                style={{ opacity: 0.6, cursor: 'default' }}
-              />
+              {modal === 'create' && sessioniAttive.length > 1 ? (
+                <select
+                  className={s.select}
+                  value={form.sessioneId}
+                  onChange={(e) => setField('sessioneId', e.target.value)}
+                  required
+                >
+                  <option value="">— Seleziona sessione —</option>
+                  {sessioniAttive.map((ss) => (
+                    <option key={ss.id} value={ss.id}>
+                      {ss.nome} (esami: {fmt(ss.dataInizio)} → {fmt(ss.dataFine)})
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  className={s.input}
+                  value={sessioneForm?.nome ?? ''}
+                  readOnly
+                  style={{ opacity: 0.6, cursor: 'default' }}
+                />
+              )}
             </div>
 
             <div className={s.field}>
@@ -284,13 +315,13 @@ export default function AppelliPage() {
             <div className={s.fieldRow}>
               <div className={s.field}>
                 <label className={s.label}>Data</label>
-                <input
-                  type="date"
+                <DateInput
                   className={s.input}
                   value={form.data}
-                  min={toInput(sessioneAttiva.dataInizio)}
-                  max={toInput(sessioneAttiva.dataFine)}
-                  onChange={(e) => setField('data', e.target.value)}
+                  min={sessioneForm ? toInput(sessioneForm.dataInizio) : undefined}
+                  max={sessioneForm ? toInput(sessioneForm.dataFine) : undefined}
+                  onChange={(v) => setField('data', v)}
+                  disabled={!sessioneForm}
                   required
                 />
               </div>
@@ -327,11 +358,13 @@ export default function AppelliPage() {
               />
             </div>
 
-            <p className={s.hint}>
-              La data deve essere un giorno feriale nel range della sessione (
-              {fmt(sessioneAttiva.dataInizio)} → {fmt(sessioneAttiva.dataFine)}).
-              Max 2 appelli per materia per sessione.
-            </p>
+            {sessioneForm && (
+              <p className={s.hint}>
+                La data deve essere un giorno feriale nel range della sessione (
+                {fmt(sessioneForm.dataInizio)} → {fmt(sessioneForm.dataFine)}).
+                Max 2 appelli per materia per sessione.
+              </p>
+            )}
 
             {formError && <div className={s.formError}>{formError}</div>}
 

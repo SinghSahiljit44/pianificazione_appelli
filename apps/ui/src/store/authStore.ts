@@ -1,4 +1,4 @@
-import type { AuthenticatedUser } from '@server/auth';
+import type { AuthenticatedUser } from '../features/auth/auth.api';
 
 const TOKEN_KEY = 'token';
 const USER_KEY = 'auth_user';

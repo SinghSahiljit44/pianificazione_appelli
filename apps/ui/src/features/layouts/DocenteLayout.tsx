@@ -25,7 +25,10 @@ export default function DocenteLayout() {
 
   return (
     <div className={styles.layout}>
-      <aside className={styles.sidebar}>
+      <a href="#contenuto" className={styles.skipLink}>
+        Salta al contenuto
+      </a>
+      <aside className={styles.sidebar} aria-label="Barra laterale">
         <div className={styles.sidebarLogo}>
           <span className={styles.sidebarLogoIcon}>🎓</span>
           <span className={styles.sidebarLogoText}>UniSingh</span>
@@ -33,7 +36,7 @@ export default function DocenteLayout() {
 
         <span className={styles.sidebarLabel}>Area docente</span>
 
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="Navigazione principale">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
@@ -62,12 +65,12 @@ export default function DocenteLayout() {
         </div>
       </aside>
 
-      <main className={styles.main}>
+      <main id="contenuto" className={styles.main}>
         {currentPage && (
-          <div className={styles.topbar}>
+          <header className={styles.topbar}>
             <span className={styles.topbarIcon}>{currentPage.icon}</span>
             <span className={styles.topbarTitle}>{currentPage.label}</span>
-          </div>
+          </header>
         )}
         <Outlet />
       </main>

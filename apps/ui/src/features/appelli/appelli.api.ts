@@ -1,5 +1,9 @@
 import client from '../../api/client';
-import { Appello, CreateAppelloDto, UpdateAppelloDto } from '@server/appello';
+import type { Appello, ICreateAppello, IUpdateAppello } from '@shared/api-types';
+
+// Ri-esporto i tipi del contratto con i nomi usati dalle pagine
+export type { Appello };
+export type { ICreateAppello as CreateAppelloDto, IUpdateAppello as UpdateAppelloDto };
 
 export async function getMieiAppelli(): Promise<Appello[]> {
   const res = await client.get<Appello[]>('/appelli/miei');
@@ -11,12 +15,12 @@ export async function getAppelliBySessione(sessioneId: number): Promise<Appello[
   return res.data;
 }
 
-export async function createAppello(data: CreateAppelloDto): Promise<Appello> {
+export async function createAppello(data: ICreateAppello): Promise<Appello> {
   const res = await client.post<Appello>('/appelli', data);
   return res.data;
 }
 
-export async function updateAppello(id: number, data: UpdateAppelloDto): Promise<Appello> {
+export async function updateAppello(id: number, data: IUpdateAppello): Promise<Appello> {
   const res = await client.patch<Appello>(`/appelli/${id}`, data);
   return res.data;
 }
