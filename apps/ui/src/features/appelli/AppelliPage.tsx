@@ -1,27 +1,22 @@
 import { useEffect, useState } from 'react';
-import { getMieiAppelli, createAppello, updateAppello, deleteAppello, type Appello, type CreateAppelloDto } from './appelli.api';
+import { getMieiAppelli, type Appello } from './appelli.api';
 import { getDocenteMe, type Docente } from '../docenti/docenti.api';
 import { getMaterieByDocente, type Materia } from '../materie/materie.api';
 import { getSessioniAttivePerInserimento, type Sessione } from '../sessioni/sessioni.api';
-import Modal from '../../components/Modal';
-import DateInput from '../../components/DateInput';
+import CreateAppelloModal from './CreateAppelloModal';
+import UpdateAppelloModal from './UpdateAppelloModal';
+import DeleteAppelloModal from './DeleteAppelloModal';
 import s from '../layouts/admin.module.css';
 import ls from './AppelliPage.module.css';
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
 const fmtOra = (o: string) => o.slice(0, 5);
-const toInput = (d: string) => d?.split('T')[0] ?? '';
 
-interface AppelloForm {
-  data: string;
-  ora: string;
-  aula: string;
-  note: string;
-  materiaId: string;
-  sessioneId: string;
-}
-
-const EMPTY_FORM: AppelloForm = { data: '', ora: '', aula: '', note: '', materiaId: '', sessioneId: '' };
+type Action =
+  | { type: 'create' }
+  | { type: 'edit'; appello: Appello }
+  | { type: 'delete'; appello: Appello }
+  | null;
 
 export default function AppelliPage() {
   const [appelli, setAppelli] = useState<Appello[]>([]);
@@ -30,12 +25,7 @@ export default function AppelliPage() {
   const [sessioniAttive, setSessioniAttive] = useState<Sessione[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
-
-  const [modal, setModal] = useState<'create' | 'edit' | null>(null);
-  const [editing, setEditing] = useState<Appello | null>(null);
-  const [form, setForm] = useState<AppelloForm>(EMPTY_FORM);
-  const [formError, setFormError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
+  const [action, setAction] = useState<Action>(null);
 
   async function load() {
     try {
@@ -60,91 +50,15 @@ export default function AppelliPage() {
 
   useEffect(() => { load(); }, []);
 
-  function openCreate() {
-    // Se c'è una sola sessione aperta la pre-seleziono, altrimenti la sceglie il docente
-    const preset = sessioniAttive.length === 1 ? String(sessioniAttive[0].id) : '';
-    setForm({ ...EMPTY_FORM, sessioneId: preset });
-    setFormError(null);
-    setEditing(null);
-    setModal('create');
-  }
-
-  function openEdit(a: Appello) {
-    setForm({
-      data: toInput(a.data),
-      ora: fmtOra(a.ora),
-      aula: a.aula,
-      note: a.note ?? '',
-      materiaId: String(a.materia.id),
-      sessioneId: String(a.sessione.id),
-    });
-    setFormError(null);
-    setEditing(a);
-    setModal('edit');
-  }
-
-  function closeModal() {
-    setModal(null);
-    setEditing(null);
-  }
-
-  function setField(key: keyof AppelloForm, value: string) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    // In modifica la sessione resta quella dell'appello; in creazione è quella scelta nel form
-    const sessioneId = modal === 'edit' && editing ? editing.sessione.id : Number(form.sessioneId);
-    if (!sessioneId) return;
-    setFormError(null);
-    setSaving(true);
-
-    const dto: CreateAppelloDto = {
-      data: form.data,
-      ora: `${form.ora}:00`,
-      aula: form.aula,
-      materiaId: Number(form.materiaId),
-      sessioneId,
-      ...(form.note ? { note: form.note } : {}),
-    };
-
-    try {
-      if (modal === 'edit' && editing) {
-        await updateAppello(editing.id, dto);
-      } else {
-        await createAppello(dto);
-      }
-      closeModal();
-      await load();
-    } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { message?: string | string[] } } })
-        ?.response?.data?.message;
-      setFormError(Array.isArray(msg) ? msg.join(', ') : (msg ?? 'Errore durante il salvataggio.'));
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function handleDelete(id: number, materia: string, data: string) {
-    if (!window.confirm(`Eliminare l'appello di ${materia} del ${data}?`)) return;
-    try {
-      await deleteAppello(id);
-      await load();
-    } catch {
-      setPageError("Impossibile eliminare l'appello.");
-    }
-  }
+  const close = () => setAction(null);
+  const handleSaved = async () => {
+    setAction(null);
+    await load();
+  };
 
   const inserimentoAperto = sessioniAttive.length > 0;
   const haMaterie = materie.length > 0;
   const canCreate = inserimentoAperto && haMaterie;
-
-  // Sessione di riferimento per il form: in modifica quella dell'appello, in creazione quella selezionata
-  const sessioneForm =
-    modal === 'edit' && editing
-      ? editing.sessione
-      : sessioniAttive.find((x) => String(x.id) === form.sessioneId) ?? null;
 
   const sorted = [...appelli].sort(
     (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
@@ -161,7 +75,7 @@ export default function AppelliPage() {
         </div>
         <button
           className={s.btnPrimary}
-          onClick={openCreate}
+          onClick={() => setAction({ type: 'create' })}
           disabled={!canCreate}
           title={
             !inserimentoAperto
@@ -240,7 +154,7 @@ export default function AppelliPage() {
                     <div className={s.actions}>
                       <button
                         className={s.btnSecondary}
-                        onClick={() => openEdit(a)}
+                        onClick={() => setAction({ type: 'edit', appello: a })}
                         disabled={!inserimentoAperto}
                         title={!inserimentoAperto ? 'Inserimento non aperto' : undefined}
                       >
@@ -248,7 +162,7 @@ export default function AppelliPage() {
                       </button>
                       <button
                         className={s.btnDanger}
-                        onClick={() => handleDelete(a.id, a.materia.nome, fmt(a.data))}
+                        onClick={() => setAction({ type: 'delete', appello: a })}
                         disabled={!inserimentoAperto}
                         title={!inserimentoAperto ? 'Inserimento non aperto' : undefined}
                       >
@@ -263,119 +177,24 @@ export default function AppelliPage() {
         )}
       </div>
 
-      {modal && inserimentoAperto && (
-        <Modal
-          title={modal === 'create' ? 'Nuovo appello' : 'Modifica appello'}
-          onClose={closeModal}
-        >
-          <form className={s.form} onSubmit={handleSubmit}>
-            <div className={s.field}>
-              <label className={s.label}>Sessione</label>
-              {modal === 'create' && sessioniAttive.length > 1 ? (
-                <select
-                  className={s.select}
-                  value={form.sessioneId}
-                  onChange={(e) => setField('sessioneId', e.target.value)}
-                  required
-                >
-                  <option value="">— Seleziona sessione —</option>
-                  {sessioniAttive.map((ss) => (
-                    <option key={ss.id} value={ss.id}>
-                      {ss.nome} (esami: {fmt(ss.dataInizio)} → {fmt(ss.dataFine)})
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  className={s.input}
-                  value={sessioneForm?.nome ?? ''}
-                  readOnly
-                  style={{ opacity: 0.6, cursor: 'default' }}
-                />
-              )}
-            </div>
-
-            <div className={s.field}>
-              <label className={s.label}>Materia</label>
-              <select
-                className={s.select}
-                value={form.materiaId}
-                onChange={(e) => setField('materiaId', e.target.value)}
-                required
-              >
-                <option value="">— Seleziona materia —</option>
-                {materie.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.nome} ({m.cfu} CFU)
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={s.fieldRow}>
-              <div className={s.field}>
-                <label className={s.label}>Data</label>
-                <DateInput
-                  className={s.input}
-                  value={form.data}
-                  min={sessioneForm ? toInput(sessioneForm.dataInizio) : undefined}
-                  max={sessioneForm ? toInput(sessioneForm.dataFine) : undefined}
-                  onChange={(v) => setField('data', v)}
-                  disabled={!sessioneForm}
-                  required
-                />
-              </div>
-              <div className={s.field}>
-                <label className={s.label}>Ora</label>
-                <input
-                  type="time"
-                  className={s.input}
-                  value={form.ora}
-                  onChange={(e) => setField('ora', e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className={s.field}>
-              <label className={s.label}>Aula</label>
-              <input
-                className={s.input}
-                placeholder="es. Aula Magna"
-                value={form.aula}
-                onChange={(e) => setField('aula', e.target.value)}
-                required
-              />
-            </div>
-
-            <div className={s.field}>
-              <label className={s.label}>Note (opzionale)</label>
-              <textarea
-                className={s.textarea}
-                placeholder="Informazioni aggiuntive per gli studenti..."
-                value={form.note}
-                onChange={(e) => setField('note', e.target.value)}
-              />
-            </div>
-
-            {sessioneForm && (
-              <p className={s.hint}>
-                La data deve essere un giorno feriale nel range della sessione (
-                {fmt(sessioneForm.dataInizio)} → {fmt(sessioneForm.dataFine)}).
-                Max 2 appelli per materia per sessione.
-              </p>
-            )}
-
-            {formError && <div className={s.formError}>{formError}</div>}
-
-            <div className={s.formActions}>
-              <button type="button" className={s.btnSecondary} onClick={closeModal}>Annulla</button>
-              <button type="submit" className={s.btnPrimary} disabled={saving}>
-                {saving ? 'Salvataggio...' : 'Salva'}
-              </button>
-            </div>
-          </form>
-        </Modal>
+      {action?.type === 'create' && (
+        <CreateAppelloModal
+          sessioniAttive={sessioniAttive}
+          materie={materie}
+          onClose={close}
+          onSaved={handleSaved}
+        />
+      )}
+      {action?.type === 'edit' && (
+        <UpdateAppelloModal
+          appello={action.appello}
+          materie={materie}
+          onClose={close}
+          onSaved={handleSaved}
+        />
+      )}
+      {action?.type === 'delete' && (
+        <DeleteAppelloModal appello={action.appello} onClose={close} onSaved={handleSaved} />
       )}
     </div>
   );

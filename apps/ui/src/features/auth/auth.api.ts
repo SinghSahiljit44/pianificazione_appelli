@@ -1,6 +1,5 @@
 import client from '../../api/client';
 
-// Tipi del frontend: forma dei dati scambiati con l'API. Mai importare @server/*.
 export interface AuthenticatedUser {
   id: number;
   email: string;

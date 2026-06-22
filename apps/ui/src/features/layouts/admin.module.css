@@ -148,11 +148,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  /* Permette all'item di restringersi sotto la larghezza intrinseca dell'input
+     (altrimenti gli input nelle .fieldRow sforano in orizzontale). */
+  min-width: 0;
 }
 
 .fieldRow {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
 }
 
