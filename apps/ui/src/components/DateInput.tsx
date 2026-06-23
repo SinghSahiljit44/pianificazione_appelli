@@ -2,10 +2,8 @@ import { useRef } from 'react';
 import s from './DateInput.module.css';
 
 type DateInputProps = {
-  /** Valore nel formato ISO `yyyy-mm-dd` (lo stesso del form/DTO). */
   value: string;
   onChange: (value: string) => void;
-  /** Classe della pagina (tipicamente la `.input` del CSS module). */
   className?: string;
   min?: string;
   max?: string;
@@ -14,7 +12,6 @@ type DateInputProps = {
   id?: string;
 };
 
-/** Converte `yyyy-mm-dd` -> `gg/mm/aaaa` per la visualizzazione. */
 const toItaliano = (value: string) => {
   if (!value) return '';
   const [anno, mese, giorno] = value.split('-');
@@ -22,11 +19,6 @@ const toItaliano = (value: string) => {
   return `${giorno}/${mese}/${anno}`;
 };
 
-/**
- * Date input nativo (calendario, min/max, validazione) ma con la data
- * mostrata sempre in formato italiano `gg/mm/aaaa`, indipendentemente dalla
- * lingua del browser. Il valore resta `yyyy-mm-dd`.
- */
 export default function DateInput({
   value,
   onChange,

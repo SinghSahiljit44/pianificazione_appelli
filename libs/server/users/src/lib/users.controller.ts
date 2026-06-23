@@ -34,45 +34,7 @@ export class ServerUsersController {
     getOneUser(@Param('id', ParseIntPipe) id: number) {
         return this.serverUsersService.getOneUser(id);
     }
-    /*
-    @Post() // POST /users
-    @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                name: { type: 'string', example: 'Devis' },
-                email: { type: 'string', example: 'bianchin@unibs.it' },
-                password: {type: 'string', example: 'Password1!'},
-                role: { type: 'string', enum: Object.values(UserRole), example: UserRole.USER}
-            },
-            required: ['name', 'email', 'password', 'role'],
-        },
-    })
-    create(@Body(ValidationPipe) user: CreateUserDto) {
-        return this.serverUsersService.create(user);
-    }
-    */
-    /*
-    @Patch(':id') // PATCH /users/:id
-    @UseGuards(JwtAuthGuard,RolesGuard)
-    @Roles(UserRole.ADMIN)
-    @ApiBearerAuth()
-    @ApiBody({
-        schema: {
-            type: 'object',
-            properties: {
-                name: { type: 'string', example: 'Devis' },
-                email: { type: 'string', example: 'bianchin@unibs.it' },
-                role: { type: 'string', enum: Object.values(UserRole), example: UserRole.USER}
-            },
-            required: ['name', 'email', 'role'],
-        },
-    })
-    update(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) userUpdate: UpdateUserDto) {
-        //return {id, ...userUpdate};
-        return this.serverUsersService.update(id,userUpdate);
-    }
-    */
+
     @Delete(':id') // DELETE /users/:id
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Roles(UserRole.ADMIN)

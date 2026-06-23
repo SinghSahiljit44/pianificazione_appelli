@@ -1,6 +1,5 @@
 import type { Docente } from './docente';
 
-// Read-model
 export interface MateriaCorso {
   id: number;
   anno: number;

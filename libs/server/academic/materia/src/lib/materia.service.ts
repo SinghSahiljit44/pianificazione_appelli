@@ -90,11 +90,6 @@ export class MateriaService {
     return this.repository.delete(id);
   }
 
-  /*async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
-    await this.getOne(materiaId);
-    return this.repository.addCorso(materiaId, corsoId, anno);
-  }*/
-
   async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
     const existing = await this.repository.findMateriaCorsoSpecific(materiaId, corsoId, anno);
 

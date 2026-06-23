@@ -49,9 +49,7 @@ interface Props {
   onChange: Dispatch<SetStateAction<AppelloFormValues>>;
   mode: 'create' | 'edit';
   materie: Materia[];
-  /** Sessioni selezionabili in creazione (ignorate in modifica). */
   sessioniAttive: Sessione[];
-  /** Sessione di riferimento risolta: vincola data e mostra il nome. */
   sessioneForm: Sessione | null;
 }
 

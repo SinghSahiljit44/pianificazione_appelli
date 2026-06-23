@@ -1,4 +1,3 @@
-// Read-model
 export interface CorsoLaurea {
   id: number;
   nome: string;

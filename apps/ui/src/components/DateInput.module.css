@@ -5,19 +5,13 @@
 
 .native {
   width: 100%;
-  /* icona del calendario chiara su sfondo scuro */
   color-scheme: dark;
 }
 
-/* Nasconde il testo nativo (nel formato della lingua del browser)
-   mantenendo visibile l'icona del calendario. Si usa `opacity: 0` invece di
-   `color: transparent` così da nascondere anche l'evidenziazione del segmento
-   selezionato (es. l'anno), che altrimenti trapelerebbe sotto l'overlay. */
 .native::-webkit-datetime-edit {
   opacity: 0;
 }
 
-/* Testo italiano sovrapposto, allineato al padding di .input (0.85rem). */
 .overlay {
   position: absolute;
   left: 0.85rem;

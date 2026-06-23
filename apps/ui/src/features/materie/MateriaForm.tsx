@@ -31,7 +31,6 @@ export function toMateriaForm(m: Materia): MateriaFormValues {
   };
 }
 
-/** Restituisce un messaggio d'errore se il form non è valido, altrimenti null. */
 export function validateMateriaForm(form: MateriaFormValues): string | null {
   for (const row of form.corsi) {
     if (!row.corsoId) {

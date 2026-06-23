@@ -1,4 +1,3 @@
-// Read-model
 export interface DocenteUser {
   id: number;
   name: string;
