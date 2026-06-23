@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
+import Select from '../../components/Select';
 import type { CorsoLaurea, CreateCorsoLaureaDto } from './corsi-laurea.api';
 import s from '../layouts/admin.module.css';
 
@@ -60,15 +61,16 @@ export default function CorsoLaureaForm({ value, onChange }: Props) {
 
       <div className={s.field}>
         <label className={s.label}>Durata (anni)</label>
-        <select
+        <Select
           className={s.select}
           value={value.durataAnni}
-          onChange={(e) => setField('durataAnni', e.target.value)}
-        >
-          <option value="3">3 anni (Triennale)</option>
-          <option value="2">2 anni (Magistrale)</option>
-          <option value="5">5 anni (Ciclo unico)</option>
-        </select>
+          onChange={(v) => setField('durataAnni', v)}
+          options={[
+            { value: '3', label: '3 anni (Triennale)' },
+            { value: '2', label: '2 anni (Magistrale)' },
+            { value: '5', label: '5 anni (Ciclo unico)' },
+          ]}
+        />
       </div>
     </>
   );

@@ -1,0 +1,100 @@
+.wrap {
+  position: relative;
+  display: flex;
+}
+
+/* Eredita lo stile di .select dalla pagina; aggiunge layout + chevron. */
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder .label {
+  color: #4a7c5f;
+}
+
+.chevron {
+  flex: none;
+  color: #95d5b2;
+  transition: transform 0.15s;
+}
+
+.button[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+/* Select nativo nascosto ma focalizzabile: serve solo alla validazione
+   HTML5 di `required` (niente display:none, altrimenti non è focalizzabile). */
+.hiddenNative {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+}
+
+/* Lista opzioni (in portal). */
+.list {
+  position: fixed;
+  z-index: 1100;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  overflow-y: auto;
+  border: 1px solid #2d6a4f;
+  border-radius: 10px;
+  background: #1b4332;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.option {
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.option.active {
+  background: #2d6a4f;
+}
+
+.option.selected {
+  color: rgb(211, 214, 8);
+  font-weight: 600;
+}
+
+.option.selected.active {
+  color: #081c15;
+  background: rgb(211, 214, 8);
+}
+
+.optionDisabled {
+  color: #4a7c5f;
+  cursor: default;
+}
+
+.optionDisabled.active {
+  background: transparent;
+}

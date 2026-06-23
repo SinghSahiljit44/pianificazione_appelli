@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import DateInput from '../../components/DateInput';
+import Select from '../../components/Select';
 import type { Appello, CreateAppelloDto } from './appelli.api';
 import type { Materia } from '../materie/materie.api';
 import type { Sessione } from '../sessioni/sessioni.api';
@@ -62,19 +63,17 @@ export default function AppelloForm({ value, onChange, mode, materie, sessioniAt
       <div className={s.field}>
         <label className={s.label}>Sessione</label>
         {mode === 'create' && sessioniAttive.length > 1 ? (
-          <select
+          <Select
             className={s.select}
             value={value.sessioneId}
-            onChange={(e) => setField('sessioneId', e.target.value)}
+            onChange={(v) => setField('sessioneId', v)}
+            placeholder="— Seleziona sessione —"
             required
-          >
-            <option value="">— Seleziona sessione —</option>
-            {sessioniAttive.map((ss) => (
-              <option key={ss.id} value={ss.id}>
-                {ss.nome} (esami: {fmt(ss.dataInizio)} → {fmt(ss.dataFine)})
-              </option>
-            ))}
-          </select>
+            options={sessioniAttive.map((ss) => ({
+              value: String(ss.id),
+              label: `${ss.nome} (esami: ${fmt(ss.dataInizio)} → ${fmt(ss.dataFine)})`,
+            }))}
+          />
         ) : (
           <input
             className={s.input}
@@ -87,19 +86,17 @@ export default function AppelloForm({ value, onChange, mode, materie, sessioniAt
 
       <div className={s.field}>
         <label className={s.label}>Materia</label>
-        <select
+        <Select
           className={s.select}
           value={value.materiaId}
-          onChange={(e) => setField('materiaId', e.target.value)}
+          onChange={(v) => setField('materiaId', v)}
+          placeholder="— Seleziona materia —"
           required
-        >
-          <option value="">— Seleziona materia —</option>
-          {materie.map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.nome} ({m.cfu} CFU)
-            </option>
-          ))}
-        </select>
+          options={materie.map((m) => ({
+            value: String(m.id),
+            label: `${m.nome} (${m.cfu} CFU)`,
+          }))}
+        />
       </div>
 
       <div className={s.fieldRow}>

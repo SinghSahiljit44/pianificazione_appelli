@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
+import Select from '../../components/Select';
 import type { Materia, CreateMateriaDto } from './materie.api';
 import type { Docente } from '../docenti/docenti.api';
 import type { CorsoLaurea } from '../corsi-laurea/corsi-laurea.api';
@@ -113,18 +114,16 @@ export default function MateriaForm({ value, onChange, docenti, corsiLaurea }: P
         </div>
         <div className={s.field}>
           <label className={s.label}>Docente</label>
-          <select
+          <Select
             className={s.select}
             value={value.docenteId}
-            onChange={(e) => setField('docenteId', e.target.value)}
-          >
-            <option value="">— Nessuno —</option>
-            {docenti.map((d) => (
-              <option key={d.id} value={d.id}>
-                {d.user.name}
-              </option>
-            ))}
-          </select>
+            onChange={(v) => setField('docenteId', v)}
+            placeholder="— Nessuno —"
+            options={docenti.map((d) => ({
+              value: String(d.id),
+              label: d.user.name,
+            }))}
+          />
         </div>
       </div>
 
@@ -136,26 +135,26 @@ export default function MateriaForm({ value, onChange, docenti, corsiLaurea }: P
               const opts = annoOptions(row.corsoId, corsiLaurea);
               return (
                 <div key={i} className={ls.corsoRow}>
-                  <select
+                  <Select
                     className={s.select}
                     value={row.corsoId}
-                    onChange={(e) => updateCorsoRow(i, 'corsoId', e.target.value)}
-                  >
-                    <option value="">— Seleziona corso —</option>
-                    {corsiLaurea.map((c) => (
-                      <option key={c.id} value={c.id}>{c.nome}</option>
-                    ))}
-                  </select>
-                  <select
+                    onChange={(v) => updateCorsoRow(i, 'corsoId', v)}
+                    placeholder="— Seleziona corso —"
+                    options={corsiLaurea.map((c) => ({
+                      value: String(c.id),
+                      label: c.nome,
+                    }))}
+                  />
+                  <Select
                     className={`${s.select} ${ls.annoSelect}`}
                     value={row.anno}
-                    onChange={(e) => updateCorsoRow(i, 'anno', e.target.value)}
+                    onChange={(v) => updateCorsoRow(i, 'anno', v)}
                     disabled={!row.corsoId}
-                  >
-                    {opts.map((a) => (
-                      <option key={a} value={a}>Anno {a}</option>
-                    ))}
-                  </select>
+                    options={opts.map((a) => ({
+                      value: String(a),
+                      label: `Anno ${a}`,
+                    }))}
+                  />
                   <button
                     type="button"
                     className={ls.removeRowBtn}
