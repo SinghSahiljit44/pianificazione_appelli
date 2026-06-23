@@ -19,7 +19,6 @@ interface Props {
 }
 
 export default function CreateAppelloModal({ sessioniAttive, materie, onClose, onSaved }: Props) {
-  // Se c'è una sola sessione aperta la pre-seleziono, altrimenti la sceglie il docente.
   const [form, setForm] = useState<AppelloFormValues>(() => ({
     ...EMPTY_APPELLO_FORM,
     sessioneId: sessioniAttive.length === 1 ? String(sessioniAttive[0].id) : '',

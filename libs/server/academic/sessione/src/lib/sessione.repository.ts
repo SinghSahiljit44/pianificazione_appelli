@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository, Not, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 import { SessioneEntity } from './sessione.entity';
 
-// Dati normalizzati (date come Date) usati dal service verso la persistenza.
 type CreateSessioneData = {
   nome: string;
   dataInizio: Date;
@@ -32,7 +31,6 @@ export class SessioneRepository {
   }
 
   findAttiva() {
-    // La sessione attiva è quella con dataInizioInserimento <= now <= dataFineInserimento
     const now = new Date();
     return this.repo.findOne({
       where: {
@@ -43,7 +41,6 @@ export class SessioneRepository {
   }
 
   findAttive() {
-    // Tutte le sessioni con la finestra di inserimento attualmente aperta
     const now = new Date();
     return this.repo.find({
       where: {

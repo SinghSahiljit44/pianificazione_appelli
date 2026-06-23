@@ -1,4 +1,3 @@
-// libs/academic/docente/src/lib/repositories/docente.repository.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

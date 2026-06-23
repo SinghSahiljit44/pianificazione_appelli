@@ -50,25 +50,6 @@ export class DocenteService {
     return this.repository.update(id, data);
   }
 
-  //Versione più sicura del metodo 
-  /*
-  async update(id: number, data: UpdateDocenteDto) {
-  // Verifichiamo che il docente esista
-  await this.getOne(id);
-
-  // Se viene inviato un userId (anche se dici che non succederà, meglio essere sicuri)
-  if (data.userId) {
-    const existing = await this.repository.findByUserId(data.userId);
-    // Se l'ID utente è già occupato da UN ALTRO docente, blocchiamo
-    if (existing && existing.id !== id) {
-      throw new ConflictException(`L'utente ${data.userId} è già associato a un altro docente.`);
-    }
-  }
-  
-  return this.repository.update(id, data);
-  }
-  */
-
   async remove(id: number) {
     const docente = await this.repository.findById(id);
     if (!docente) throw new NotFoundException(`Docente ${id} non trovato`);

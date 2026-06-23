@@ -3,8 +3,8 @@ import type { Sessione } from './sessione';
 
 export interface Appello {
   id: number;
-  data: string; // ISO date
-  ora: string; // es. "09:30:00"
+  data: string;
+  ora: string;
   aula: string;
   note?: string;
   sessione: Sessione;

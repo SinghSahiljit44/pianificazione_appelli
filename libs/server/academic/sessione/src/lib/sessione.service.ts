@@ -104,7 +104,6 @@ export class SessioneService {
     }
   }
 
-  //Metodo senza problemi di performance
   private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
     const sovrapposizione = await this.repository.existsOverlap(dataInizio, dataFine, excludeId);
     

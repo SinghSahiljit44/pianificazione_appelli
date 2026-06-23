@@ -12,7 +12,7 @@ export class AppelloEntity {
     data: Date;
 
     @Column({ type: 'time' })
-    ora: string; // es. "09:30:00"
+    ora: string; 
 
     @Column({ type: 'text' }) 
     aula: string;

@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function UpdateAppelloModal({ appello, materie, onClose, onSaved }: Props) {
-  // In modifica la sessione resta quella dell'appello.
   const [form, setForm] = useState<AppelloFormValues>(() => toAppelloForm(appello));
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);

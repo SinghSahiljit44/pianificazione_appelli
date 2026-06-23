@@ -1,4 +1,3 @@
-// libs/academic/materia/src/lib/materia.service.ts
 import { Injectable, NotFoundException, ConflictException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { MateriaRepository } from './materia.repository';
 import { CreateMateriaDto } from './dto/createmateria.dto';
@@ -97,7 +96,6 @@ export class MateriaService {
   }*/
 
   async addMateriaToCorso(materiaId: number, corsoId: number, anno: number) {
-    // Verifichiamo se l'associazione esiste già per quell'anno
     const existing = await this.repository.findMateriaCorsoSpecific(materiaId, corsoId, anno);
 
     if (existing) {

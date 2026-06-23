@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, Not } from 'typeorm';
 import { AppelloEntity } from './appello.entity';
 
-// Dati normalizzati (date come Date) usati dal service verso la persistenza.
 type CreateAppelloData = {
   data: Date;
   ora: string;
@@ -56,7 +55,6 @@ export class AppelloRepository {
       order: { data: 'ASC' }
     });
   }
-  //createQueryBuilder per query più complesse, da vedere
   async findDuplicate(data: Date, corsoId: number, anno: number, excludeId?: number) {
     return this.repository.findOne({
       where: {

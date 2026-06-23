@@ -1,7 +1,6 @@
 import client from '../../api/client';
 import type { Appello, ICreateAppello, IUpdateAppello } from '@shared/api-types';
 
-// Ri-esporto i tipi del contratto con i nomi usati dalle pagine
 export type { Appello };
 export type { ICreateAppello as CreateAppelloDto, IUpdateAppello as UpdateAppelloDto };
 
