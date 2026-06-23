@@ -2,10 +2,11 @@ import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
 import { createDocente, type CreateDocenteDto } from './docenti.api';
+import DocenteForm, { EMPTY_DOCENTE_FORM } from './DocenteForm';
 import s from '../layouts/admin.module.css';
 
 const EMPTY_FORM: CreateDocenteDto = {
-  titolo: '', dipartimento: '', name: '', email: '', password: '',
+  name: '', email: '', password: '', ...EMPTY_DOCENTE_FORM,
 };
 
 interface Props {
@@ -75,28 +76,7 @@ export default function CreateDocenteModal({ onClose, onSaved }: Props) {
           <p className={s.hint}>Min. 8 caratteri, una maiuscola, un simbolo tra ? ^ ! # @</p>
         </div>
 
-        <div className={s.fieldRow}>
-          <div className={s.field}>
-            <label className={s.label}>Titolo</label>
-            <input
-              className={s.input}
-              placeholder="es. Prof. Associato"
-              value={form.titolo}
-              onChange={(e) => setField('titolo', e.target.value)}
-              required
-            />
-          </div>
-          <div className={s.field}>
-            <label className={s.label}>Dipartimento</label>
-            <input
-              className={s.input}
-              placeholder="es. DIEM"
-              value={form.dipartimento}
-              onChange={(e) => setField('dipartimento', e.target.value)}
-              required
-            />
-          </div>
-        </div>
+        <DocenteForm value={form} onChange={setForm} />
 
         {error && <div className={s.formError}>{error}</div>}
 
