@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from './auth.api';
 import { authStore } from '../../store/authStore';
 import styles from './LoginPage.module.css';
+import LogoIcon from '../../icons/corso-laurea.svg?react';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function LoginPage() {
   return (
     <div className={styles.page}>
       <main className={styles.card}>
-        <div className={styles.logo}>🎓</div>
+        <LogoIcon className={styles.logo} aria-hidden="true" />
         <h1 className={styles.title}>Accedi</h1>
         <p className={styles.subtitle}>Inserisci le tue credenziali universitarie</p>
 

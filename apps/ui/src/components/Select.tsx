@@ -12,7 +12,6 @@ type SelectProps = {
   value: string;
   onChange: (value: string) => void;
   options: SelectOption[];
-  /** Riga vuota iniziale (value `''`), mostrata anche quando nulla è scelto. */
   placeholder?: string;
   className?: string;
   disabled?: boolean;
@@ -23,13 +22,6 @@ type SelectProps = {
 
 const MAX_LIST_HEIGHT = 280;
 
-/**
- * Select in tema scuro, coerente su tutti i browser: bottone stilizzato +
- * lista di opzioni in un portal con `position: fixed` (così non viene
- * ritagliata da contenitori con overflow, es. il modale). Navigabile da
- * tastiera. Per `required` mantiene un `<select>` nativo nascosto ma
- * focalizzabile, così la validazione HTML5 del form continua a funzionare.
- */
 export default function Select({
   value,
   onChange,
@@ -55,7 +47,6 @@ export default function Select({
   const wrapRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLUListElement>(null);
 
-  // Posiziona la lista sotto al bottone, ribaltandola sopra se manca spazio.
   useLayoutEffect(() => {
     if (!open) return undefined;
     const place = () => {
@@ -82,7 +73,6 @@ export default function Select({
     };
   }, [open]);
 
-  // Chiusura su click esterno.
   useEffect(() => {
     if (!open) return undefined;
     const onDown = (e: MouseEvent) => {

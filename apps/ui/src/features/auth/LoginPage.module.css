@@ -21,8 +21,15 @@
 }
 
 .logo {
-  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   margin-bottom: 0.5rem;
+  color: rgb(211, 214, 8);
+  fill: currentColor;
+}
+
+.logo * {
+  fill: currentColor;
 }
 
 .title {

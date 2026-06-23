@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.css';
+import LogoIcon from '../icons/corso-laurea.svg?react';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ export default function HomePage() {
     <div className={styles.page}>
       <main className={styles.container}>
         <div className={styles.logo}>
+          <LogoIcon className={styles.logoIcon} aria-hidden="true" />
           <span className={styles.logoText}>UniSingh</span>
         </div>
 

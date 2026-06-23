@@ -4,8 +4,6 @@
   align-items: center;
 }
 
-/* Il campo testo eredita lo stile di .input dalla pagina; lascia spazio
-   a destra per il pulsante calendario. */
 .field {
   width: 100%;
   padding-right: 2.4rem;
@@ -41,7 +39,6 @@
   z-index: 1100;
 }
 
-/* Tema scuro per react-day-picker. */
 .calendar {
   margin: 0;
   padding: 0.5rem 0.75rem;
@@ -57,13 +54,11 @@
   --rdp-day-height: 2.1rem;
 }
 
-/* Giorno selezionato: testo scuro su sfondo giallo per leggibilità. */
 .calendar :global(.rdp-selected) :global(.rdp-day_button) {
   color: #081c15;
   font-weight: 700;
 }
 
-/* Dropdown mese/anno coerenti col tema. */
 .calendar :global(.rdp-dropdown) {
   color: white;
 }

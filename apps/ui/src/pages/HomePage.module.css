@@ -30,7 +30,14 @@
 }
 
 .logoIcon {
-  font-size: 2.5rem;
+  width: 2rem;
+  height: 2rem;
+  color: rgb(211, 214, 8);
+  fill: currentColor;
+}
+
+.logoIcon * {
+  fill: currentColor;
 }
 
 .logoText {

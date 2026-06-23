@@ -3,7 +3,6 @@
   display: flex;
 }
 
-/* Eredita lo stile di .select dalla pagina; aggiunge layout + chevron. */
 .button {
   width: 100%;
   display: flex;
@@ -39,8 +38,6 @@
   transform: rotate(180deg);
 }
 
-/* Select nativo nascosto ma focalizzabile: serve solo alla validazione
-   HTML5 di `required` (niente display:none, altrimenti non è focalizzabile). */
 .hiddenNative {
   position: absolute;
   inset: 0;
@@ -51,7 +48,6 @@
   border: 0;
 }
 
-/* Lista opzioni (in portal). */
 .list {
   position: fixed;
   z-index: 1100;

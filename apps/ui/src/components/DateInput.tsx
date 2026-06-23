@@ -6,10 +6,8 @@ import 'react-day-picker/style.css';
 import s from './DateInput.module.css';
 
 type DateInputProps = {
-  /** Valore nel formato ISO `yyyy-mm-dd` (lo stesso del form/DTO). */
   value: string;
   onChange: (value: string) => void;
-  /** Classe della pagina (tipicamente la `.input` del CSS module). */
   className?: string;
   min?: string;
   max?: string;
@@ -20,7 +18,6 @@ type DateInputProps = {
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-/** `yyyy-mm-dd` -> `Date` locale (niente shift di fuso). */
 const isoToDate = (iso: string): Date | undefined => {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   if (!m) return undefined;
@@ -29,17 +26,14 @@ const isoToDate = (iso: string): Date | undefined => {
   return Number.isNaN(date.getTime()) ? undefined : date;
 };
 
-/** `Date` -> `yyyy-mm-dd` locale. */
 const dateToIso = (date: Date): string =>
   `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
-/** `yyyy-mm-dd` -> `gg/mm/aaaa`. */
 const isoToItaliano = (iso: string): string => {
   const date = isoToDate(iso);
   return date ? `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}` : '';
 };
 
-/** `gg/mm/aaaa` -> `yyyy-mm-dd`, o `''` se non è una data valida. */
 const italianoToIso = (text: string): string => {
   const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(text.trim());
   if (!m) return '';
@@ -57,14 +51,6 @@ const italianoToIso = (text: string): string => {
 
 const POPOVER_HEIGHT = 360;
 
-/**
- * Date input in formato italiano `gg/mm/aaaa` su tutti i browser: campo di
- * testo modificabile a mano + calendario `react-day-picker` in popover.
- * Il valore esposto resta sempre `yyyy-mm-dd`.
- *
- * Il popover è renderizzato in un portal con posizione `fixed`, così non viene
- * ritagliato da contenitori con `overflow` (es. il modale scrollabile).
- */
 export default function DateInput({
   value,
   onChange,
@@ -81,12 +67,10 @@ export default function DateInput({
   const wrapRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  // Riallinea il testo quando il valore cambia dall'esterno.
   useEffect(() => {
     setText(isoToItaliano(value));
   }, [value]);
 
-  // Posiziona il popover sotto al campo, ribaltandolo sopra se manca spazio.
   useLayoutEffect(() => {
     if (!open) return undefined;
     const place = () => {
@@ -108,7 +92,6 @@ export default function DateInput({
     };
   }, [open]);
 
-  // Chiusura del popover su click esterno o Esc.
   useEffect(() => {
     if (!open) return undefined;
     const onDown = (e: MouseEvent) => {
@@ -142,7 +125,6 @@ export default function DateInput({
     else if (iso && inRange(isoToDate(iso)!)) onChange(iso);
   };
 
-  // Al blur ricanonicalizza: tiene il valore valido, scarta il testo incompleto.
   const handleBlur = () => setText(isoToItaliano(value));
 
   const handleSelect = (date: Date | undefined) => {
