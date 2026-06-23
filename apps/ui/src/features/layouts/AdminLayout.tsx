@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { to: '/admin/docenti', icon: '👨‍🏫', label: 'Docenti' },
   { to: '/admin/materie', icon: '📚', label: 'Materie' },
   { to: '/admin/corsi-laurea', icon: '🎓', label: 'Corsi di Laurea' },
+  { to: '/admin/appelli', icon: '📝', label: 'Appelli' },
 ];
 
 export default function AdminLayout() {

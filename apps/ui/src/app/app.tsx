@@ -9,6 +9,7 @@ import MateriePage from '../features/materie/MateriePage';
 import CorsiLaureaPage from '../features/corsi-laurea/CorsiLaureaPage';
 import DocenteLayout from '../features/layouts/DocenteLayout';
 import AppelliPage from '../features/appelli/AppelliPage';
+import AppelliAdminPage from '../features/appelli/AppelliAdminPage';
 import SessioniDocentePage from '../features/sessioni/SessioniDocentePage';
 
 export function App() {
@@ -30,6 +31,7 @@ export function App() {
         <Route path="docenti" element={<DocentiPage />} />
         <Route path="materie" element={<MateriePage />} />
         <Route path="corsi-laurea" element={<CorsiLaureaPage />} />
+        <Route path="appelli" element={<AppelliAdminPage />} />
       </Route>
 
       <Route
