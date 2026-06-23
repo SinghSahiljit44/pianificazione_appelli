@@ -31,7 +31,7 @@ export class AppelloRepository {
   
   async findAll(): Promise<AppelloEntity[]> {
     return this.repository.find({
-      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
+      relations: ['materia', 'materia.corsi', 'docente', 'docente.user', 'sessione'],
       order: { data: 'ASC' },
     });
   }

@@ -1,28 +1,74 @@
 .wrap {
   position: relative;
   display: flex;
+  align-items: center;
 }
 
-.native {
+/* Il campo testo eredita lo stile di .input dalla pagina; lascia spazio
+   a destra per il pulsante calendario. */
+.field {
   width: 100%;
-  color-scheme: dark;
+  padding-right: 2.4rem;
 }
 
-.native::-webkit-datetime-edit {
-  opacity: 0;
-}
-
-.overlay {
+.iconBtn {
   position: absolute;
-  left: 0.85rem;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 0.9rem;
-  color: white;
-  pointer-events: none;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #95d5b2;
+  cursor: pointer;
 }
 
-.placeholder {
-  color: #4a7c5f;
+.iconBtn:hover:not(:disabled) {
+  color: rgb(211, 214, 8);
+}
+
+.iconBtn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.popover {
+  position: fixed;
+  z-index: 1100;
+}
+
+/* Tema scuro per react-day-picker. */
+.calendar {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #2d6a4f;
+  border-radius: 10px;
+  background: #1b4332;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --rdp-accent-color: rgb(211, 214, 8);
+  --rdp-accent-background-color: #2d6a4f;
+  --rdp-today-color: rgb(211, 214, 8);
+  --rdp-day-width: 2.1rem;
+  --rdp-day-height: 2.1rem;
+}
+
+/* Giorno selezionato: testo scuro su sfondo giallo per leggibilità. */
+.calendar :global(.rdp-selected) :global(.rdp-day_button) {
+  color: #081c15;
+  font-weight: 700;
+}
+
+/* Dropdown mese/anno coerenti col tema. */
+.calendar :global(.rdp-dropdown) {
+  color: white;
+}
+
+.calendar :global(.rdp-dropdown) option {
+  background: #1b4332;
+  color: white;
 }
