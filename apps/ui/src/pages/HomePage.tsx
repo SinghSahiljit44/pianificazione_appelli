@@ -8,7 +8,6 @@ export default function HomePage() {
     <div className={styles.page}>
       <main className={styles.container}>
         <div className={styles.logo}>
-          <span className={styles.logoIcon}>🎓</span>
           <span className={styles.logoText}>UniSingh</span>
         </div>
 

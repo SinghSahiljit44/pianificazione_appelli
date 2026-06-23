@@ -109,8 +109,13 @@
 .navIcon {
   font-size: 1rem;
   width: 1.2rem;
-  text-align: center;
+  height: 1.2rem;
   flex-shrink: 0;
+  fill: currentColor;
+}
+
+.navIcon * {
+  fill: currentColor;
 }
 
 .sidebarFooter {
@@ -203,8 +208,14 @@
 }
 
 .topbarIcon {
-  font-size: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
   opacity: 0.85;
+  fill: currentColor;
+}
+
+.topbarIcon * {
+  fill: currentColor;
 }
 
 .topbarTitle {

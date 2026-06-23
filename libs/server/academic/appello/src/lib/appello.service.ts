@@ -112,7 +112,7 @@ export class AppelloService {
       const anno = materiaCorso.anno;
       const duplicato = await this.repository.findDuplicate(dataScelta, corsoId, anno, excludeId);
       if (duplicato) {
-        throw new BadRequestException('Esiste già un appello per questo corso e anno in questa data');
+        throw new BadRequestException('Esiste già un appello per questo corso di laurea e anno in questa data');
       }
     }
 

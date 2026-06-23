@@ -92,7 +92,6 @@ export default function AppelliPage() {
       <div className={inserimentoAperto ? ls.bannerOpen : ls.bannerClosed}>
         {inserimentoAperto ? (
           <>
-            <span className={ls.bannerIcon}>🟢</span>
             <span>
               {sessioniAttive.length === 1 ? (
                 <>
@@ -109,7 +108,6 @@ export default function AppelliPage() {
           </>
         ) : (
           <>
-            <span className={ls.bannerIcon}>🔴</span>
             <span>Nessuna sessione aperta per l'inserimento al momento.</span>
           </>
         )}

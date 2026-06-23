@@ -1,13 +1,18 @@
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { authStore } from '../../store/authStore';
 import styles from './AdminLayout.module.css';
+import SessioneIcon from '../../icons/sessione.svg?react';
+import DocentiIcon from '../../icons/docenti.svg?react';
+import MaterieIcon from '../../icons/materie.svg?react';
+import CorsoLaureaIcon from '../../icons/corso-laurea.svg?react';
+import AppelloIcon from '../../icons/appello.svg?react';
 
 const NAV_ITEMS = [
-  { to: '/admin/sessioni', icon: '📅', label: 'Sessioni' },
-  { to: '/admin/docenti', icon: '👨‍🏫', label: 'Docenti' },
-  { to: '/admin/materie', icon: '📚', label: 'Materie' },
-  { to: '/admin/corsi-laurea', icon: '🎓', label: 'Corsi di Laurea' },
-  { to: '/admin/appelli', icon: '📝', label: 'Appelli' },
+  { to: '/admin/sessioni', icon: SessioneIcon, label: 'Sessioni' },
+  { to: '/admin/docenti', icon: DocentiIcon, label: 'Docenti' },
+  { to: '/admin/materie', icon: MaterieIcon, label: 'Materie' },
+  { to: '/admin/corsi-laurea', icon: CorsoLaureaIcon, label: 'Corsi di Laurea' },
+  { to: '/admin/appelli', icon: AppelloIcon, label: 'Appelli' },
 ];
 
 export default function AdminLayout() {
@@ -33,25 +38,27 @@ export default function AdminLayout() {
       </a>
       <aside className={styles.sidebar} aria-label="Barra laterale">
         <div className={styles.sidebarLogo}>
-          <span className={styles.sidebarLogoIcon}>🎓</span>
           <span className={styles.sidebarLogoText}>UniSingh</span>
         </div>
 
         <span className={styles.sidebarLabel}>Gestione</span>
 
         <nav className={styles.nav} aria-label="Navigazione principale">
-          {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `${styles.navItem} ${isActive ? styles.navItemActive : ''}`
-              }
-            >
-              <span className={styles.navIcon}>{item.icon}</span>
-              {item.label}
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `${styles.navItem} ${isActive ? styles.navItemActive : ''}`
+                }
+              >
+                <Icon className={styles.navIcon} aria-hidden="true" />
+                {item.label}
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div className={styles.sidebarFooter}>
@@ -71,7 +78,7 @@ export default function AdminLayout() {
       <main id="contenuto" className={styles.main}>
         {currentPage && (
           <header className={styles.topbar}>
-            <span className={styles.topbarIcon}>{currentPage.icon}</span>
+            <currentPage.icon className={styles.topbarIcon} aria-hidden="true" />
             <span className={styles.topbarTitle}>{currentPage.label}</span>
           </header>
         )}
