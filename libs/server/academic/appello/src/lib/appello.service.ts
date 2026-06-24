@@ -70,7 +70,7 @@ export class AppelloService {
   async remove(id: number, docenteId: number) {
     const appello = await this.getById(id);
 
-    if (appello.docente.id !== docenteId) { //TODO potrebbe farlo anche la segreteria!!
+    if (appello.docente.id !== docenteId) {
       throw new ForbiddenException('Non puoi cancellare un appello che non è tuo');
     }
 

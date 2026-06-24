@@ -89,7 +89,7 @@ export class AppelloController {
 
   @Delete(':id')
   @UseGuards(RolesGuard)
-  @Roles(UserRole.USER) //Potrebbe rimuoverlo anche admin? 
+  @Roles(UserRole.USER)
   @ApiBearerAuth()
   async remove(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: AuthenticatedUser) {
     const docente = await this.docenteService.getByUserId(user.id);

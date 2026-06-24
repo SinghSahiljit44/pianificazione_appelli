@@ -85,6 +85,10 @@ export class SessioneService {
     this.checkDateConsistency(dataInizio, dataFine, inizioIns, fineIns);
     await this.checkOverlap(dataInizio, dataFine, id);
 
+    if (data.dataInizio !== undefined || data.dataFine !== undefined) {
+      await this.checkAppelliWithinRange(id, dataInizio, dataFine);
+    }
+
     return this.repository.update(id, {
       ...(data.nome !== undefined && { nome: data.nome }),
       ...(data.dataInizio !== undefined && { dataInizio }),
@@ -151,5 +155,31 @@ export class SessioneService {
         'La sessione si sovrappone con una sessione esistente',
       );
     }
+  }
+
+  private async checkAppelliWithinRange(
+    sessioneId: number,
+    dataInizio: Date,
+    dataFine: Date,
+  ) {
+    const fuoriRange = await this.repository.findAppelliFuoriRange(
+      sessioneId,
+      dataInizio,
+      dataFine,
+    );
+    if (fuoriRange.length === 0) return;
+
+    const date = [
+      ...new Set(
+        fuoriRange.map((a) => new Date(a.data).toLocaleDateString('it-IT')),
+      ),
+    ].join(', ');
+    const sostantivo = fuoriRange.length === 1 ? 'appello' : 'appelli';
+
+    throw new BadRequestException(
+      `Le nuove date lascerebbero ${fuoriRange.length} ${sostantivo} fuori dalla sessione (${date}). ` +
+        'Scegli un intervallo che li comprenda: gli appelli possono essere rimossi solo dai docenti, ' +
+        'mentre il periodo di inserimento è aperto.',
+    );
   }
 }

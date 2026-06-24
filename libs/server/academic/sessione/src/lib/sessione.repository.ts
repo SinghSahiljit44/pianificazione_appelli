@@ -7,7 +7,7 @@ import {
   LessThanOrEqual,
   MoreThanOrEqual,
 } from 'typeorm';
-import { SessioneEntity } from '@server/academic-entities';
+import { AppelloEntity, SessioneEntity } from '@server/academic-entities';
 
 type CreateSessioneData = {
   nome: string;
@@ -101,5 +101,22 @@ export class SessioneRepository {
     });
 
     return count > 0;
+  }
+
+  async findAppelliFuoriRange(
+    sessioneId: number,
+    dataInizio: Date,
+    dataFine: Date,
+  ): Promise<AppelloEntity[]> {
+    const sessione = await this.repo.findOne({
+      where: { id: sessioneId },
+      relations: { appelli: true },
+    });
+    if (!sessione) return [];
+
+    return sessione.appelli.filter((appello) => {
+      const data = new Date(appello.data);
+      return data < dataInizio || data > dataFine;
+    });
   }
 }

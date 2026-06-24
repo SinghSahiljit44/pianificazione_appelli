@@ -11,6 +11,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Props
   if (!authStore.isLoggedIn()) {
     return <Navigate to="/login" replace />;
   }
+  if (!requireAdmin && authStore.isAdmin()) {
+    return <Navigate to="/admin" replace />;
+  }
   if (requireAdmin && !authStore.isAdmin()) {
     return <Navigate to="/docente" replace />;
   }
