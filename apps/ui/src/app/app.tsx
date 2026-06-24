@@ -11,6 +11,7 @@ import DocenteLayout from '../features/layouts/DocenteLayout';
 import AppelliPage from '../features/appelli/AppelliPage';
 import AppelliAdminPage from '../features/appelli/AppelliAdminPage';
 import SessioniDocentePage from '../features/sessioni/SessioniDocentePage';
+import ProfiloPage from '../features/profilo/ProfiloPage';
 
 export function App() {
   return (
@@ -45,6 +46,7 @@ export function App() {
         <Route index element={<Navigate to="/docente/appelli" replace />} />
         <Route path="appelli" element={<AppelliPage />} />
         <Route path="sessioni" element={<SessioniDocentePage />} />
+        <Route path="profilo" element={<ProfiloPage />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { SessioneRepository } from './sessione.repository';
-import { SessioneEntity } from './sessione.entity';
+import { SessioneEntity } from '@server/academic-entities';
 import { CreateSessioneDto } from './dto/createsessione.dto';
 import { UpdateSessioneDto } from './dto/updatesessione.dto';
 

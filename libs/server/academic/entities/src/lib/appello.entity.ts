@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { MateriaEntity } from '@server/materia';
-import { DocenteEntity } from '@server/docente';
-import { SessioneEntity } from '@server/sessione'; 
+import { MateriaEntity } from './materia.entity';
+import { DocenteEntity } from './docente.entity';
+import { SessioneEntity } from './sessione.entity';
 
 @Entity('appelli')
 export class AppelloEntity {

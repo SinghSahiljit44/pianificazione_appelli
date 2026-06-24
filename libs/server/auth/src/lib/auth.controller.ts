@@ -1,11 +1,12 @@
-import { Controller, UseGuards, Post, Request, Body, ValidationPipe } from '@nestjs/common';
-import { ApiTags, ApiBody } from '@nestjs/swagger';
+import { Controller, UseGuards, Post, Patch, Request, Body, ValidationPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { ServerAuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthenticatedUser } from './interfaces/authenticated-user.interface';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserRole } from '@server/users';
-import { JwtAuthGuard, RolesGuard, Roles } from '@server/security';
+import { JwtAuthGuard, RolesGuard, Roles, CurrentUser } from '@server/security';
 
 type RequestWithUser = Request & {
   user: AuthenticatedUser;
@@ -50,5 +51,26 @@ export class ServerAuthController {
       })
   register(@Body(ValidationPipe) dto: RegisterDto) {
     return this.serverAuthService.register(dto);
+  }
+
+  @Patch('password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        currentPassword: { type: 'string', example: 'Password1!' },
+        newPassword: { type: 'string', example: 'Password2!' },
+      },
+      required: ['currentPassword', 'newPassword'],
+    },
+  })
+  changePassword(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body(new ValidationPipe({ whitelist: true })) dto: ChangePasswordDto,
+  ) {
+    return this.serverAuthService.changePassword(user.id, dto);
   }
 }

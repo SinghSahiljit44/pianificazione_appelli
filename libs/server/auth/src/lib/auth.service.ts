@@ -1,10 +1,11 @@
-import { NotFoundException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException, Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { ServerUsersService } from '@server/users';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AuthenticatedUser } from './interfaces/authenticated-user.interface';
 import { AuthResponse } from './interfaces/auth-response.interface';
 import { RegisterDto } from './dto/register.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class ServerAuthService {
@@ -31,13 +32,28 @@ export class ServerAuthService {
         return {access_token: await this.jwtService.signAsync(payload), user}
     }
 
-    //Al posto di AuthResponse se metto any => qualsiasi cosa 
+    //Al posto di AuthResponse se metto any => qualsiasi cosa
     async register(dto: RegisterDto): Promise<AuthResponse> {
         const user = await this.usersService.create(dto);
 
-        //tutto tranne password hash 
+        //tutto tranne password hash
         const { passwordHash, ...result } = user;
         return this.login(result);
+    }
+
+    async changePassword(userId: number, dto: ChangePasswordDto): Promise<void> {
+        const user = await this.usersService.getOneUser(userId);
+
+        const currentMatches = await bcrypt.compare(dto.currentPassword, user.passwordHash);
+        if (!currentMatches) {
+            throw new UnauthorizedException('La password attuale non è corretta');
+        }
+
+        if (dto.currentPassword === dto.newPassword) {
+            throw new BadRequestException('La nuova password deve essere diversa da quella attuale');
+        }
+
+        await this.usersService.updatePassword(userId, dto.newPassword);
     }
 }
 

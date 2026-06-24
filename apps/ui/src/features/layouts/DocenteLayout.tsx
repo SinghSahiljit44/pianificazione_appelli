@@ -3,10 +3,12 @@ import { authStore } from '../../store/authStore';
 import styles from './AdminLayout.module.css';
 import AppelloIcon from '../../icons/appello.svg?react';
 import SessioneIcon from '../../icons/sessione.svg?react';
+import ProfiloIcon from '../../icons/docenti.svg?react';
 
 const NAV_ITEMS = [
   { to: '/docente/appelli', icon: AppelloIcon, label: 'I miei appelli' },
   { to: '/docente/sessioni', icon: SessioneIcon, label: 'Sessioni' },
+  { to: '/docente/profilo', icon: ProfiloIcon, label: 'Profilo' },
 ];
 
 export default function DocenteLayout() {

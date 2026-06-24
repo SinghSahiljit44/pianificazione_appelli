@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository, Not, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
-import { SessioneEntity } from './sessione.entity';
+import { SessioneEntity } from '@server/academic-entities';
 
 type CreateSessioneData = {
   nome: string;

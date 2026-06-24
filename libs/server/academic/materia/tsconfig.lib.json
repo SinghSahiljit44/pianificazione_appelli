@@ -20,19 +20,19 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../appello/tsconfig.lib.json"
+      "path": "../corso-di-laurea/tsconfig.lib.json"
     },
     {
       "path": "../docente/tsconfig.lib.json"
+    },
+    {
+      "path": "../entities/tsconfig.lib.json"
     },
     {
       "path": "../../users/tsconfig.lib.json"
     },
     {
       "path": "../../security/tsconfig.lib.json"
-    },
-    {
-      "path": "../corso-di-laurea/tsconfig.lib.json"
     },
     {
       "path": "../../../shared/api-types/tsconfig.lib.json"

@@ -23,10 +23,13 @@
       "path": "../../../shared/api-types/tsconfig.lib.json"
     },
     {
+      "path": "../materia/tsconfig.lib.json"
+    },
+    {
       "path": "../sessione/tsconfig.lib.json"
     },
     {
-      "path": "../materia/tsconfig.lib.json"
+      "path": "../entities/tsconfig.lib.json"
     },
     {
       "path": "../docente/tsconfig.lib.json"

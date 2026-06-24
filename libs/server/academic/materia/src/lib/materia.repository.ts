@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MateriaEntity } from './materia.entity';
+import { MateriaEntity } from '@server/academic-entities';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
-import { MateriaCorsoEntity } from './materia-corso.entity';
+import { MateriaCorsoEntity } from '@server/academic-entities';
 
 @Injectable()
 export class MateriaRepository {

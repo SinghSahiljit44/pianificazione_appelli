@@ -23,10 +23,7 @@
       "path": "../../../shared/api-types/tsconfig.lib.json"
     },
     {
-      "path": "../materia/tsconfig.lib.json"
-    },
-    {
-      "path": "../appello/tsconfig.lib.json"
+      "path": "../entities/tsconfig.lib.json"
     },
     {
       "path": "../../auth/tsconfig.lib.json"

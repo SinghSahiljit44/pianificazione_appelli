@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppelloEntity } from './appello.entity';
+import { AppelloEntity } from '@server/academic-entities';
 import { AppelloService } from './appello.service';
 import { AppelloController } from './appello.controller';
 import { AppelloRepository } from './appello.repository';

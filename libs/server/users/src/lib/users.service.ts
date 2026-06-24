@@ -67,6 +67,14 @@ export class ServerUsersService {
         return updated;
     }
 
+    async updatePassword(id: number, newPassword: string): Promise<void> {
+        const passwordHash = await bcrypt.hash(newPassword, 10);
+        const updated = await this.usersRepository.updatePassword(id, passwordHash);
+        if (!updated) {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
+    }
+
     async removeUser(id: number): Promise<void> {
         const deleted = await this.usersRepository.deleteOne(id);
         if (!deleted) {

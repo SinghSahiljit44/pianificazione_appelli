@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/academic-entities';
 import { CorsoDiLaureaService } from './corso-di-laurea.service';
 import { CorsoDiLaureaController } from './corso-di-laurea.controller';
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';

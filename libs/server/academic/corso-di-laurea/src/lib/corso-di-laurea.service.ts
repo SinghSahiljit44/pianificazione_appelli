@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';
-import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/academic-entities';
 import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
 import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
 

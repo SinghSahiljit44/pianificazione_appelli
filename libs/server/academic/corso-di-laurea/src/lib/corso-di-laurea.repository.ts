@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/academic-entities';
 import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
 import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
 

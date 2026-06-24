@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { MateriaCorsoEntity } from '@server/materia';
+import { MateriaCorsoEntity } from './materia-corso.entity';
 
 @Entity('corsi_di_laurea')
 export class CorsoDiLaureaEntity {

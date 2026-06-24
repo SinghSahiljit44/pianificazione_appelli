@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, Not } from 'typeorm';
-import { AppelloEntity } from './appello.entity';
+import { Repository, Between, Not, FindOptionsRelations } from 'typeorm';
+import { AppelloEntity } from '@server/academic-entities';
+
+const APPELLO_RELATIONS: FindOptionsRelations<AppelloEntity> = {
+  materia: { corsi: { corso: true } },
+  docente: { user: true },
+  sessione: true,
+};
 
 type CreateAppelloData = {
   data: Date;
@@ -31,7 +37,7 @@ export class AppelloRepository {
   
   async findAll(): Promise<AppelloEntity[]> {
     return this.repository.find({
-      relations: ['materia', 'materia.corsi', 'docente', 'docente.user', 'sessione'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' },
     });
   }
@@ -41,7 +47,7 @@ export class AppelloRepository {
       where: { 
         docente: { id: docenteId } 
       },
-      relations: ['materia', 'materia.corsi', 'sessione'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' }
     });
   }
@@ -51,7 +57,7 @@ export class AppelloRepository {
       where: {
         sessione: { id: sessioneId }
       },
-      relations: ['materia', 'materia.corsi', 'materia.corsi.corso', 'docente', 'docente.user'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' }
     });
   }
@@ -70,7 +76,7 @@ export class AppelloRepository {
       where: { 
         materia: { id: materiaId } 
       },
-      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' }
     });
   }
@@ -80,7 +86,7 @@ export class AppelloRepository {
       where: {
         data: Between(start, end)
       },
-      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' }
     });
   }
@@ -90,7 +96,7 @@ export class AppelloRepository {
       where: {
         materia: { corsi: { corso: { id: corsoId } } }
       },
-      relations: ['materia', 'materia.corsi', 'docente', 'sessione'],
+      relations: APPELLO_RELATIONS,
       order: { data: 'ASC' }
     });
   }
@@ -98,7 +104,7 @@ export class AppelloRepository {
   async findById(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: ['materia', 'materia.corsi', 'docente', 'sessione']
+      relations: APPELLO_RELATIONS
     });
   }
 

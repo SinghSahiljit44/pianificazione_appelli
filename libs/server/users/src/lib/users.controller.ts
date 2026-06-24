@@ -1,8 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe, ParseEnumPipe, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Query, ParseIntPipe, ParseEnumPipe, UseGuards } from '@nestjs/common';
 import { ServerUsersService } from './users.service';
-import { ApiTags, ApiBody, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiTags, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { UserRole } from './dto/user-role.enum';
 import { CurrentUser, JwtAuthGuard, Roles, RolesGuard } from '@server/security';
 

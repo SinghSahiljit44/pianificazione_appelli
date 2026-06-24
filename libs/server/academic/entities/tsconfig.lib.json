@@ -7,11 +7,11 @@
     "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
-    "types": ["node", "jest"],
+    "ignoreDeprecations": "6.0",
+    "types": ["node"],
     "target": "es2021",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "ignoreDeprecations": "6.0",
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
@@ -20,16 +20,7 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../../shared/api-types/tsconfig.lib.json"
-    },
-    {
-      "path": "../entities/tsconfig.lib.json"
-    },
-    {
       "path": "../../users/tsconfig.lib.json"
-    },
-    {
-      "path": "../../security/tsconfig.lib.json"
     }
   ]
 }
