@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { MateriaEntity } from '@server/academic-entities';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
-import { MateriaCorsoEntity } from '@server/academic-entities';
+import { AppelloEntity, MateriaCorsoEntity } from '@server/academic-entities';
 
 @Injectable()
 export class MateriaRepository {
@@ -13,6 +13,8 @@ export class MateriaRepository {
     private readonly repo: Repository<MateriaEntity>,
     @InjectRepository(MateriaCorsoEntity)
     private readonly materiaCorsoRepo: Repository<MateriaCorsoEntity>,
+    @InjectRepository(AppelloEntity)
+    private readonly appelloRepo: Repository<AppelloEntity>,
   ) {}
 
   async findAll(): Promise<MateriaEntity[]> {
@@ -155,6 +157,33 @@ export class MateriaRepository {
         corso: { id: corsoId },
         anno: anno,
       },
+    });
+  }
+
+  /**
+   * Appelli che entrerebbero in conflitto se la materia venisse associata a
+   * (corsoId, anno): appelli di ALTRE materie già in quella combinazione, nelle
+   * stesse date in cui questa materia ha un appello (→ due appelli lo stesso
+   * giorno per lo stesso corso e anno).
+   */
+  async findAppelliInConflittoPerAssociazione(
+    materiaId: number,
+    corsoId: number,
+    anno: number,
+  ): Promise<AppelloEntity[]> {
+    const appelliMateria = await this.appelloRepo.find({
+      where: { materia: { id: materiaId } },
+    });
+    if (appelliMateria.length === 0) return [];
+
+    const date = appelliMateria.map((a) => a.data);
+
+    return this.appelloRepo.find({
+      where: {
+        data: In(date),
+        materia: { id: Not(materiaId), corsi: { corso: { id: corsoId }, anno } },
+      },
+      relations: { materia: true },
     });
   }
 }

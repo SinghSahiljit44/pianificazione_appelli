@@ -81,6 +81,18 @@ export class MateriaService {
       }
     }));
 
+    if (data.corsi !== undefined) {
+      const esistenti = new Set(
+        materia.corsi.map((mc) => `${mc.corso.id}-${mc.anno}`),
+      );
+      const aggiunte = data.corsi.filter(
+        (c) => !esistenti.has(`${c.corsoId}-${c.anno}`),
+      );
+      for (const c of aggiunte) {
+        await this.checkAppelloConflittiPerAssociazione(id, c.corsoId, c.anno);
+      }
+    }
+
     return this.repository.update(id, data);
   }
 
@@ -99,7 +111,36 @@ export class MateriaService {
       );
     }
 
+    await this.checkAppelloConflittiPerAssociazione(materiaId, corsoId, anno);
+
     return this.repository.addCorso(materiaId, corsoId, anno);
+  }
+
+  private async checkAppelloConflittiPerAssociazione(
+    materiaId: number,
+    corsoId: number,
+    anno: number,
+  ) {
+    const conflitti =
+      await this.repository.findAppelliInConflittoPerAssociazione(
+        materiaId,
+        corsoId,
+        anno,
+      );
+    if (conflitti.length === 0) return;
+
+    const corso = await this.corsoDiLaureaService.getById(corsoId);
+    const date = [
+      ...new Set(
+        conflitti.map((a) => new Date(a.data).toLocaleDateString('it-IT')),
+      ),
+    ].join(', ');
+
+    throw new BadRequestException(
+      `Impossibile associare la materia al corso "${corso.nome}" (anno ${anno}): ` +
+        `per quel corso e anno esistono già appelli nelle stesse date in cui questa materia ne ha uno (${date}), ` +
+        'creando due appelli lo stesso giorno. Gli appelli vanno prima spostati o rimossi dai docenti.',
+    );
   }
 
   async removeMateriaFromCorso(materiaId: number, corsoId: number) {
