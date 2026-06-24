@@ -3,7 +3,7 @@ const { readFileSync } = require('fs');
 
 // Reading the SWC compilation config for the spec files
 const swcJestConfig = JSON.parse(
-  readFileSync(`${__dirname}/.spec.swcrc`, 'utf-8')
+  readFileSync(`${__dirname}/.spec.swcrc`, 'utf-8'),
 );
 
 // Disable .swcrc look-up by SWC core because we're passing in swcJestConfig ourselves
@@ -13,6 +13,8 @@ module.exports = {
   displayName: '@server/auth',
   preset: '../../../jest.preset.js',
   testEnvironment: 'node',
+  // No spec files in this lib yet; don't fail CI for an empty suite.
+  passWithNoTests: true,
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },

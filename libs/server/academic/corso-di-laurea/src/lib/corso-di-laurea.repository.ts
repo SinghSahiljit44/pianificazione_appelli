@@ -9,12 +9,12 @@ import { UpdateCorsoDiLaureaDto } from './dto/updatecorsodilaurea.dto';
 export class CorsoDiLaureaRepository {
   constructor(
     @InjectRepository(CorsoDiLaureaEntity)
-    private readonly repo: Repository<CorsoDiLaureaEntity>
+    private readonly repo: Repository<CorsoDiLaureaEntity>,
   ) {}
 
   findAll() {
     return this.repo.find({
-      relations: ['materie']
+      relations: ['materie'],
     });
   }
 

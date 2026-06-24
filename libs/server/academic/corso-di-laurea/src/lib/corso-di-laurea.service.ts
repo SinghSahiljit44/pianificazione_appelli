@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';
 import { CorsoDiLaureaEntity } from '@server/academic-entities';
 import { CreateCorsoDiLaureaDto } from './dto/createcorsodilaurea.dto';
@@ -10,7 +14,8 @@ export class CorsoDiLaureaService {
 
   async getById(id: number): Promise<CorsoDiLaureaEntity> {
     const corso = await this.repository.findById(id);
-    if (!corso) throw new NotFoundException(`Corso di laurea ${id} non trovato`);
+    if (!corso)
+      throw new NotFoundException(`Corso di laurea ${id} non trovato`);
     return corso;
   }
 
@@ -20,7 +25,10 @@ export class CorsoDiLaureaService {
 
   async create(data: CreateCorsoDiLaureaDto): Promise<CorsoDiLaureaEntity> {
     const existing = await this.repository.findByNome(data.nome);
-    if (existing) throw new ConflictException(`Corso di laurea con nome ${data.nome} già esistente`);
+    if (existing)
+      throw new ConflictException(
+        `Corso di laurea con nome ${data.nome} già esistente`,
+      );
     return this.repository.create(data);
   }
 
@@ -30,7 +38,7 @@ export class CorsoDiLaureaService {
       const existing = await this.repository.findByNome(data.nome);
       if (existing && existing.id !== id) {
         throw new ConflictException(
-          `Impossibile rinominare: il corso "${data.nome}" esiste già (ID: ${existing.id})`
+          `Impossibile rinominare: il corso "${data.nome}" esiste già (ID: ${existing.id})`,
         );
       }
     }

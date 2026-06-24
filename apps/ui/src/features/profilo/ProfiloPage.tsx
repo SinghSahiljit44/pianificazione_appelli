@@ -3,12 +3,15 @@ import { changePassword } from '../auth/auth.api';
 import { getApiErrorMessage } from '../../api/apiError';
 import s from '../layouts/admin.module.css';
 
-const PASSWORD_HINT = 'Min. 8 caratteri, una maiuscola, un simbolo tra ? ^ ! # @';
+const PASSWORD_HINT =
+  'Min. 8 caratteri, una maiuscola, un simbolo tra ? ^ ! # @';
 
 function validaNuovaPassword(pw: string): string | null {
   if (pw.length < 8) return 'La nuova password deve avere almeno 8 caratteri.';
-  if (!/[A-Z]/.test(pw)) return 'La nuova password deve contenere almeno una maiuscola.';
-  if (!/[?^!#@]/.test(pw)) return 'La nuova password deve contenere un simbolo tra ? ^ ! # @.';
+  if (!/[A-Z]/.test(pw))
+    return 'La nuova password deve contenere almeno una maiuscola.';
+  if (!/[?^!#@]/.test(pw))
+    return 'La nuova password deve contenere un simbolo tra ? ^ ! # @.';
   return null;
 }
 
@@ -58,11 +61,17 @@ export default function ProfiloPage() {
       <div className={s.pageHeader}>
         <div>
           <h1 className={s.pageTitle}>Profilo</h1>
-          <p className={s.pageSubtitle}>Gestisci le credenziali del tuo account</p>
+          <p className={s.pageSubtitle}>
+            Gestisci le credenziali del tuo account
+          </p>
         </div>
       </div>
 
-      <form className={s.form} onSubmit={handleSubmit} style={{ maxWidth: 460 }}>
+      <form
+        className={s.form}
+        onSubmit={handleSubmit}
+        style={{ maxWidth: 460 }}
+      >
         <div className={s.field}>
           <label className={s.label}>Password attuale</label>
           <input
@@ -101,7 +110,9 @@ export default function ProfiloPage() {
         </div>
 
         {error && <div className={s.formError}>{error}</div>}
-        {ok && <div className={s.formOk}>Password aggiornata con successo.</div>}
+        {ok && (
+          <div className={s.formOk}>Password aggiornata con successo.</div>
+        )}
 
         <div className={s.formActions}>
           <button type="submit" className={s.btnPrimary} disabled={saving}>

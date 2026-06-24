@@ -7,11 +7,14 @@
     "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "types": ["node"],
     "target": "es2021",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    // emitDecoratorMetadata intentionally omitted: this target is emitDeclarationOnly
+    // (no JS output), so metadata emission is a no-op and only produces TS1272
+    // false-positives on the Relation<> wrappers that break TypeORM circular deps.
+    // Runtime metadata is emitted by the app build (tsconfig.app.json) and swc-jest.
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,

@@ -12,7 +12,11 @@ export class ChangePasswordDto implements IChangePassword {
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  @Matches(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
-  @Matches(/[?^!#@]/, { message: 'Password must contain at least one symbol among ? ^ ! # @' })
+  @Matches(/[A-Z]/, {
+    message: 'Password must contain at least one uppercase letter',
+  })
+  @Matches(/[?^!#@]/, {
+    message: 'Password must contain at least one symbol among ? ^ ! # @',
+  })
   newPassword: string;
 }

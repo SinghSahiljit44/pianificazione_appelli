@@ -8,7 +8,7 @@ import { UpdateDocenteDto } from './dto/updatedocente.dto';
 export class DocenteRepository {
   constructor(
     @InjectRepository(DocenteEntity)
-    private readonly repo: Repository<DocenteEntity>
+    private readonly repo: Repository<DocenteEntity>,
   ) {}
 
   findAll() {
@@ -16,29 +16,36 @@ export class DocenteRepository {
   }
 
   findById(id: number): Promise<DocenteEntity | null> {
-    return this.repo.findOne({ where: { id }, relations: ['user', 'materie', 'appelli'] });
+    return this.repo.findOne({
+      where: { id },
+      relations: ['user', 'materie', 'appelli'],
+    });
   }
 
   findByUserId(userId: number) {
-    return this.repo.findOne({ where: { user: { id: userId } }, relations: ['user'] });
+    return this.repo.findOne({
+      where: { user: { id: userId } },
+      relations: ['user'],
+    });
   }
 
   findByDipartimento(dipartimento: string) {
     return this.repo.find({ where: { dipartimento }, relations: ['user'] });
   }
-  
-  findByMateriaId(materiaId: number) { //piu' insegnanti per materia?
+
+  findByMateriaId(materiaId: number) {
+    //piu' insegnanti per materia?
     return this.repo.findOne({
       where: { materie: { id: materiaId } },
-      relations: ['materie']
+      relations: ['materie'],
     });
   }
 
   findAppelliByDocenteId(docenteId: number) {
     return this.repo.find({
       where: { id: docenteId },
-      relations: ['appelli', 'appelli.materia', 'appelli.sessione']
-    })
+      relations: ['appelli', 'appelli.materia', 'appelli.sessione'],
+    });
   }
 
   create(data: { titolo: string; dipartimento: string; userId: number }) {
@@ -53,7 +60,8 @@ export class DocenteRepository {
   async update(id: number, data: UpdateDocenteDto) {
     const payload: any = {};
     if (data.titolo !== undefined) payload.titolo = data.titolo;
-    if (data.dipartimento !== undefined) payload.dipartimento = data.dipartimento;
+    if (data.dipartimento !== undefined)
+      payload.dipartimento = data.dipartimento;
     await this.repo.update(id, payload);
     return this.findById(id);
   }

@@ -15,8 +15,14 @@ export interface AuthResponse {
   user: AuthenticatedUser;
 }
 
-export async function login(email: string, password: string): Promise<AuthResponse> {
-  const res = await client.post<AuthResponse>('/auth/login', { email, password });
+export async function login(
+  email: string,
+  password: string,
+): Promise<AuthResponse> {
+  const res = await client.post<AuthResponse>('/auth/login', {
+    email,
+    password,
+  });
   return res.data;
 }
 

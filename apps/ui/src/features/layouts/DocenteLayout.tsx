@@ -24,7 +24,12 @@ export default function DocenteLayout() {
   }
 
   const initials = user?.name
-    ? user.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
+    ? user.name
+        .split(' ')
+        .map((w) => w[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase()
     : 'D';
 
   return (
@@ -74,7 +79,10 @@ export default function DocenteLayout() {
       <main id="contenuto" className={styles.main}>
         {currentPage && (
           <header className={styles.topbar}>
-            <currentPage.icon className={styles.topbarIcon} aria-hidden="true" />
+            <currentPage.icon
+              className={styles.topbarIcon}
+              aria-hidden="true"
+            />
             <span className={styles.topbarTitle}>{currentPage.label}</span>
           </header>
         )}

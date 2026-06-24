@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository, Not, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
+import {
+  Between,
+  Repository,
+  Not,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+} from 'typeorm';
 import { SessioneEntity } from '@server/academic-entities';
 
 type CreateSessioneData = {
@@ -17,16 +23,16 @@ type UpdateSessioneData = Partial<CreateSessioneData>;
 export class SessioneRepository {
   constructor(
     @InjectRepository(SessioneEntity)
-    private readonly repo: Repository<SessioneEntity>
+    private readonly repo: Repository<SessioneEntity>,
   ) {}
 
   findAll() {
-    return this.repo.find({ 
-      order: { dataInizio: 'DESC' } 
+    return this.repo.find({
+      order: { dataInizio: 'DESC' },
     });
   }
 
-  findById(id: number): Promise<SessioneEntity|null> {
+  findById(id: number): Promise<SessioneEntity | null> {
     return this.repo.findOne({ where: { id } });
   }
 
@@ -35,8 +41,8 @@ export class SessioneRepository {
     return this.repo.findOne({
       where: {
         dataInizioInserimento: LessThanOrEqual(now),
-        dataFineInserimento: MoreThanOrEqual(now)
-      }
+        dataFineInserimento: MoreThanOrEqual(now),
+      },
     });
   }
 
@@ -45,9 +51,9 @@ export class SessioneRepository {
     return this.repo.find({
       where: {
         dataInizioInserimento: LessThanOrEqual(now),
-        dataFineInserimento: MoreThanOrEqual(now)
+        dataFineInserimento: MoreThanOrEqual(now),
       },
-      order: { dataInizio: 'ASC' }
+      order: { dataInizio: 'ASC' },
     });
   }
 
@@ -56,15 +62,15 @@ export class SessioneRepository {
       relations: ['appelli', 'appelli.materia', 'appelli.docente'],
       order: { dataInizio: 'DESC' },
     });
-    return sessioni.filter(s => s.appelli.length > 0);
+    return sessioni.filter((s) => s.appelli.length > 0);
   }
 
   findByDateRange(start: Date, end: Date) {
     return this.repo.find({
       where: {
-        dataInizio: Between(start, end)
+        dataInizio: Between(start, end),
       },
-      order: { dataInizio: 'DESC' }
+      order: { dataInizio: 'DESC' },
     });
   }
 
@@ -81,13 +87,17 @@ export class SessioneRepository {
     return this.repo.delete(id);
   }
 
-  async existsOverlap(dataInizio: Date, dataFine: Date, excludeId?: number): Promise<boolean> {
+  async existsOverlap(
+    dataInizio: Date,
+    dataFine: Date,
+    excludeId?: number,
+  ): Promise<boolean> {
     const count = await this.repo.count({
       where: {
         dataInizio: LessThanOrEqual(dataFine),
         dataFine: MoreThanOrEqual(dataInizio),
-        ...(excludeId && { id: Not(excludeId) })
-      }
+        ...(excludeId && { id: Not(excludeId) }),
+      },
     });
 
     return count > 0;

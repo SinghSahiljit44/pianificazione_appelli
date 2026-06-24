@@ -9,7 +9,12 @@ import { MateriaModule } from '@server/materia';
 import { DocenteModule } from '@server/docente';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AppelloEntity]), SessioneModule, MateriaModule, DocenteModule],
+  imports: [
+    TypeOrmModule.forFeature([AppelloEntity]),
+    SessioneModule,
+    MateriaModule,
+    DocenteModule,
+  ],
   controllers: [AppelloController],
   providers: [AppelloService, AppelloRepository],
   exports: [AppelloService],

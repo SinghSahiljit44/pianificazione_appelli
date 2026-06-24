@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { SessioneRepository } from './sessione.repository';
 import { SessioneEntity } from '@server/academic-entities';
 import { CreateSessioneDto } from './dto/createsessione.dto';
@@ -31,7 +35,9 @@ export class SessioneService {
   async isSessioneOpen(sessioneId: number): Promise<boolean> {
     const sessione = await this.getById(sessioneId);
     const now = new Date();
-    return now >= new Date(sessione.dataInizio) && now <= new Date(sessione.dataFine);
+    return (
+      now >= new Date(sessione.dataInizio) && now <= new Date(sessione.dataFine)
+    );
   }
 
   getWithAppelli() {
@@ -44,7 +50,12 @@ export class SessioneService {
     const dataInizioInserimento = new Date(data.dataInizioInserimento);
     const dataFineInserimento = new Date(data.dataFineInserimento);
 
-    this.checkDateConsistency(dataInizio, dataFine, dataInizioInserimento, dataFineInserimento);
+    this.checkDateConsistency(
+      dataInizio,
+      dataFine,
+      dataInizioInserimento,
+      dataFineInserimento,
+    );
     await this.checkOverlap(dataInizio, dataFine);
     return this.repository.create({
       nome: data.nome,
@@ -58,10 +69,18 @@ export class SessioneService {
   async update(id: number, data: UpdateSessioneDto) {
     const sessione = await this.getById(id);
 
-    const dataInizio = data.dataInizio ? new Date(data.dataInizio) : new Date(sessione.dataInizio);
-    const dataFine = data.dataFine ? new Date(data.dataFine) : new Date(sessione.dataFine);
-    const inizioIns = data.dataInizioInserimento ? new Date(data.dataInizioInserimento) : new Date(sessione.dataInizioInserimento);
-    const fineIns = data.dataFineInserimento ? new Date(data.dataFineInserimento) : new Date(sessione.dataFineInserimento);
+    const dataInizio = data.dataInizio
+      ? new Date(data.dataInizio)
+      : new Date(sessione.dataInizio);
+    const dataFine = data.dataFine
+      ? new Date(data.dataFine)
+      : new Date(sessione.dataFine);
+    const inizioIns = data.dataInizioInserimento
+      ? new Date(data.dataInizioInserimento)
+      : new Date(sessione.dataInizioInserimento);
+    const fineIns = data.dataFineInserimento
+      ? new Date(data.dataFineInserimento)
+      : new Date(sessione.dataFineInserimento);
 
     this.checkDateConsistency(dataInizio, dataFine, inizioIns, fineIns);
     await this.checkOverlap(dataInizio, dataFine, id);
@@ -70,8 +89,12 @@ export class SessioneService {
       ...(data.nome !== undefined && { nome: data.nome }),
       ...(data.dataInizio !== undefined && { dataInizio }),
       ...(data.dataFine !== undefined && { dataFine }),
-      ...(data.dataInizioInserimento !== undefined && { dataInizioInserimento: inizioIns }),
-      ...(data.dataFineInserimento !== undefined && { dataFineInserimento: fineIns }),
+      ...(data.dataInizioInserimento !== undefined && {
+        dataInizioInserimento: inizioIns,
+      }),
+      ...(data.dataFineInserimento !== undefined && {
+        dataFineInserimento: fineIns,
+      }),
     });
   }
 
@@ -84,31 +107,49 @@ export class SessioneService {
     dataInizio: Date,
     dataFine: Date,
     inizioInserimento: Date,
-    fineInserimento: Date
+    fineInserimento: Date,
   ) {
     if (dataInizio >= dataFine) {
-      throw new BadRequestException('La data di inizio sessione deve essere precedente alla fine');
+      throw new BadRequestException(
+        'La data di inizio sessione deve essere precedente alla fine',
+      );
     }
     if (inizioInserimento >= fineInserimento) {
-      throw new BadRequestException('La data di inizio inserimento deve essere precedente alla fine');
+      throw new BadRequestException(
+        'La data di inizio inserimento deve essere precedente alla fine',
+      );
     }
     if (fineInserimento >= dataInizio) {
-      throw new BadRequestException('La fine del periodo di inserimento non può superare l\'inizio della sessione');
+      throw new BadRequestException(
+        "La fine del periodo di inserimento non può superare l'inizio della sessione",
+      );
     }
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0);
     inizioInserimento.setHours(0, 0, 0, 0);
 
     if (inizioInserimento < oggi) {
-      throw new BadRequestException('La data di inizio inserimento non può essere nel passato');
+      throw new BadRequestException(
+        'La data di inizio inserimento non può essere nel passato',
+      );
     }
   }
 
-  private async checkOverlap(dataInizio: Date, dataFine: Date, excludeId?: number) {
-    const sovrapposizione = await this.repository.existsOverlap(dataInizio, dataFine, excludeId);
-    
+  private async checkOverlap(
+    dataInizio: Date,
+    dataFine: Date,
+    excludeId?: number,
+  ) {
+    const sovrapposizione = await this.repository.existsOverlap(
+      dataInizio,
+      dataFine,
+      excludeId,
+    );
+
     if (sovrapposizione) {
-      throw new BadRequestException('La sessione si sovrappone con una sessione esistente');
+      throw new BadRequestException(
+        'La sessione si sovrappone con una sessione esistente',
+      );
     }
   }
 }

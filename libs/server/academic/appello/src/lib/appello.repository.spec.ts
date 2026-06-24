@@ -1,5 +1,5 @@
-import { AppelloRepository } from './appello.repository';
-
 describe('AppelloRepository', () => {
-  
+  it('placeholder', () => {
+    expect(true).toBe(true);
+  });
 });

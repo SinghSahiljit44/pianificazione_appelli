@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CorsoDiLaureaRepository } from './corso-di-laurea.repository';
-import { CorsoDiLaureaEntity } from './corso-di-laurea.entity';
+import { CorsoDiLaureaEntity } from '@server/academic-entities';
 describe('CorsoDiLaureaRepository', () => {
   let repository: CorsoDiLaureaRepository;
 

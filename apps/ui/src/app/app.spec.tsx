@@ -8,19 +8,17 @@ describe('App', () => {
     const { baseElement } = render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should render the home page branding', () => {
     const { getAllByText } = render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
-    expect(
-      getAllByText(new RegExp('Welcome @org/ui', 'gi')).length > 0
-    ).toBeTruthy();
+    expect(getAllByText(/UniSingh/i).length).toBeGreaterThan(0);
   });
 });

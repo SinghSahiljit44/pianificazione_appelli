@@ -3,25 +3,24 @@ import { AppelloEntity } from './appello.entity';
 
 @Entity('sessioni')
 export class SessioneEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar', length: 100 })
-    nome: string; 
+  @Column({ type: 'varchar', length: 100 })
+  nome: string;
 
-    @Column({ type: 'date' })
-    dataInizio: Date;
+  @Column({ type: 'date' })
+  dataInizio: Date;
 
-    @Column({ type: 'date' })
-    dataFine: Date;
+  @Column({ type: 'date' })
+  dataFine: Date;
 
-    @Column({ type: 'date' })
-    dataInizioInserimento: Date;
+  @Column({ type: 'date' })
+  dataInizioInserimento: Date;
 
-    @Column({ type: 'date' })
-    dataFineInserimento: Date;
+  @Column({ type: 'date' })
+  dataFineInserimento: Date;
 
-    @OneToMany(() => AppelloEntity, (appello) => appello.sessione)
-    appelli: AppelloEntity[];
-
+  @OneToMany(() => AppelloEntity, (appello) => appello.sessione)
+  appelli: AppelloEntity[];
 }

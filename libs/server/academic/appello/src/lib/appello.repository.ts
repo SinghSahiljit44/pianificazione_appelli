@@ -32,9 +32,9 @@ type UpdateAppelloData = {
 export class AppelloRepository {
   constructor(
     @InjectRepository(AppelloEntity)
-    private readonly repository: Repository<AppelloEntity>
+    private readonly repository: Repository<AppelloEntity>,
   ) {}
-  
+
   async findAll(): Promise<AppelloEntity[]> {
     return this.repository.find({
       relations: APPELLO_RELATIONS,
@@ -44,67 +44,72 @@ export class AppelloRepository {
 
   async findAllByDocente(docenteId: number) {
     return this.repository.find({
-      where: { 
-        docente: { id: docenteId } 
+      where: {
+        docente: { id: docenteId },
       },
       relations: APPELLO_RELATIONS,
-      order: { data: 'ASC' }
+      order: { data: 'ASC' },
     });
   }
 
   async findAllBySessione(sessioneId: number) {
     return this.repository.find({
       where: {
-        sessione: { id: sessioneId }
+        sessione: { id: sessioneId },
       },
       relations: APPELLO_RELATIONS,
-      order: { data: 'ASC' }
+      order: { data: 'ASC' },
     });
   }
-  async findDuplicate(data: Date, corsoId: number, anno: number, excludeId?: number) {
+  async findDuplicate(
+    data: Date,
+    corsoId: number,
+    anno: number,
+    excludeId?: number,
+  ) {
     return this.repository.findOne({
       where: {
         data, //need to check only for the day!!!!
         materia: { corsi: { corso: { id: corsoId }, anno } },
-        ...(excludeId && { id: Not(excludeId) })
+        ...(excludeId && { id: Not(excludeId) }),
       },
     });
   }
 
   async findAllByMateria(materiaId: number) {
     return this.repository.find({
-      where: { 
-        materia: { id: materiaId } 
+      where: {
+        materia: { id: materiaId },
       },
       relations: APPELLO_RELATIONS,
-      order: { data: 'ASC' }
+      order: { data: 'ASC' },
     });
   }
 
   async findByDateRange(start: Date, end: Date) {
     return this.repository.find({
       where: {
-        data: Between(start, end)
+        data: Between(start, end),
       },
       relations: APPELLO_RELATIONS,
-      order: { data: 'ASC' }
+      order: { data: 'ASC' },
     });
   }
 
   async findByCourseId(corsoId: number) {
     return this.repository.find({
       where: {
-        materia: { corsi: { corso: { id: corsoId } } }
+        materia: { corsi: { corso: { id: corsoId } } },
       },
       relations: APPELLO_RELATIONS,
-      order: { data: 'ASC' }
+      order: { data: 'ASC' },
     });
   }
 
   async findById(id: number) {
     return this.repository.findOne({
       where: { id },
-      relations: APPELLO_RELATIONS
+      relations: APPELLO_RELATIONS,
     });
   }
 
@@ -129,8 +134,10 @@ export class AppelloRepository {
     if (data.aula !== undefined) payload.aula = data.aula;
     if (data.note !== undefined) payload.note = data.note;
     if (data.materiaId !== undefined) payload.materia = { id: data.materiaId };
-    if (data.sessioneId !== undefined) payload.sessione = { id: data.sessioneId };
-    if (Object.keys(payload).length > 0) await this.repository.update(id, payload);
+    if (data.sessioneId !== undefined)
+      payload.sessione = { id: data.sessioneId };
+    if (Object.keys(payload).length > 0)
+      await this.repository.update(id, payload);
     return this.findById(id);
   }
 
@@ -138,14 +145,18 @@ export class AppelloRepository {
     const result = await this.repository.delete(id);
     return (result.affected ?? 0) > 0;
   }
- 
-  async countByMateriaAndSessione(materiaId: number, sessioneId: number, excludeId?: number): Promise<number> {
+
+  async countByMateriaAndSessione(
+    materiaId: number,
+    sessioneId: number,
+    excludeId?: number,
+  ): Promise<number> {
     return this.repository.count({
       where: {
         materia: { id: materiaId },
         sessione: { id: sessioneId },
-        ...(excludeId && { id: Not(excludeId) })
-      }
+        ...(excludeId && { id: Not(excludeId) }),
+      },
     });
   }
 }
