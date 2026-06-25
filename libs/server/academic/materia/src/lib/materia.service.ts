@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { MateriaRepository } from './materia.repository';
 import { CreateMateriaDto } from './dto/createmateria.dto';
 import { UpdateMateriaDto } from './dto/updatemateria.dto';
@@ -9,9 +9,7 @@ import { CorsoDiLaureaService } from '@server/corso-di-laurea';
 export class MateriaService {
   constructor(
     private readonly repository: MateriaRepository,
-    @Inject(forwardRef(() => DocenteService))
     private readonly docenteService: DocenteService,
-    @Inject(forwardRef(() => CorsoDiLaureaService))
     private readonly corsoDiLaureaService: CorsoDiLaureaService,
   ) {}
 

@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MateriaEntity } from '@server/academic-entities';
 import { AppelloEntity, MateriaCorsoEntity } from '@server/academic-entities';
@@ -11,8 +11,8 @@ import { CorsoDiLaureaModule } from '@server/corso-di-laurea';
 @Module({
   imports: [
     TypeOrmModule.forFeature([MateriaEntity, MateriaCorsoEntity, AppelloEntity]),
-    forwardRef(() => DocenteModule),
-    forwardRef(() => CorsoDiLaureaModule),
+    DocenteModule,
+    CorsoDiLaureaModule,
   ],
   controllers: [MateriaController],
   providers: [MateriaService, MateriaRepository],
