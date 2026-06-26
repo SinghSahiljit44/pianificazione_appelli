@@ -21,6 +21,7 @@ export default function MateriePage() {
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
   const [action, setAction] = useState<Action>(null);
+  const [query, setQuery] = useState('');
 
   async function load() {
     try {
@@ -44,6 +45,17 @@ export default function MateriePage() {
     await load();
   };
 
+  const q = query.trim().toLowerCase();
+  const materieFiltrate = q
+    ? materie.filter((m) =>
+        [
+          m.nome,
+          m.docente?.user?.name,
+          ...(m.corsi ?? []).map((mc) => mc.corso.nome),
+        ].some((v) => v?.toLowerCase().includes(q))
+      )
+    : materie;
+
   return (
     <div className={s.page}>
       <div className={s.pageHeader}>
@@ -58,11 +70,25 @@ export default function MateriePage() {
 
       {pageError && <div className={s.pageError}>{pageError}</div>}
 
+      {!loading && materie.length > 0 && (
+        <div className={s.searchBar}>
+          <input
+            type="search"
+            className={s.searchInput}
+            placeholder="Cerca per nome, docente o corso di laurea..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      )}
+
       <div className={s.tableWrap}>
         {loading ? (
           <div className={s.loading}>Caricamento...</div>
         ) : materie.length === 0 ? (
           <div className={s.empty}>Nessuna materia presente.</div>
+        ) : materieFiltrate.length === 0 ? (
+          <div className={s.empty}>Nessuna materia corrisponde alla ricerca.</div>
         ) : (
           <table className={s.table}>
             <thead>
@@ -75,7 +101,7 @@ export default function MateriePage() {
               </tr>
             </thead>
             <tbody>
-              {materie.map((m) => (
+              {materieFiltrate.map((m) => (
                 <tr key={m.id}>
                   <td>{m.nome}</td>
                   <td>{m.cfu}</td>

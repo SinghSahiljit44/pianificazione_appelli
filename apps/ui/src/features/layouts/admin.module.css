@@ -225,6 +225,32 @@
   padding-top: 0.25rem;
 }
 
+.searchBar {
+  margin-bottom: 1rem;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 360px;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #2d6a4f;
+  background: #081c15;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.searchInput::placeholder {
+  color: #4a7c5f;
+}
+
+.searchInput:focus {
+  border-color: rgb(211, 214, 8);
+}
+
 .empty {
   text-align: center;
   padding: 3rem 1rem;

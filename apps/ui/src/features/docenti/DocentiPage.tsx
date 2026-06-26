@@ -16,6 +16,7 @@ export default function DocentiPage() {
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
   const [action, setAction] = useState<Action>(null);
+  const [query, setQuery] = useState('');
 
   async function load() {
     try {
@@ -37,6 +38,14 @@ export default function DocentiPage() {
     await load();
   };
 
+  const q = query.trim().toLowerCase();
+  const docentiFiltrati = q
+    ? docenti.filter((d) =>
+        [d.user.name, d.user.email, d.titolo, d.dipartimento]
+          .some((v) => v?.toLowerCase().includes(q))
+      )
+    : docenti;
+
   return (
     <div className={s.page}>
       <div className={s.pageHeader}>
@@ -51,11 +60,25 @@ export default function DocentiPage() {
 
       {pageError && <div className={s.pageError}>{pageError}</div>}
 
+      {!loading && docenti.length > 0 && (
+        <div className={s.searchBar}>
+          <input
+            type="search"
+            className={s.searchInput}
+            placeholder="Cerca per nome, email, titolo o dipartimento..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      )}
+
       <div className={s.tableWrap}>
         {loading ? (
           <div className={s.loading}>Caricamento...</div>
         ) : docenti.length === 0 ? (
           <div className={s.empty}>Nessun docente presente.</div>
+        ) : docentiFiltrati.length === 0 ? (
+          <div className={s.empty}>Nessun docente corrisponde alla ricerca.</div>
         ) : (
           <table className={s.table}>
             <thead>
@@ -68,7 +91,7 @@ export default function DocentiPage() {
               </tr>
             </thead>
             <tbody>
-              {docenti.map((d) => (
+              {docentiFiltrati.map((d) => (
                 <tr key={d.id}>
                   <td>{d.user.name}</td>
                   <td>{d.user.email}</td>
