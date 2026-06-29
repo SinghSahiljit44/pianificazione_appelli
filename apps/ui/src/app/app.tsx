@@ -12,6 +12,7 @@ import AppelliPage from '../features/appelli/AppelliPage';
 import AppelliAdminPage from '../features/appelli/AppelliAdminPage';
 import SessioniDocentePage from '../features/sessioni/SessioniDocentePage';
 import ProfiloPage from '../features/profilo/ProfiloPage';
+import NotFoundPage from '../pages/NotFoundPage';
 
 export function App() {
   return (
@@ -33,6 +34,7 @@ export function App() {
         <Route path="materie" element={<MateriePage />} />
         <Route path="corsi-laurea" element={<CorsiLaureaPage />} />
         <Route path="appelli" element={<AppelliAdminPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
       <Route
@@ -47,7 +49,10 @@ export function App() {
         <Route path="appelli" element={<AppelliPage />} />
         <Route path="sessioni" element={<SessioniDocentePage />} />
         <Route path="profilo" element={<ProfiloPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

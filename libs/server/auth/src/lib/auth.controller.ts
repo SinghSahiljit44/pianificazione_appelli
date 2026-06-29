@@ -45,8 +45,8 @@ export class ServerAuthController {
   }
 
   @Post('register')
-  //@UseGuards(JwtAuthGuard, RolesGuard)
-  //@Roles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @ApiBody({
     schema: {
       type: 'object',
