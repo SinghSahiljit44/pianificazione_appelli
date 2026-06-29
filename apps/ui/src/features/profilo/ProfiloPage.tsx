@@ -23,7 +23,7 @@ export default function ProfiloPage() {
   const [ok, setOk] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setOk(false);

@@ -1,0 +1,162 @@
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: #0d2818;
+  border-right: 1px solid #1b4332;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 50;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.4rem 1.25rem 1.1rem;
+  border-bottom: 1px solid #1b4332;
+}
+
+.sidebarLogoIcon {
+  font-size: 1.4rem;
+}
+
+.sidebarLogoText {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgb(211, 214, 8);
+  letter-spacing: 0.3px;
+}
+
+.sidebarLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #4a7c5f;
+  padding: 1.2rem 1.25rem 0.4rem;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0.65rem;
+  gap: 0.1rem;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  color: #a8c5b0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.navItemActive {
+  background: rgba(211, 214, 8, 0.1);
+  color: rgb(211, 214, 8);
+}
+
+.navItemActive:hover {
+  background: rgba(211, 214, 8, 0.15);
+  color: rgb(211, 214, 8);
+}
+
+.navIcon {
+  font-size: 1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.navIcon * {
+  fill: currentColor;
+}
+
+.sidebarFooter {
+  padding: 0.9rem;
+  border-top: 1px solid #1b4332;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.5rem 0.65rem;
+}
+
+.userAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #1b4332;
+  border: 1px solid #2d6a4f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgb(211, 214, 8);
+  flex-shrink: 0;
+}
+
+.userDetails {
+  min-width: 0;
+  flex: 1;
+}
+
+.userName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: 0.7rem;
+  color: #4a7c5f;
+  margin-top: 1px;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 107, 107, 0.1);
+}

@@ -28,7 +28,7 @@ export default function CreateAppelloModal({ sessioniAttive, materie, onClose, o
 
   const sessioneForm = sessioniAttive.find((x) => String(x.id) === form.sessioneId) ?? null;
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     const sessioneId = Number(form.sessioneId);
     if (!sessioneId) {

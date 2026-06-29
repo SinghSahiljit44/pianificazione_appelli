@@ -22,7 +22,7 @@ export default function CreateDocenteModal({ onClose, onSaved }: Props) {
   const setField = (key: keyof CreateDocenteDto, v: string) =>
     setForm((f) => ({ ...f, [key]: v }));
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setSaving(true);

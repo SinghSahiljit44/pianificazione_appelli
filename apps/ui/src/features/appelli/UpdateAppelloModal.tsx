@@ -22,7 +22,7 @@ export default function UpdateAppelloModal({ appello, materie, onClose, onSaved 
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setSaving(true);
