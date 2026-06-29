@@ -229,6 +229,20 @@
   margin-bottom: 1rem;
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.filterField {
+  flex: 1 1 180px;
+  min-width: 160px;
+  max-width: 240px;
+}
+
 .searchInput {
   width: 100%;
   max-width: 360px;
