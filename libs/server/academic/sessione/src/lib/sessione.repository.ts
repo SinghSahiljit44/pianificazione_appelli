@@ -8,9 +8,12 @@ import {
   MoreThanOrEqual,
 } from 'typeorm';
 import { AppelloEntity, SessioneEntity } from '@server/academic-entities';
+import { CreateSessioneDto } from './dto/createsessione.dto';
 
-type CreateSessioneData = {
-  nome: string;
+type CreateSessioneData = Omit<
+  CreateSessioneDto,
+  'dataInizio' | 'dataFine' | 'dataInizioInserimento' | 'dataFineInserimento'
+> & {
   dataInizio: Date;
   dataFine: Date;
   dataInizioInserimento: Date;

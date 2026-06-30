@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, Not, FindOptionsRelations } from 'typeorm';
 import { AppelloEntity } from '@server/academic-entities';
+import { CreateAppelloDto } from './dto/create-appello.dto';
+import { UpdateAppelloDto } from './dto/update-appello.dto';
 
 const APPELLO_RELATIONS: FindOptionsRelations<AppelloEntity> = {
   materia: { corsi: { corso: true } },
@@ -9,23 +11,13 @@ const APPELLO_RELATIONS: FindOptionsRelations<AppelloEntity> = {
   sessione: true,
 };
 
-type CreateAppelloData = {
+type CreateAppelloData = Omit<CreateAppelloDto, 'data'> & {
   data: Date;
-  ora: string;
-  aula: string;
-  note?: string;
-  materiaId: number;
-  sessioneId: number;
   docenteId: number;
 };
 
-type UpdateAppelloData = {
+type UpdateAppelloData = Omit<UpdateAppelloDto, 'data'> & {
   data?: Date;
-  ora?: string;
-  aula?: string;
-  note?: string;
-  materiaId?: number;
-  sessioneId?: number;
 };
 
 @Injectable()
