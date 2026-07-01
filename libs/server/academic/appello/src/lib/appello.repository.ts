@@ -11,15 +11,6 @@ const APPELLO_RELATIONS: FindOptionsRelations<AppelloEntity> = {
   sessione: true,
 };
 
-type CreateAppelloData = Omit<CreateAppelloDto, 'data'> & {
-  data: Date;
-  docenteId: number;
-};
-
-type UpdateAppelloData = Omit<UpdateAppelloDto, 'data'> & {
-  data?: Date;
-};
-
 @Injectable()
 export class AppelloRepository {
   constructor(
@@ -105,7 +96,7 @@ export class AppelloRepository {
     });
   }
 
-  async create(data: CreateAppelloData) {
+  async create(data: CreateAppelloDto, docenteId: number) {
     const appello = this.repository.create({
       data: data.data,
       ora: data.ora,
@@ -113,13 +104,13 @@ export class AppelloRepository {
       note: data.note,
       materia: { id: data.materiaId } as any,
       sessione: { id: data.sessioneId } as any,
-      docente: { id: data.docenteId } as any,
+      docente: { id: docenteId } as any,
     });
     const saved = await this.repository.save(appello);
     return this.findById(saved.id);
   }
 
-  async update(id: number, data: UpdateAppelloData) {
+  async update(id: number, data: UpdateAppelloDto) {
     const payload: any = {};
     if (data.data !== undefined) payload.data = data.data;
     if (data.ora !== undefined) payload.ora = data.ora;

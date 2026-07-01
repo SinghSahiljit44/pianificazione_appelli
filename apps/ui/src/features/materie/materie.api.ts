@@ -1,20 +1,34 @@
 import client from '../../api/client';
-import type { Materia, ICreateMateria, IUpdateMateria } from '@shared/api-types';
+import type { CreateMateriaDto, UpdateMateriaDto } from '@server/materia';
+import { Docente } from '../docenti/docenti.api';
 
-export type { Materia };
-export type { ICreateMateria as CreateMateriaDto, IUpdateMateria as UpdateMateriaDto };
+export interface MateriaCorso {
+  id: number;
+  anno: number;
+  corso: { id: number; nome: string; descrizione?: string; durataAnni: number };
+}
+
+export interface Materia {
+  id: number;
+  nome: string;
+  cfu: number;
+  docente?: Docente;
+  corsi: MateriaCorso[] | null;
+}
+
+export type { CreateMateriaDto, UpdateMateriaDto };
 
 export async function getMaterie(): Promise<Materia[]> {
   const res = await client.get<Materia[]>('/materie');
   return res.data;
 }
 
-export async function createMateria(data: ICreateMateria): Promise<Materia> {
+export async function createMateria(data: CreateMateriaDto): Promise<Materia> {
   const res = await client.post<Materia>('/materie', data);
   return res.data;
 }
 
-export async function updateMateria(id: number, data: IUpdateMateria): Promise<Materia> {
+export async function updateMateria(id: number, data: UpdateMateriaDto): Promise<Materia> {
   const res = await client.patch<Materia>(`/materie/${id}`, data);
   return res.data;
 }

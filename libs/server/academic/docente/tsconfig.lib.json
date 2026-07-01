@@ -20,9 +20,6 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../../shared/api-types/tsconfig.lib.json"
-    },
-    {
       "path": "../entities/tsconfig.lib.json"
     },
     {

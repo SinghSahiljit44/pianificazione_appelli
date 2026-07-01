@@ -46,9 +46,6 @@
       "path": "./libs/server/academic/sessione"
     },
     {
-      "path": "./libs/shared/api-types"
-    },
-    {
       "path": "./libs/server/academic/entities"
     }
   ]

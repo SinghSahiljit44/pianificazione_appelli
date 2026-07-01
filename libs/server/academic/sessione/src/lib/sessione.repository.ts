@@ -9,18 +9,8 @@ import {
 } from 'typeorm';
 import { AppelloEntity, SessioneEntity } from '@server/academic-entities';
 import { CreateSessioneDto } from './dto/createsessione.dto';
+import { UpdateSessioneDto } from './dto/updatesessione.dto';
 
-type CreateSessioneData = Omit<
-  CreateSessioneDto,
-  'dataInizio' | 'dataFine' | 'dataInizioInserimento' | 'dataFineInserimento'
-> & {
-  dataInizio: Date;
-  dataFine: Date;
-  dataInizioInserimento: Date;
-  dataFineInserimento: Date;
-};
-
-type UpdateSessioneData = Partial<CreateSessioneData>;
 
 @Injectable()
 export class SessioneRepository {
@@ -77,11 +67,11 @@ export class SessioneRepository {
     });
   }
 
-  create(data: CreateSessioneData) {
+  create(data: CreateSessioneDto) {
     return this.repo.save(this.repo.create(data));
   }
 
-  async update(id: number, data: UpdateSessioneData) {
+  async update(id: number, data: UpdateSessioneDto) {
     await this.repo.update(id, data);
     return this.findById(id);
   }

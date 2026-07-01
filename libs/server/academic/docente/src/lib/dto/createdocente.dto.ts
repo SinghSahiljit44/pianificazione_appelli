@@ -1,8 +1,7 @@
 import { IsString, IsNotEmpty, IsEmail, MinLength, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import type { ICreateDocente } from '@shared/api-types';
 
-export class CreateDocenteDto implements ICreateDocente {
+export class CreateDocenteDto {
   @ApiProperty({ example: 'Prof. Associato' })
   @IsString()
   @IsNotEmpty()

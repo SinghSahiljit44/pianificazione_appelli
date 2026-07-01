@@ -1,26 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDateString } from 'class-validator';
-import type { ICreateSessione } from '@shared/api-types';
+import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 
-export class CreateSessioneDto implements ICreateSessione {
+export class CreateSessioneDto {
   @ApiProperty({ example: 'Sessione Estiva 2025' })
   @IsString()
   @IsNotEmpty()
   nome: string;
 
   @ApiProperty({ example: '2025-06-01' })
-  @IsDateString({}, { message: 'La data non è una data ISO valida' })
-  dataInizio: string;
+  @Type(() => Date)
+  @IsDate({ message: 'La data non è una data ISO valida' })
+  dataInizio: Date;
 
   @ApiProperty({ example: '2025-07-31' })
-  @IsDateString({}, { message: 'La data non è una data ISO valida' })
-  dataFine: string;
+  @Type(() => Date)
+  @IsDate({ message: 'La data non è una data ISO valida' })
+  dataFine: Date;
 
   @ApiProperty({ example: '2025-05-01' })
-  @IsDateString({}, { message: 'La data non è una data ISO valida' })
-  dataInizioInserimento: string;
-
-  @ApiProperty({ example: '2025-05-31' })
-  @IsDateString({}, { message: 'La data non è una data ISO valida' })
-  dataFineInserimento: string;
+  @Type(() => Date)
+  @IsDate({ message: 'La data non è una data ISO valida' })
+  dataInizioInserimento: Date;
+  
+  @ApiProperty({ type: String, format: 'date-time', example: '2026-05-31T23:59:59.000Z' })
+  @Type(() => Date)
+  @IsDate({ message: 'La data inserita non è valida' })
+  dataFineInserimento: Date;
 }

@@ -5,15 +5,19 @@ import UpdateSessioneModal from './UpdateSessioneModal';
 import DeleteSessioneModal from './DeleteSessioneModal';
 import s from '../layouts/admin.module.css';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 
 function getStatoBadge(sessione: Sessione) {
-  const oggi = new Date().toISOString().split('T')[0];
-  const { dataInizio, dataFine, dataInizioInserimento, dataFineInserimento } = sessione;
-  if (oggi < dataInizioInserimento.split('T')[0]) return { label: 'Futura', cls: s.badgeGray };
-  if (oggi <= dataFineInserimento.split('T')[0]) return { label: 'Inserimento aperto', cls: s.badgeGreen };
-  if (oggi < dataInizio.split('T')[0]) return { label: 'In attesa', cls: s.badgeBlue };
-  if (oggi <= dataFine.split('T')[0]) return { label: 'In corso', cls: s.badgeYellow };
+  const oggi = new Date().getTime();
+  const inizioEsami = sessione.dataInizio.getTime();
+  const fineEsami = sessione.dataFine.getTime();
+  const inizioIns = sessione.dataInizioInserimento.getTime();
+  const fineIns = sessione.dataFineInserimento.getTime();
+
+  if (oggi < inizioIns) return { label: 'Futura', cls: s.badgeGray };
+  if (oggi <= fineIns) return { label: 'Inserimento aperto', cls: s.badgeGreen };
+  if (oggi < inizioEsami) return { label: 'In attesa', cls: s.badgeBlue };
+  if (oggi <= fineEsami) return { label: 'In corso', cls: s.badgeYellow };
   return { label: 'Conclusa', cls: s.badgeGray };
 }
 

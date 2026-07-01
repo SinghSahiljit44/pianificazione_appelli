@@ -21,7 +21,7 @@ export class AppelloService {
     await this.checkDuplicateAppello(data, dataDTO.materiaId);
     await this.checkDuplicateAppelloForDocente(data, docenteId);
 
-    return this.repository.create({ ...dataDTO, data, docenteId });
+    return this.repository.create({ ...dataDTO, data }, docenteId);
   }
 
   async update(id: number, dataDTO: UpdateAppelloDto, docenteId: number) {

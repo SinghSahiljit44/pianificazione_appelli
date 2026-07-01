@@ -1,20 +1,31 @@
 import client from '../../api/client';
-import type { Docente, ICreateDocente, IUpdateDocente } from '@shared/api-types';
+import type { CreateDocenteDto, UpdateDocenteDto } from '@server/docente';
 
-export type { Docente };
-export type { ICreateDocente as CreateDocenteDto, IUpdateDocente as UpdateDocenteDto };
+export interface DocenteUser {
+  id: number; //UserID
+  name: string; 
+  email: string;
+  role: string; //user?
+}
+
+export interface Docente {
+  id: number;
+  titolo: string;
+  dipartimento: string;
+  user: DocenteUser;
+}export type { CreateDocenteDto, UpdateDocenteDto };
 
 export async function getDocenti(): Promise<Docente[]> {
   const res = await client.get<Docente[]>('/docenti');
   return res.data;
 }
 
-export async function createDocente(data: ICreateDocente): Promise<Docente> {
+export async function createDocente(data: CreateDocenteDto): Promise<Docente> {
   const res = await client.post<Docente>('/docenti', data);
   return res.data;
 }
 
-export async function updateDocente(id: number, data: IUpdateDocente): Promise<Docente> {
+export async function updateDocente(id: number, data: UpdateDocenteDto): Promise<Docente> {
   const res = await client.patch<Docente>(`/docenti/${id}`, data);
   return res.data;
 }

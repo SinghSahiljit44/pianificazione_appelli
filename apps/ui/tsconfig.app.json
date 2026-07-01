@@ -36,7 +36,19 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../../libs/shared/api-types/tsconfig.lib.json"
+      "path": "../../libs/server/academic/sessione/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/materia/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/docente/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/corso-di-laurea/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/server/academic/appello/tsconfig.lib.json"
     }
   ]
 }

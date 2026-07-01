@@ -1,20 +1,24 @@
 import client from '../../api/client';
-import type { CorsoLaurea, ICreateCorsoLaurea, IUpdateCorsoLaurea } from '@shared/api-types';
+import type { CreateCorsoDiLaureaDto, UpdateCorsoDiLaureaDto } from '@server/corso-di-laurea';
 
-export type { CorsoLaurea };
-export type { ICreateCorsoLaurea as CreateCorsoLaureaDto, IUpdateCorsoLaurea as UpdateCorsoLaureaDto };
+export interface CorsoLaurea {
+  id: number;
+  nome: string;
+  descrizione?: string;
+  durataAnni: number;
+}export type { CreateCorsoDiLaureaDto, UpdateCorsoDiLaureaDto };
 
 export async function getCorsiLaurea(): Promise<CorsoLaurea[]> {
   const res = await client.get<CorsoLaurea[]>('/corsi-laurea');
   return res.data;
 }
 
-export async function createCorsoLaurea(data: ICreateCorsoLaurea): Promise<CorsoLaurea> {
+export async function createCorsoLaurea(data: CreateCorsoDiLaureaDto): Promise<CorsoLaurea> {
   const res = await client.post<CorsoLaurea>('/corsi-laurea', data);
   return res.data;
 }
 
-export async function updateCorsoLaurea(id: number, data: IUpdateCorsoLaurea): Promise<CorsoLaurea> {
+export async function updateCorsoLaurea(id: number, data: UpdateCorsoDiLaureaDto): Promise<CorsoLaurea> {
   const res = await client.patch<CorsoLaurea>(`/corsi-laurea/${id}`, data);
   return res.data;
 }

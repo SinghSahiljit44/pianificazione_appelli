@@ -3,7 +3,7 @@ import { getAllAppelli, type Appello } from './appelli.api';
 import Select from '../../components/Select';
 import s from '../layouts/admin.module.css';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 const fmtOra = (o: string) => o.slice(0, 5);
 
 type Option = { value: string; label: string };
@@ -80,7 +80,7 @@ export default function AppelliAdminPage() {
 
   const filtered = useMemo(() => {
     return [...appelli]
-      .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime())
+      .sort((a, b) => a.data.getTime() - b.data.getTime())
       .filter((a) => {
         if (docenteId && String(a.docente?.id) !== docenteId) return false;
         if (materiaId && String(a.materia.id) !== materiaId) return false;

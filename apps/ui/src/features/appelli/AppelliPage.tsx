@@ -9,7 +9,7 @@ import DeleteAppelloModal from './DeleteAppelloModal';
 import s from '../layouts/admin.module.css';
 import ls from './AppelliPage.module.css';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 const fmtOra = (o: string) => o.slice(0, 5);
 
 type Action =
@@ -60,9 +60,7 @@ export default function AppelliPage() {
   const haMaterie = materie.length > 0;
   const canCreate = inserimentoAperto && haMaterie;
 
-  const sorted = [...appelli].sort(
-    (a, b) => new Date(a.data).getTime() - new Date(b.data).getTime()
-  );
+  const sorted = [...appelli].sort((a, b) => a.data.getTime() - b.data.getTime());
 
   return (
     <div className={s.page}>

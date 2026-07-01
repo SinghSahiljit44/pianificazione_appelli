@@ -11,7 +11,7 @@ export interface SessioneFormValues {
   dataFineInserimento: string;
 }
 
-const toInput = (d: string) => d?.split('T')[0] ?? '';
+const toInputDate = (d: Date) => d.toISOString().split('T')[0];
 
 export const EMPTY_SESSIONE_FORM: SessioneFormValues = {
   nome: '',
@@ -24,20 +24,20 @@ export const EMPTY_SESSIONE_FORM: SessioneFormValues = {
 export function toSessioneForm(sessione: Sessione): SessioneFormValues {
   return {
     nome: sessione.nome,
-    dataInizio: toInput(sessione.dataInizio),
-    dataFine: toInput(sessione.dataFine),
-    dataInizioInserimento: toInput(sessione.dataInizioInserimento),
-    dataFineInserimento: toInput(sessione.dataFineInserimento),
+    dataInizio: toInputDate(sessione.dataInizio),
+    dataFine: toInputDate(sessione.dataFine),
+    dataInizioInserimento: toInputDate(sessione.dataInizioInserimento),
+    dataFineInserimento: toInputDate(sessione.dataFineInserimento),
   };
 }
 
 export function buildSessionePayload(form: SessioneFormValues): CreateSessioneDto {
   return {
     nome: form.nome,
-    dataInizio: form.dataInizio,
-    dataFine: form.dataFine,
-    dataInizioInserimento: form.dataInizioInserimento,
-    dataFineInserimento: form.dataFineInserimento,
+    dataInizio: new Date(form.dataInizio),
+    dataFine: new Date(form.dataFine),
+    dataInizioInserimento: new Date(form.dataInizioInserimento),
+    dataFineInserimento: new Date(form.dataFineInserimento),
   };
 }
 

@@ -1,12 +1,12 @@
-import { IsString, IsOptional, IsInt, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsDateString, IsDate } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import type { IUpdateAppello } from '@shared/api-types';
+import { Type } from 'class-transformer';
 
-export class UpdateAppelloDto implements IUpdateAppello {
-    @ApiPropertyOptional({ example: '2025-06-20' })
-    @IsOptional()
-    @IsDateString({}, { message: 'La data non è una data ISO valida' })
-    data?: string;
+export class UpdateAppelloDto {
+    @ApiPropertyOptional({ example: '2025-06-01' })
+    @Type(() => Date)
+    @IsDate({ message: 'La data non è una data ISO valida' })
+    data?: Date;
 
     @ApiPropertyOptional({ example: 'B3' })
     @IsOptional()

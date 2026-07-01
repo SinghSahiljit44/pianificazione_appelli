@@ -4,7 +4,7 @@ import { getApiErrorMessage } from '../../api/apiError';
 import { deleteAppello, type Appello } from './appelli.api';
 import s from '../layouts/admin.module.css';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 
 interface Props {
   appello: Appello;
@@ -34,6 +34,7 @@ export default function DeleteAppelloModal({ appello, onClose, onSaved }: Props)
       <div className={s.form}>
         <p>
           Eliminare l'appello di <strong>{appello.materia.nome}</strong> del{' '}
+          {/* FIX: appello.data viene passato direttamente senza conversioni extra */}
           <strong>{fmt(appello.data)}</strong>? L'azione è irreversibile.
         </p>
         {error && <div className={s.formError}>{error}</div>}

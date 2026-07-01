@@ -1,8 +1,9 @@
 import client from '../../api/client';
-import type { IChangePassword } from '@shared/api-types';
 
-export type { IChangePassword as ChangePasswordDto };
-
+export interface ChangePasswordDTO {
+  currentPassword: string;
+  newPassword: string;
+}
 export interface AuthenticatedUser {
   id: number;
   email: string;
@@ -26,6 +27,6 @@ export async function login(
   return res.data;
 }
 
-export async function changePassword(data: IChangePassword): Promise<void> {
+export async function changePassword(data: ChangePasswordDTO): Promise<void> {
   await client.patch('/auth/password', data);
 }

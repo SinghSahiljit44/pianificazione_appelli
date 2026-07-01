@@ -7,17 +7,16 @@ import type { Sessione } from '../sessioni/sessioni.api';
 import s from '../layouts/admin.module.css';
 
 export interface AppelloFormValues {
-  data: string;
+  data: string; 
   ora: string;
   aula: string;
   note: string;
   materiaId: string;
   sessioneId: string;
 }
-
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 const fmtOra = (o: string) => o.slice(0, 5);
-const toInput = (d: string) => d?.split('T')[0] ?? '';
+const toInputDate = (d: Date) => d.toISOString().split('T')[0];
 
 export const EMPTY_APPELLO_FORM: AppelloFormValues = {
   data: '', ora: '', aula: '', note: '', materiaId: '', sessioneId: '',
@@ -25,7 +24,7 @@ export const EMPTY_APPELLO_FORM: AppelloFormValues = {
 
 export function toAppelloForm(a: Appello): AppelloFormValues {
   return {
-    data: toInput(a.data),
+    data: toInputDate(a.data),
     ora: fmtOra(a.ora),
     aula: a.aula,
     note: a.note ?? '',
@@ -36,8 +35,8 @@ export function toAppelloForm(a: Appello): AppelloFormValues {
 
 export function buildAppelloPayload(form: AppelloFormValues, sessioneId: number): CreateAppelloDto {
   return {
-    data: form.data,
-    ora: `${form.ora}:00`,
+    data: new Date(form.data), // FIX: Istanzia l'oggetto Date per il DTO del backend
+    ora: form.ora.length === 5 ? `${form.ora}:00` : form.ora,
     aula: form.aula,
     materiaId: Number(form.materiaId),
     sessioneId,
@@ -105,8 +104,9 @@ export default function AppelloForm({ value, onChange, mode, materie, sessioniAt
           <DateInput
             className={s.input}
             value={value.data}
-            min={sessioneForm ? toInput(sessioneForm.dataInizio) : undefined}
-            max={sessioneForm ? toInput(sessioneForm.dataFine) : undefined}
+            // FIX: Genera correttamente min/max usando il nuovo helper toInputDate
+            min={sessioneForm ? toInputDate(sessioneForm.dataInizio) : undefined}
+            max={sessioneForm ? toInputDate(sessioneForm.dataFine) : undefined}
             onChange={(v) => setField('data', v)}
             disabled={!sessioneForm}
             required

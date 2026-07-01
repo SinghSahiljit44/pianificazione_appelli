@@ -4,15 +4,19 @@ import { getAppelliBySessione, type Appello } from '../appelli/appelli.api';
 import s from '../layouts/admin.module.css';
 import ls from './SessioniDocentePage.module.css';
 
-const fmt = (d: string) => new Date(d).toLocaleDateString('it-IT');
+const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 
 function getStatoBadge(sessione: Sessione) {
-  const oggi = new Date().toISOString().split('T')[0];
-  const { dataInizio, dataFine, dataInizioInserimento, dataFineInserimento } = sessione;
-  if (oggi < dataInizioInserimento.split('T')[0]) return { label: 'Futura', cls: s.badgeGray };
-  if (oggi <= dataFineInserimento.split('T')[0]) return { label: 'Inserimento aperto', cls: s.badgeGreen };
-  if (oggi < dataInizio.split('T')[0]) return { label: 'In attesa', cls: s.badgeBlue };
-  if (oggi <= dataFine.split('T')[0]) return { label: 'In corso', cls: s.badgeYellow };
+  const oggi = new Date().getTime();
+  const inizioEsami = sessione.dataInizio.getTime();
+  const fineEsami = sessione.dataFine.getTime();
+  const inizioIns = sessione.dataInizioInserimento.getTime();
+  const fineIns = sessione.dataFineInserimento.getTime();
+
+  if (oggi < inizioIns) return { label: 'Futura', cls: s.badgeGray };
+  if (oggi <= fineIns) return { label: 'Inserimento aperto', cls: s.badgeGreen };
+  if (oggi < inizioEsami) return { label: 'In attesa', cls: s.badgeBlue };
+  if (oggi <= fineEsami) return { label: 'In corso', cls: s.badgeYellow };
   return { label: 'Conclusa', cls: s.badgeGray };
 }
 
@@ -26,7 +30,7 @@ export default function SessioniDocentePage() {
     async function load() {
       try {
         const sess = await getSessioni();
-        sess.sort((a, b) => b.dataInizio.localeCompare(a.dataInizio));
+        sess.sort((a, b) => b.dataInizio.getTime() - a.dataInizio.getTime());
         setSessioni(sess);
 
         const results = await Promise.all(
@@ -34,7 +38,7 @@ export default function SessioniDocentePage() {
         );
         const map: Record<number, Appello[]> = {};
         sess.forEach((sessione, i) => {
-          map[sessione.id] = results[i].sort((a, b) => a.data.localeCompare(b.data));
+          map[sessione.id] = results[i].sort((a, b) => a.data.getTime() - b.data.getTime());
         });
         setAppelli(map);
       } catch {

@@ -1,8 +1,7 @@
 import { IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import type { IUpdateDocente } from '@shared/api-types';
 
-export class UpdateDocenteDto implements IUpdateDocente {
+export class UpdateDocenteDto {
   @ApiProperty({ required: false, example: 'Prof. Ordinario' })
   @IsOptional()
   @IsString()
