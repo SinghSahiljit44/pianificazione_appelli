@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import Select from '../../components/Select';
-import type { CorsoLaurea, CreateCorsoLaureaDto } from './corsi-laurea.api';
+import type { CorsoLaurea, CreateCorsoDiLaureaDto } from './corsi-laurea.api';
 import s from '../layouts/admin.module.css';
 
 export interface CorsoFormValues {
@@ -19,7 +19,7 @@ export function toCorsoForm(c: CorsoLaurea): CorsoFormValues {
   };
 }
 
-export function buildCorsoPayload(form: CorsoFormValues): CreateCorsoLaureaDto {
+export function buildCorsoPayload(form: CorsoFormValues): CreateCorsoDiLaureaDto {
   return {
     nome: form.nome,
     durataAnni: Number(form.durataAnni),
