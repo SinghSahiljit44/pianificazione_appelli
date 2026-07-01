@@ -41,7 +41,16 @@ export class DocenteService {
       password: data.password,
       role: UserRole.USER,
     });
-    return this.repository.create({ titolo: data.titolo, dipartimento: data.dipartimento, userId: user.id });
+    try {
+      return await this.repository.create({
+        titolo: data.titolo,
+        dipartimento: data.dipartimento,
+        userId: user.id,
+      });
+    } catch (err) {
+      await this.usersService.removeUser(user.id);
+      throw err;
+    }
   }
 
   async update(id: number, data: UpdateDocenteDto) {
