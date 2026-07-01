@@ -1,16 +1,5 @@
 import client from '../../api/client';
-import type { CreateSessioneDto, UpdateSessioneDto } from '@server/sessione';
-
-export interface Sessione {
-  id: number;
-  nome: string;
-  dataInizio: Date;
-  dataFine: Date;
-  dataInizioInserimento: Date;
-  dataFineInserimento: Date;
-}
-
-export type { CreateSessioneDto, UpdateSessioneDto };
+import type { CreateSessioneDto, UpdateSessioneDto, SessioneListItem as Sessione } from '@server/sessione';
 
 export async function getSessioni(): Promise<Sessione[]> {
   const res = await client.get<Sessione[]>('/sessioni');

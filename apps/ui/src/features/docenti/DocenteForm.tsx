@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { Docente } from './docenti.api';
+import type { DocenteListItem as Docente } from '@server/docente';
 import s from '../layouts/admin.module.css';
 
 export interface DocenteFormValues {

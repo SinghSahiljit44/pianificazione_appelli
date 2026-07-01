@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { createDocente, type CreateDocenteDto } from './docenti.api';
+import { createDocente } from './docenti.api';
+import type { CreateDocenteDto } from '@server/docente';
 import DocenteForm, { EMPTY_DOCENTE_FORM } from './DocenteForm';
 import s from '../layouts/admin.module.css';
 

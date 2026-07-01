@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { updateAppello, type Appello } from './appelli.api';
+import { updateAppello } from './appelli.api';
+import type { AppelloListItem as Appello } from '@server/appello';
 import type { Materia } from '../materie/materie.api';
 import AppelloForm, {
   toAppelloForm,

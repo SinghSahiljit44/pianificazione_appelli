@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getSessioni, type Sessione } from './sessioni.api';
+import { getSessioni } from './sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
 import CreateSessioneModal from './CreateSessioneModal';
 import UpdateSessioneModal from './UpdateSessioneModal';
 import DeleteSessioneModal from './DeleteSessioneModal';

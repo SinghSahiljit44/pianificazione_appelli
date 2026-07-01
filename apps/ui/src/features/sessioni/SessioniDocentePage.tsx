@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getSessioni, type Sessione } from './sessioni.api';
-import { getAppelliBySessione, type Appello } from '../appelli/appelli.api';
+import { getSessioni } from './sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
+import { getAppelliBySessione } from '../appelli/appelli.api';
+import type { AppelloListItem as Appello } from '@server/appello';
 import s from '../layouts/admin.module.css';
 import ls from './SessioniDocentePage.module.css';
 

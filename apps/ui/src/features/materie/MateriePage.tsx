@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getMaterie, type Materia } from './materie.api';
-import { getDocenti, type Docente } from '../docenti/docenti.api';
-import { getCorsiLaurea, type CorsoLaurea } from '../corsi-laurea/corsi-laurea.api';
+import { getDocenti } from '../docenti/docenti.api';
+import type { DocenteListItem as Docente } from '@server/docente';
+import { getCorsiLaurea } from '../corsi-laurea/corsi-laurea.api';
+import type { CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 import CreateMateriaModal from './CreateMateriaModal';
 import UpdateMateriaModal from './UpdateMateriaModal';
 import DeleteMateriaModal from './DeleteMateriaModal';
@@ -17,7 +19,7 @@ type Action =
 export default function MateriePage() {
   const [materie, setMaterie] = useState<Materia[]>([]);
   const [docenti, setDocenti] = useState<Docente[]>([]);
-  const [corsiLaurea, setCorsiLaurea] = useState<CorsoLaurea[]>([]);
+  const [corsiLaurea, setCorsiLaurea] = useState<CorsoDiLaurea[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
   const [action, setAction] = useState<Action>(null);

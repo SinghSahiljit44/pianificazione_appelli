@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getMieiAppelli, type Appello } from './appelli.api';
-import { getDocenteMe, type Docente } from '../docenti/docenti.api';
+import { getMieiAppelli } from './appelli.api';
+import type { AppelloListItem as Appello } from '@server/appello';
+import type { DocenteListItem as Docente } from '@server/docente';
+import { getDocenteMe } from '../docenti/docenti.api';
 import { getMaterieByDocente, type Materia } from '../materie/materie.api';
-import { getSessioniAttivePerInserimento, type Sessione } from '../sessioni/sessioni.api';
+import { getSessioniAttivePerInserimento } from '../sessioni/sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
 import CreateAppelloModal from './CreateAppelloModal';
 import UpdateAppelloModal from './UpdateAppelloModal';
 import DeleteAppelloModal from './DeleteAppelloModal';

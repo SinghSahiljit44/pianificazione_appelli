@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { deleteSessione, type Sessione } from './sessioni.api';
+import { deleteSessione } from './sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
 import s from '../layouts/admin.module.css';
 
 interface Props {

@@ -1,8 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import Select from '../../components/Select';
 import type { Materia, CreateMateriaDto } from './materie.api';
-import type { Docente } from '../docenti/docenti.api';
-import type { CorsoLaurea } from '../corsi-laurea/corsi-laurea.api';
+import type { DocenteListItem as Docente } from '@server/docente';
+import type { CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 import s from '../layouts/admin.module.css';
 import ls from './MateriePage.module.css';
 
@@ -50,7 +50,7 @@ export function buildMateriaPayload(form: MateriaFormValues): CreateMateriaDto {
   };
 }
 
-function annoOptions(corsoId: string, corsiLaurea: CorsoLaurea[]) {
+function annoOptions(corsoId: string, corsiLaurea: CorsoDiLaurea[]) {
   const corso = corsiLaurea.find((c) => String(c.id) === corsoId);
   const max = corso?.durataAnni ?? 5;
   return Array.from({ length: max }, (_, i) => i + 1);
@@ -60,7 +60,7 @@ interface Props {
   value: MateriaFormValues;
   onChange: Dispatch<SetStateAction<MateriaFormValues>>;
   docenti: Docente[];
-  corsiLaurea: CorsoLaurea[];
+  corsiLaurea: CorsoDiLaurea[];
 }
 
 export default function MateriaForm({ value, onChange, docenti, corsiLaurea }: Props) {

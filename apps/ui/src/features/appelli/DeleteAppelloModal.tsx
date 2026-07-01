@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { deleteAppello, type Appello } from './appelli.api';
+import { deleteAppello } from './appelli.api';
+import type { AppelloListItem as Appello } from '@server/appello';
 import s from '../layouts/admin.module.css';
 
 const fmt = (d: Date) => d.toLocaleDateString('it-IT');

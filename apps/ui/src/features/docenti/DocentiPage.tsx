@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getDocenti, type Docente } from './docenti.api';
+import { getDocenti } from './docenti.api';
+import type { DocenteListItem as Docente } from '@server/docente';
 import CreateDocenteModal from './CreateDocenteModal';
 import UpdateDocenteModal from './UpdateDocenteModal';
 import DeleteDocenteModal from './DeleteDocenteModal';

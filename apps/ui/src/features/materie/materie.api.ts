@@ -1,22 +1,7 @@
 import client from '../../api/client';
-import type { CreateMateriaDto, UpdateMateriaDto } from '@server/materia';
-import { Docente } from '../docenti/docenti.api';
+import type { CreateMateriaDto, UpdateMateriaDto, MateriaListItem as Materia } from '@server/materia';
 
-export interface MateriaCorso {
-  id: number;
-  anno: number;
-  corso: { id: number; nome: string; descrizione?: string; durataAnni: number };
-}
-
-export interface Materia {
-  id: number;
-  nome: string;
-  cfu: number;
-  docente?: Docente;
-  corsi: MateriaCorso[] | null;
-}
-
-export type { CreateMateriaDto, UpdateMateriaDto };
+export type { CreateMateriaDto, UpdateMateriaDto, Materia };
 
 export async function getMaterie(): Promise<Materia[]> {
   const res = await client.get<Materia[]>('/materie');

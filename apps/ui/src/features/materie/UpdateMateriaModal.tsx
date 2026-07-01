@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
 import { updateMateria, type Materia } from './materie.api';
-import type { Docente } from '../docenti/docenti.api';
-import type { CorsoLaurea } from '../corsi-laurea/corsi-laurea.api';
+import type { DocenteListItem as Docente } from '@server/docente';
+import type { CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 import MateriaForm, {
   toMateriaForm,
   validateMateriaForm,
@@ -15,7 +15,7 @@ import s from '../layouts/admin.module.css';
 interface Props {
   materia: Materia;
   docenti: Docente[];
-  corsiLaurea: CorsoLaurea[];
+  corsiLaurea: CorsoDiLaurea[];
   onClose: () => void;
   onSaved: () => void;
 }

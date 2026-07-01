@@ -1,26 +1,5 @@
 import client from '../../api/client';
-import type { CreateAppelloDto, UpdateAppelloDto } from '@server/appello';
-import { Docente } from '../docenti/docenti.api';
-import { Sessione } from '../sessioni/sessioni.api';
-
-export interface Appello {
-  id: number;
-  data: Date;
-  ora: string;
-  aula: string;
-  note?: string;
-  sessione: Sessione;
-  materia: {
-    id: number;
-    nome: string;
-    cfu: number;
-    docente?: Docente;
-    corsi: { id: number; anno: number; corso: { id: number; nome: string } }[] | null;
-  };
-  docente: Docente;
-}
-
-export type { CreateAppelloDto as CreateAppelloDto, UpdateAppelloDto as UpdateAppelloDto };
+import type { CreateAppelloDto, UpdateAppelloDto, AppelloListItem as Appello } from '@server/appello';
 
 export async function getMieiAppelli(): Promise<Appello[]> {
   const res = await client.get<Appello[]>('/appelli/miei');

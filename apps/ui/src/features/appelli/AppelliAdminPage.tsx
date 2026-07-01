@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getAllAppelli, type Appello } from './appelli.api';
+import { getAllAppelli } from './appelli.api';
+import type { AppelloListItem as Appello } from '@server/appello';
 import Select from '../../components/Select';
 import s from '../layouts/admin.module.css';
 

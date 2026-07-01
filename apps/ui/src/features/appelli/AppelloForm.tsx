@@ -1,9 +1,9 @@
 import type { Dispatch, SetStateAction } from 'react';
 import DateInput from '../../components/DateInput';
 import Select from '../../components/Select';
-import type { Appello, CreateAppelloDto } from './appelli.api';
+import type { AppelloListItem as Appello, CreateAppelloDto } from '@server/appello';
 import type { Materia } from '../materie/materie.api';
-import type { Sessione } from '../sessioni/sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
 import s from '../layouts/admin.module.css';
 
 export interface AppelloFormValues {

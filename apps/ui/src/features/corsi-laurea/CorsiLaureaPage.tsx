@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getCorsiLaurea, type CorsoLaurea } from './corsi-laurea.api';
+import { getCorsiLaurea } from './corsi-laurea.api';
+import type { CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 import CreateCorsoLaureaModal from './CreateCorsoLaureaModal';
 import UpdateCorsoLaureaModal from './UpdateCorsoLaureaModal';
 import DeleteCorsoLaureaModal from './DeleteCorsoLaureaModal';
@@ -7,12 +8,12 @@ import s from '../layouts/admin.module.css';
 
 type Action =
   | { type: 'create' }
-  | { type: 'edit'; corso: CorsoLaurea }
-  | { type: 'delete'; corso: CorsoLaurea }
+  | { type: 'edit'; corso: CorsoDiLaurea }
+  | { type: 'delete'; corso: CorsoDiLaurea }
   | null;
 
 export default function CorsiLaureaPage() {
-  const [corsi, setCorsi] = useState<CorsoLaurea[]>([]);
+  const [corsi, setCorsi] = useState<CorsoDiLaurea[]>([]);
   const [loading, setLoading] = useState(true);
   const [pageError, setPageError] = useState<string | null>(null);
   const [action, setAction] = useState<Action>(null);

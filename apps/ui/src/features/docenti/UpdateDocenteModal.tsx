@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { updateDocente, type Docente } from './docenti.api';
+import { updateDocente } from './docenti.api';
+import type { DocenteListItem as Docente } from '@server/docente';
 import DocenteForm, {
   toDocenteForm,
   type DocenteFormValues,

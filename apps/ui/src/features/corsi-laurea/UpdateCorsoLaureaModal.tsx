@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { updateCorsoLaurea, type CorsoLaurea } from './corsi-laurea.api';
+import { updateCorsoLaurea } from './corsi-laurea.api';
+import type { CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 import CorsoLaureaForm, {
   toCorsoForm,
   buildCorsoPayload,
@@ -10,7 +11,7 @@ import CorsoLaureaForm, {
 import s from '../layouts/admin.module.css';
 
 interface Props {
-  corso: CorsoLaurea;
+  corso: CorsoDiLaurea;
   onClose: () => void;
   onSaved: () => void;
 }

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { updateSessione, type Sessione } from './sessioni.api';
+import { updateSessione } from './sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
+
 import SessioneForm, {
   toSessioneForm,
   buildSessionePayload,

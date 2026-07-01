@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import DateInput from '../../components/DateInput';
-import type { Sessione, CreateSessioneDto } from './sessioni.api';
+import type { CreateSessioneDto, SessioneListItem as Sessione } from '@server/sessione';
 import s from '../layouts/admin.module.css';
 
 export interface SessioneFormValues {

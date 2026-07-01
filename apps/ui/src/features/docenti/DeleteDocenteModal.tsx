@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
-import { deleteDocente, type Docente } from './docenti.api';
+import { deleteDocente } from './docenti.api';
+import type { DocenteListItem as Docente } from '@server/docente';
+
 import s from '../layouts/admin.module.css';
 
 interface Props {

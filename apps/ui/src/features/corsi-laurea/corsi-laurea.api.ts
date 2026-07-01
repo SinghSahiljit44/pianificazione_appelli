@@ -1,25 +1,18 @@
 import client from '../../api/client';
-import type { CreateCorsoDiLaureaDto, UpdateCorsoDiLaureaDto } from '@server/corso-di-laurea';
+import type { CreateCorsoDiLaureaDto, UpdateCorsoDiLaureaDto, CorsoLaureaListItem as CorsoDiLaurea } from '@server/corso-di-laurea';
 
-export interface CorsoLaurea {
-  id: number;
-  nome: string;
-  descrizione?: string;
-  durataAnni: number;
-}export type { CreateCorsoDiLaureaDto, UpdateCorsoDiLaureaDto };
-
-export async function getCorsiLaurea(): Promise<CorsoLaurea[]> {
-  const res = await client.get<CorsoLaurea[]>('/corsi-laurea');
+export async function getCorsiLaurea(): Promise<CorsoDiLaurea[]> {
+  const res = await client.get<CorsoDiLaurea[]>('/corsi-laurea');
   return res.data;
 }
 
-export async function createCorsoLaurea(data: CreateCorsoDiLaureaDto): Promise<CorsoLaurea> {
-  const res = await client.post<CorsoLaurea>('/corsi-laurea', data);
+export async function createCorsoLaurea(data: CreateCorsoDiLaureaDto): Promise<CorsoDiLaurea> {
+  const res = await client.post<CorsoDiLaurea>('/corsi-laurea', data);
   return res.data;
 }
 
-export async function updateCorsoLaurea(id: number, data: UpdateCorsoDiLaureaDto): Promise<CorsoLaurea> {
-  const res = await client.patch<CorsoLaurea>(`/corsi-laurea/${id}`, data);
+export async function updateCorsoLaurea(id: number, data: UpdateCorsoDiLaureaDto): Promise<CorsoDiLaurea> {
+  const res = await client.patch<CorsoDiLaurea>(`/corsi-laurea/${id}`, data);
   return res.data;
 }
 

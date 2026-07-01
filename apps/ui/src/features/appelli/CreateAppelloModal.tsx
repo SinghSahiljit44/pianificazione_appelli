@@ -3,7 +3,7 @@ import Modal from '../../components/Modal';
 import { getApiErrorMessage } from '../../api/apiError';
 import { createAppello } from './appelli.api';
 import type { Materia } from '../materie/materie.api';
-import type { Sessione } from '../sessioni/sessioni.api';
+import type { SessioneListItem as Sessione } from '@server/sessione';
 import AppelloForm, {
   EMPTY_APPELLO_FORM,
   buildAppelloPayload,
