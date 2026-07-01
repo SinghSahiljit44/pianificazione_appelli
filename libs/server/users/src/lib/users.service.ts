@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -9,6 +10,7 @@ import { UsersRepository } from './users.repository';
 import { UserEntity } from './user.entity';
 import { UserRole } from './dto/user-role.enum';
 import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class ServerUsersService {
@@ -19,7 +21,7 @@ export class ServerUsersService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user)
-      throw new NotFoundException('User with email ${email} not found');
+      throw new UnauthorizedException('Credentials not valid!');
 
     return user;
   }
@@ -27,18 +29,13 @@ export class ServerUsersService {
   async getOneUser(id: number): Promise<UserEntity> {
     const user = await this.usersRepository.findById(id);
 
-    if (!user) throw new NotFoundException('User with id ${id} not found');
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
 
     return user;
   }
 
   async getUsers(role?: UserRole): Promise<UserEntity[]> {
-    const users = await this.usersRepository.findAll(role);
-
-    if (role && users.length === 0) {
-      throw new NotFoundException(`No users found with role ${role}`);
-    }
-    return users;
+    return this.usersRepository.findAll(role);
   }
 
   async create(dto: CreateUserDto): Promise<UserEntity> {

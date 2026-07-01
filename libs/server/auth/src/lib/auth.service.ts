@@ -1,5 +1,4 @@
 import {
-  NotFoundException,
   Injectable,
   UnauthorizedException,
   BadRequestException,
@@ -25,8 +24,6 @@ export class ServerAuthService {
     password: string,
   ): Promise<AuthenticatedUser> {
     const user = await this.usersService.findByEmail(email);
-
-    if (!user) throw new NotFoundException('Credentials not valid');
 
     const passwordMatches = await bcrypt.compare(password, user.passwordHash);
     if (!passwordMatches) {

@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { SessioneRepository } from './sessione.repository';
-import { SessioneEntity } from '@server/academic-entities';
+import { SessioneEntity, parseDay } from '@server/academic-entities';
 import { CreateSessioneDto } from './dto/createsessione.dto';
 import { UpdateSessioneDto } from './dto/updatesessione.dto';
 
@@ -34,9 +34,9 @@ export class SessioneService {
 
   async isSessioneOpen(sessioneId: number): Promise<boolean> {
     const sessione = await this.getById(sessioneId);
-    const now = new Date();
+    const oggi = parseDay(new Date());
     return (
-      now >= new Date(sessione.dataInizio) && now <= new Date(sessione.dataFine)
+      oggi >= parseDay(sessione.dataInizio) && oggi <= parseDay(sessione.dataFine)
     );
   }
 
@@ -45,10 +45,10 @@ export class SessioneService {
   }
 
   async create(data: CreateSessioneDto): Promise<SessioneEntity> {
-    const dataInizio = new Date(data.dataInizio);
-    const dataFine = new Date(data.dataFine);
-    const dataInizioInserimento = new Date(data.dataInizioInserimento);
-    const dataFineInserimento = new Date(data.dataFineInserimento);
+    const dataInizio = parseDay(data.dataInizio);
+    const dataFine = parseDay(data.dataFine);
+    const dataInizioInserimento = parseDay(data.dataInizioInserimento);
+    const dataFineInserimento = parseDay(data.dataFineInserimento);
 
     this.checkDateConsistency(
       dataInizio,
@@ -69,18 +69,10 @@ export class SessioneService {
   async update(id: number, data: UpdateSessioneDto) {
     const sessione = await this.getById(id);
 
-    const dataInizio = data.dataInizio
-      ? new Date(data.dataInizio)
-      : new Date(sessione.dataInizio);
-    const dataFine = data.dataFine
-      ? new Date(data.dataFine)
-      : new Date(sessione.dataFine);
-    const inizioIns = data.dataInizioInserimento
-      ? new Date(data.dataInizioInserimento)
-      : new Date(sessione.dataInizioInserimento);
-    const fineIns = data.dataFineInserimento
-      ? new Date(data.dataFineInserimento)
-      : new Date(sessione.dataFineInserimento);
+    const dataInizio = parseDay(data.dataInizio ?? sessione.dataInizio);
+    const dataFine = parseDay(data.dataFine ?? sessione.dataFine);
+    const inizioIns = parseDay(data.dataInizioInserimento ?? sessione.dataInizioInserimento);
+    const fineIns = parseDay(data.dataFineInserimento ?? sessione.dataFineInserimento);
 
     this.checkDateConsistency(dataInizio, dataFine, inizioIns, fineIns);
     await this.checkOverlap(dataInizio, dataFine, id);
@@ -128,11 +120,7 @@ export class SessioneService {
         "La fine del periodo di inserimento non può superare l'inizio della sessione",
       );
     }
-    const oggi = new Date();
-    oggi.setHours(0, 0, 0, 0);
-    inizioInserimento.setHours(0, 0, 0, 0);
-
-    if (inizioInserimento < oggi) {
+    if (inizioInserimento < parseDay(new Date())) {
       throw new BadRequestException(
         'La data di inizio inserimento non può essere nel passato',
       );

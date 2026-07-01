@@ -18,15 +18,11 @@ export class MateriaService {
   }
 
   async getByDocenteId(docenteId: number) {
-    const materie = await this.repository.findByDocenteId(docenteId);
-    if (!materie || materie.length === 0) throw new NotFoundException(`Materia con docente ${docenteId} non trovata`);
-    return materie;
+    return this.repository.findByDocenteId(docenteId);
   }
 
   async getByCorsoId(corsoId: number) {
-    const materie = await this.repository.findByCorsoId(corsoId);
-    if (!materie || materie.length === 0) throw new NotFoundException(`Nessuna materia trovata per il corso ${corsoId}`);
-    return materie;
+    return this.repository.findByCorsoId(corsoId);
   }
 
   async getWithAppelli(id: number) {

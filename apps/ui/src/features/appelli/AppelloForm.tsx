@@ -16,8 +16,12 @@ export interface AppelloFormValues {
 }
 const fmt = (d: Date) => d.toLocaleDateString('it-IT');
 const fmtOra = (o: string) => o.slice(0, 5);
-const toInputDate = (d: Date) => d.toISOString().split('T')[0];
-
+const toInputDate = (d: Date) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 export const EMPTY_APPELLO_FORM: AppelloFormValues = {
   data: '', ora: '', aula: '', note: '', materiaId: '', sessioneId: '',
 };

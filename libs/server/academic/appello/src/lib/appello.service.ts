@@ -4,6 +4,7 @@ import { SessioneService } from '@server/sessione';
 import { CreateAppelloDto } from './dto/create-appello.dto';
 import { UpdateAppelloDto } from './dto/update-appello.dto';
 import { MateriaService } from '@server/materia';
+import { parseDay } from '@server/academic-entities';
 
 @Injectable()
 export class AppelloService {
@@ -14,7 +15,7 @@ export class AppelloService {
   ) {}
 
   async create(dataDTO: CreateAppelloDto, docenteId: number) {
-    const data = new Date(dataDTO.data);
+    const data = parseDay(dataDTO.data);
     await this.checkDocenteOwnsMateria(dataDTO.materiaId, docenteId);
     await this.checkValidityForAppello(dataDTO.sessioneId, data);
     await this.checkLimiteAppelliPerSessione(dataDTO.materiaId, dataDTO.sessioneId);
@@ -41,7 +42,7 @@ export class AppelloService {
       );
     }
 
-    const data = dataDTO.data ? new Date(dataDTO.data) : new Date(appello.data);
+    const data = parseDay(dataDTO.data ?? appello.data);
 
     await this.checkValidityForAppello(dataDTO.sessioneId ?? appello.sessione.id, data);
 
@@ -74,7 +75,7 @@ export class AppelloService {
       throw new ForbiddenException('Non puoi cancellare un appello che non è tuo');
     }
 
-    if (new Date() > appello.sessione.dataFineInserimento) {
+    if (parseDay(new Date()) > parseDay(appello.sessione.dataFineInserimento)) {
       throw new BadRequestException('Non puoi cancellare un appello dopo la chiusura del periodo di inserimento');
     }
 
@@ -85,8 +86,8 @@ export class AppelloService {
   private async checkValidityForAppello(sessioneId: number, dataOra: Date){
     const sessione = await this.sessioneService.getById(sessioneId);
 
-    const now = new Date();
-    if (now < sessione.dataInizioInserimento || now > sessione.dataFineInserimento) {
+    const oggi = parseDay(new Date());
+    if (oggi < parseDay(sessione.dataInizioInserimento) || oggi > parseDay(sessione.dataFineInserimento)) {
       throw new BadRequestException('Il periodo di inserimento per questa sessione è chiuso');
     }
 
@@ -94,7 +95,7 @@ export class AppelloService {
     if (giorno === 0 || giorno === 6) {
       throw new BadRequestException('Non è possibile fissare appelli nel weekend');
     }
-    if (dataOra < new Date(sessione.dataInizio) || dataOra > new Date(sessione.dataFine)) {
+    if (dataOra < parseDay(sessione.dataInizio) || dataOra > parseDay(sessione.dataFine)) {
       throw new BadRequestException("La data dell'appello è fuori dal range della sessione");
     }
   }

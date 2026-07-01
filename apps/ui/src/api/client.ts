@@ -11,7 +11,8 @@ function isIsoDateString(value: any): boolean {
     typeof value === 'string' &&
     value.length >= 10 &&
     value.length <= 30 &&
-    dateRegex.test(value)
+    dateRegex.test(value) &&
+    !isNaN(Date.parse(value))
   );
 }
 
